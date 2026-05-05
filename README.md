@@ -2,63 +2,80 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Pacientes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjeta Glassmorphism</title>
     <style>
-        table {
-            border-collapse: collapse;
-            width: 60%;
-            margin: 20px auto;
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        th, td {
-            border: 1px solid #000;
-            padding: 8px;
+
+        .container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            width: 300px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            color: #fff;
             text-align: center;
         }
-        th {
-            background-color: #ddd;
+
+        .card h2 {
+            margin-top: 20px;
+            font-size: 1.5rem;
         }
-        h1 {
-            text-align: center;
+
+        .card p {
+            font-size: 1rem;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+
+        .button {
+            margin-top: auto;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background: rgba(255, 255, 255, 0.5);
         }
     </style>
 </head>
-
 <body>
-    <h1>Pacientes</h1>
 
-    <table>
-        <tr>
-            <th>Nombre</th>
-            <th>Edad</th>
-        </tr>
-
-        <?php 
-        require 'vendor/autoload.php';
-
-        try {
-            // Conexión a MongoDB
-            $client = new MongoDB\Client("mongodb://localhost:27987");
-
-            // Base de datos y colección
-            $collection = $client->Clinica->pacientes;
-
-            // Consulta
-            $result = $collection->find();
-
-            // Mostrar en tabla
-            foreach ($result as $pac) {
-                echo "<tr>";
-                echo "<td>" . $pac['nombre'] . "</td>";
-                echo "<td>" . $pac['edad'] . "</td>";
-                echo "</tr>";
-                
-            }
-
-        } catch (Exception $e) {
-            echo "<tr><td colspan='2'>Error: " . $e->getMessage() . "</td></tr>";
-        }
-        ?>
-    </table>
+    <div class="container">
+        <div class="card">
+            <h2>Código Aleatorio</h2>
+            <p>Este es un ejemplo de diseño Glassmorphism creado solo con HTML y CSS. Se ve genial en cualquier portafolio moderno.</p>
+            <a href="#" class="button">¡Haz clic aquí!</a>
+        </div>
+    </div>
 
 </body>
 </html>
