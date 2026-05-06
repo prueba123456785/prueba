@@ -12,11 +12,13 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '.')));
+app.use(express.static('./'));
 
 // ==========================================
 // CONEXIÓN A MONGODB ATLAS
 // ==========================================
 const mongoURI = 'mongodb+srv://yael24571_db_user:y12345@cluster0.86hmorz.mongodb.net/ClimasHuerto?appName=Cluster0';
+const port = process.env.PORT || 3000;
 
 mongoose.connect(mongoURI)
   .then(() => console.log("Conectado a MongoDB Atlas"))
