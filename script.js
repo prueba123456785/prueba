@@ -1,19 +1,19 @@
-
 // ===== CONFIGURACIÓN DE API =====
 const API_URL = 'http://localhost:3000/api';
 let tempChart = null;
- 
+
+
 // ===== CURSOR =====
 const cursor = document.getElementById('cursor');
 const trail  = document.getElementById('cursorTrail');
 let mx = 0, my = 0, tx = 0, ty = 0;
- 
+
 document.addEventListener('mousemove', e => {
   mx = e.clientX; my = e.clientY;
   cursor.style.left = mx + 'px';
   cursor.style.top  = my + 'px';
 });
- 
+
 function animateTrail() {
   tx += (mx - tx) * 0.14;
   ty += (my - ty) * 0.14;
@@ -22,7 +22,7 @@ function animateTrail() {
   requestAnimationFrame(animateTrail);
 }
 animateTrail();
- 
+
 document.querySelectorAll('a, button, input, select').forEach(el => {
   el.addEventListener('mouseenter', () => {
     cursor.style.transform = 'translate(-50%,-50%) scale(2)';
@@ -33,13 +33,13 @@ document.querySelectorAll('a, button, input, select').forEach(el => {
     trail.style.opacity = '0.5';
   });
 });
- 
+
 // ===== NAVBAR SCROLL =====
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
   navbar.classList.toggle('scrolled', window.scrollY > 60);
 });
- 
+
 // ===== PARTICLES =====
 const pContainer = document.getElementById('particles');
 const colors = ['#E8E4F3','#D0C8E6','#B5A8D6','#9B88C6','#7B68A6'];
@@ -56,7 +56,7 @@ for (let i = 0; i < 28; i++) {
   `;
   pContainer.appendChild(p);
 }
- 
+
 // ===== REVEAL ON SCROLL =====
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
@@ -66,7 +66,7 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.15 });
 document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
- 
+
 // ===== COUNTER ANIMATION =====
 function animateCounter(el, target, duration = 1800) {
   let start = null;
@@ -80,7 +80,7 @@ function animateCounter(el, target, duration = 1800) {
   };
   requestAnimationFrame(step);
 }
- 
+
 const counterObs = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting && !e.target.dataset.done) {
@@ -90,7 +90,7 @@ const counterObs = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.3 });
 document.querySelectorAll('.stat-num, .counter').forEach(el => counterObs.observe(el));
- 
+
 // ===== HAMBURGER =====
 const hamburger = document.getElementById('hamburger');
 const navLinks  = document.querySelector('.nav-links');
@@ -103,7 +103,7 @@ hamburger.addEventListener('click', () => {
     gap:1rem; z-index:999;
   `;
 });
- 
+
 // ===== ACTIVE NAV SECTION =====
 const sections = document.querySelectorAll('section[id]');
 const navItems = document.querySelectorAll('.nav-links a');
@@ -114,7 +114,7 @@ window.addEventListener('scroll', () => {
     a.style.color = a.getAttribute('href') === '#' + current ? '#7B68A6' : '';
   });
 });
- 
+
 // ===== CARD 3D TILT =====
 document.querySelectorAll('.card, .team-card').forEach(card => {
   card.addEventListener('mousemove', e => {
@@ -125,10 +125,9 @@ document.querySelectorAll('.card, .team-card').forEach(card => {
   });
   card.addEventListener('mouseleave', () => { card.style.transform = ''; });
 });
- 
+
 // ========== API FUNCTIONS ==========
- 
-// Función para obtener temperatura actual
+
 async function obtenerTemperaturaActual() {
   try {
     const response = await fetch(`${API_URL}/temperatura/actual`);
@@ -143,20 +142,18 @@ async function obtenerTemperaturaActual() {
     mostrarTemperaturaFallback();
   }
 }
- 
-// Actualizar widget de temperatura en hero
+
 function actualizarWidgetTemperatura(data) {
   const tempValue = document.getElementById('tempValue');
   const tempLabel = document.getElementById('tempLabel');
   const tempRecommendation = document.getElementById('tempRecommendation');
   const tempIcon = document.getElementById('tempIcon');
   const tempWidget = document.getElementById('tempWidget');
- 
-  if (tempValue) tempValue.textContent = `${data.temperatura}°C`;
-  if (tempLabel) tempLabel.textContent = data.estado;
-  if (tempRecommendation) tempRecommendation.textContent = data.mensaje;
- 
-  // Cambiar icono según temperatura
+
+  if (tempValue) tempValue.textContent = `${data.temperatura || 0}°C`;
+  if (tempLabel) tempLabel.textContent = data.estado || 'Sin estado';
+  if (tempRecommendation) tempRecommendation.textContent = data.mensaje || '';
+
   const iconos = {
     'ÓPTIMO': '🟣',
     'CÁLIDO': '🟠',
@@ -165,26 +162,25 @@ function actualizarWidgetTemperatura(data) {
     'HELADA': '❄️'
   };
   if (tempIcon) tempIcon.textContent = iconos[data.estado] || '🌡️';
- 
-  // Cambiar color del widget
+
   if (tempWidget) {
     tempWidget.className = 'temp-widget reveal visible';
-    tempWidget.classList.add(`temp-${data.estado.toLowerCase().replace(/ /g, '-')}`);
+    if (data.estado) {
+      tempWidget.classList.add(`temp-${data.estado.toLowerCase().replace(/ /g, '-')}`);
+    }
   }
 }
- 
-// Mostrar datos de respaldo si falla la API
+
 function mostrarTemperaturaFallback() {
   const tempValue = document.getElementById('tempValue');
   const tempLabel = document.getElementById('tempLabel');
   const tempRecommendation = document.getElementById('tempRecommendation');
- 
-  if (tempValue) tempValue.textContent = '22°C';
-  if (tempLabel) tempLabel.textContent = 'SIMULADO';
-  if (tempRecommendation) tempRecommendation.textContent = '⚠️ Datos de ejemplo (API no disponible)';
+
+  if (tempValue) tempValue.textContent = '--°C';
+  if (tempLabel) tempLabel.textContent = 'Sin conexión';
+  if (tempRecommendation) tempRecommendation.textContent = '⚠️ Sin conexión con el servidor de la base de datos.';
 }
- 
-// Obtener estadísticas de temperatura
+
 async function obtenerEstadisticas() {
   try {
     const response = await fetch(`${API_URL}/temperatura/estadisticas?dias=30`);
@@ -193,21 +189,20 @@ async function obtenerEstadisticas() {
     const avgTemp = document.getElementById('avgTemp');
     const maxTemp = document.getElementById('maxTemp');
     const optimalDaysCounter = document.querySelector('#optimalDays .counter');
- 
-    if (avgTemp) avgTemp.textContent = `${data.promedio}°C`;
-    if (maxTemp) maxTemp.textContent = `${data.maxima}°C`;
+
+    if (avgTemp) avgTemp.textContent = `${data.promedio || 0}°C`;
+    if (maxTemp) maxTemp.textContent = `${data.maxima || 0}°C`;
     if (optimalDaysCounter) {
-      optimalDaysCounter.dataset.target = data.diasOptimos;
-      animateCounter(optimalDaysCounter, data.diasOptimos);
+      optimalDaysCounter.dataset.target = data.diasOptimos || 0;
+      animateCounter(optimalDaysCounter, data.diasOptimos || 0);
     }
- 
+    
     return data;
   } catch (error) {
     console.error('Error al obtener estadísticas:', error);
   }
 }
- 
-// Obtener recomendaciones de riego
+
 async function obtenerRecomendacionesRiego() {
   try {
     const response = await fetch(`${API_URL}/recomendaciones/riego`);
@@ -220,21 +215,19 @@ async function obtenerRecomendacionesRiego() {
         <span>${data.frecuencia} — ${data.cantidad}</span>
       `;
     }
-    
     return data;
   } catch (error) {
     console.error('Error al obtener recomendaciones:', error);
     const riegoInfo = document.getElementById('riegoInfo');
     if (riegoInfo) {
       riegoInfo.innerHTML = `
-        <strong>Riego moderado</strong>
-        <span>Cada 7-10 días (datos de ejemplo)</span>
+        <strong>Sin datos</strong>
+        <span>Sin información disponible</span>
       `;
     }
   }
 }
- 
-// Obtener estado de floración
+
 async function obtenerEstadoFloracion() {
   try {
     const response = await fetch(`${API_URL}/estado/floracion`);
@@ -247,53 +240,51 @@ async function obtenerEstadoFloracion() {
         <span>${data.mensaje}</span>
       `;
     }
-    
     return data;
   } catch (error) {
     console.error('Error al obtener estado de floración:', error);
     const floracionInfo = document.getElementById('floracionInfo');
     if (floracionInfo) {
       floracionInfo.innerHTML = `
-        <strong>CRECIMIENTO</strong>
-        <span>Fase de desarrollo activo (datos de ejemplo)</span>
+        <strong>Sin datos</strong>
+        <span>Sin información disponible</span>
       `;
     }
   }
 }
- 
-// Obtener historial de temperaturas para gráfico
+
 async function obtenerHistorialTemperatura(dias = 7) {
   try {
     const response = await fetch(`${API_URL}/temperatura/historial?dias=${dias}`);
     const data = await response.json();
     
-    crearGraficoTemperatura(data);
+    if (data && data.length > 0) {
+      crearGraficoTemperatura(data);
+    } else {
+      crearGraficoTemperaturaFallback();
+    }
     return data;
   } catch (error) {
     console.error('Error al obtener historial:', error);
     crearGraficoTemperaturaFallback();
   }
 }
- 
-// Crear gráfico de temperatura con Chart.js
+
 function crearGraficoTemperatura(datos) {
   const ctx = document.getElementById('tempChart');
   if (!ctx) return;
- 
-  // Destruir gráfico anterior si existe
+
   if (tempChart) {
     tempChart.destroy();
   }
- 
-  // Preparar datos
+
   const labels = datos.map(d => {
     const fecha = new Date(d.fecha);
     return fecha.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
   });
   
   const temperaturas = datos.map(d => d.temperatura);
- 
-  // Crear gráfico
+
   tempChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -358,83 +349,88 @@ function crearGraficoTemperatura(datos) {
             color: '#7B68A6'
           }
         }
-      },
-      annotation: {
-        annotations: [{
-          type: 'box',
-          yMin: 15,
-          yMax: 25,
-          backgroundColor: 'rgba(155, 136, 198, 0.1)',
-          borderWidth: 0,
-          label: {
-            content: 'Zona óptima',
-            enabled: true
-          }
-        }]
       }
     }
   });
 }
- 
-// Crear gráfico de respaldo con datos de ejemplo
+
 function crearGraficoTemperaturaFallback() {
-  const datosEjemplo = [
-    { fecha: new Date(Date.now() - 6*24*60*60*1000), temperatura: 18 },
-    { fecha: new Date(Date.now() - 5*24*60*60*1000), temperatura: 21 },
-    { fecha: new Date(Date.now() - 4*24*60*60*1000), temperatura: 23 },
-    { fecha: new Date(Date.now() - 3*24*60*60*1000), temperatura: 22 },
-    { fecha: new Date(Date.now() - 2*24*60*60*1000), temperatura: 20 },
-    { fecha: new Date(Date.now() - 1*24*60*60*1000), temperatura: 24 },
-    { fecha: new Date(), temperatura: 22 }
-  ];
-  
-  crearGraficoTemperatura(datosEjemplo);
+  const ctx = document.getElementById('tempChart');
+  if (!ctx) return;
+
+  if (tempChart) {
+    tempChart.destroy();
+  }
+
+  tempChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Sin datos'],
+      datasets: [{
+        label: 'No hay datos registrados en la base de datos',
+        data: [0],
+        borderColor: '#9B88C6',
+        backgroundColor: 'rgba(155, 136, 198, 0.1)',
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          min: 0,
+          max: 40,
+          ticks: {
+            color: '#7B68A6'
+          }
+        },
+        x: {
+          ticks: {
+            color: '#7B68A6'
+          }
+        }
+      }
+    }
+  });
 }
- 
-// Actualizar estado de conexión con API
+
 function actualizarEstadoAPI(conectado) {
   const apiStatus = document.getElementById('apiStatus');
   if (!apiStatus) return;
- 
+
   const statusDot = apiStatus.querySelector('.status-dot');
   const statusText = apiStatus.querySelector('.status-text');
- 
+
   if (conectado) {
     statusDot.style.background = '#52b788';
     statusText.textContent = 'API conectada';
   } else {
     statusDot.style.background = '#ff6b6b';
-    statusText.textContent = 'API desconectada (datos de ejemplo)';
+    statusText.textContent = 'API desconectada (Sin conexión a servidor)';
   }
 }
- 
-// Función para enviar formulario de contacto
+
 async function enviarContacto() {
   const nombre = document.getElementById('contactName').value;
   const email = document.getElementById('contactEmail').value;
   const tipo = document.getElementById('contactType').value;
- 
+
   if (!nombre || !email) {
     alert('Por favor completa todos los campos');
     return;
   }
- 
-  // Aquí podrías hacer un POST a tu API para guardar el contacto
+
   console.log('Enviando contacto:', { nombre, email, tipo });
-  
   alert(`¡Gracias ${nombre}! Te contactaremos pronto a ${email}`);
-  
-  // Limpiar formulario
+
   document.getElementById('contactName').value = '';
   document.getElementById('contactEmail').value = '';
   document.getElementById('contactType').selectedIndex = 0;
 }
- 
+
 // ===== INICIALIZACIÓN =====
 async function inicializarDatos() {
-  console.log('🌿 Iniciando aplicación del Huerto Escolar...');
+  console.log(' Iniciando aplicación del Huerto Escolar...');
   
-  // Cargar todos los datos de la API
   await obtenerTemperaturaActual();
   await obtenerEstadisticas();
   await obtenerRecomendacionesRiego();
@@ -443,18 +439,15 @@ async function inicializarDatos() {
   
   console.log('✅ Datos cargados correctamente');
 }
- 
-// Actualizar datos cada 30 segundos
+
 setInterval(async () => {
   console.log('🔄 Actualizando datos...');
   await obtenerTemperaturaActual();
   await obtenerEstadisticas();
 }, 30000);
- 
-// Iniciar cuando la página cargue
+
 window.addEventListener('DOMContentLoaded', () => {
   inicializarDatos();
 });
- 
-// Exponer función de contacto globalmente
+
 window.enviarContacto = enviarContacto;
