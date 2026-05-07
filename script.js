@@ -2,7 +2,6 @@
 const API_URL = '/api';
 let tempChart = null;
 
-
 // ===== CURSOR =====
 const cursor = document.getElementById('cursor');
 const trail  = document.getElementById('cursorTrail');
@@ -393,6 +392,94 @@ function crearGraficoTemperaturaFallback() {
   });
 }
 
+// ========== CARRUSEL DE FOTOS ==========
+let currentSlideIndex = 0;
+let carouselTimer = null;
+
+async function inicializarCarrusel() {
+  try {
+    const response = await fetch(`${API_URL}/fotos`);
+    const fotos = await response.json();
+    
+    const track = document.getElementById('carouselTrack');
+    if (!track) return;
+    
+    if (fotos && fotos.length > 0) {
+      track.innerHTML = ''; // Limpiar el cargador
+      
+      fotos.forEach((foto, index) => {
+        const li = document.createElement('li');
+        li.className = 'carousel-slide';
+        
+        // Renderizamos url, titulo y descripción
+        li.innerHTML = `
+          <img src="${foto.url || 'https://via.placeholder.com/800x450'}" alt="${foto.titulo}" class="carousel-image">
+          <div class="slide-caption">
+            <h4>${foto.titulo || 'Sin título'}</h4>
+            <p>${foto.descripcion || ''}</p>
+          </div>
+        `;
+        track.appendChild(li);
+      });
+      
+      iniciarLogicaCarrusel(fotos.length);
+    } else {
+      track.innerHTML = `
+        <li class="carousel-slide">
+          <div class="slide-placeholder">No hay fotos en la base de datos aún.</div>
+        </li>
+      `;
+    }
+  } catch (error) {
+    console.error('Error al cargar fotos para el carrusel:', error);
+    const track = document.getElementById('carouselTrack');
+    if (track) {
+      track.innerHTML = `
+        <li class="carousel-slide">
+          <div class="slide-placeholder">⚠️ Error de conexión con la galería.</div>
+        </li>
+      `;
+    }
+  }
+}
+
+function iniciarLogicaCarrusel(totalSlides) {
+  const track = document.getElementById('carouselTrack');
+  const btnPrev = document.getElementById('carouselPrev');
+  const btnNext = document.getElementById('carouselNext');
+  
+  if (!track || totalSlides <= 1) return; // Si solo hay 1 o 0 fotos, no hay slider
+
+  const moverA = (index) => {
+    currentSlideIndex = index;
+    // Si llegamos al final, volvemos al inicio, y viceversa
+    if (currentSlideIndex >= totalSlides) currentSlideIndex = 0;
+    if (currentSlideIndex < 0) currentSlideIndex = totalSlides - 1;
+    
+    const translateValue = -(currentSlideIndex * 100);
+    track.style.transform = `translateX(${translateValue}%)`;
+  };
+
+  const autoPlay = () => {
+    moverA(currentSlideIndex + 1);
+  };
+
+  btnPrev.addEventListener('click', () => {
+    clearInterval(carouselTimer);
+    moverA(currentSlideIndex - 1);
+    carouselTimer = setInterval(autoPlay, 5000);
+  });
+
+  btnNext.addEventListener('click', () => {
+    clearInterval(carouselTimer);
+    moverA(currentSlideIndex + 1);
+    carouselTimer = setInterval(autoPlay, 5000);
+  });
+
+  // Autoplay de 5 segundos
+  carouselTimer = setInterval(autoPlay, 5000);
+}
+
 function actualizarEstadoAPI(conectado) {
   const apiStatus = document.getElementById('apiStatus');
   if (!apiStatus) return;
@@ -436,6 +523,7 @@ async function inicializarDatos() {
   await obtenerRecomendacionesRiego();
   await obtenerEstadoFloracion();
   await obtenerHistorialTemperatura(7);
+  await inicializarCarrusel(); // Agregado el carrusel
   
   console.log('✅ Datos cargados correctamente');
 }
