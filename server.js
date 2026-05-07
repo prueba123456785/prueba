@@ -12,48 +12,41 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '.')));
-app.use(express.static('./'));
 
 // ==========================================
-// CONEXIÓN A MONGODB ATLAS
+// CONEXIÓN A MONGODB ATLAS (REGRESAMOS A ClimasHuerto)
 // ==========================================
 const mongoURI = 'mongodb+srv://yael24571_db_user:y12345@cluster0.86hmorz.mongodb.net/ClimasHuerto?appName=Cluster0';
-const port = process.env.PORT || 3000;
 
 mongoose.connect(mongoURI)
-  .then(() => console.log("Conectado a MongoDB Atlas"))
-  .catch(err => console.log("Error:", err));
+  .then(() => console.log("✅ Conectado a MongoDB Atlas (ClimasHuerto)"))
+  .catch(err => console.log("❌ Error:", err));
 
 // ==========================================
 // MODELOS DE DATOS (SCHEMAS)
 // ==========================================
 
-// Schema para la colección de Climas del huerto
+// 1. Schema para el clima (Apuntando a 'Climas' con C mayúscula, donde están tus 7 datos)
 const climaSchema = new mongoose.Schema({
     fecha: String, 
     temperatura: Number
 }, { 
     collection: 'Climas' 
 });
-
 const Clima = mongoose.model('Clima', climaSchema);
 
-// Schema de Plantas
-const plantaSchema = new mongoose.Schema({
-  nombre: { type: String, required: true },
-  tipo: { type: String, required: true },
-  fechaPlantacion: { type: Date, default: Date.now },
-  tempOptima: { min: Number, max: Number },
-  estado: {
-    type: String,
-    enum: ['semilla', 'germinando', 'crecimiento', 'floracion', 'cosecha'],
-    default: 'semilla'
-  }
+// 2. Schema para las imágenes del Carrusel (Apuntando a la nueva 'Images' que creaste)
+const fotoSchema = new mongoose.Schema({
+  url: { type: String, required: true },
+  titulo: { type: String },
+  descripcion: { type: String }
+}, {
+  collection: 'Images' 
 });
+const Foto = mongoose.model('Foto', fotoSchema);
 
-const Planta = mongoose.model('Planta', plantaSchema);
 
-// Función auxiliar para obtener la fecha en formato "YYYY-MM-DD"
+// Función auxiliar para obtener la fecha
 const obtenerFechaString = (diasAtras = 0) => {
   const d = new Date();
   d.setDate(d.getDate() - diasAtras);
@@ -64,7 +57,7 @@ const obtenerFechaString = (diasAtras = 0) => {
 // RUTAS DE LA API
 // ==========================================
 
-// 1. Obtener temperatura actual
+// Obtener temperatura actual
 app.get('/api/temperatura/actual', async (req, res) => {
   try {
     const ultimoRegistro = await Clima.findOne().sort({ fecha: -1 });
@@ -89,9 +82,10 @@ app.get('/api/temperatura/actual', async (req, res) => {
   }
 });
 
-// 2. Obtener historial para el gráfico (últimos 7 días)
+// Obtener historial
 app.get('/api/temperatura/historial', async (req, res) => {
   try {
+    // Al ordenar por fecha, la gráfica se dibujará en el orden correcto
     const historial = await Clima.find({}).sort({ fecha: 1 });
     res.json(historial);
   } catch (error) {
@@ -99,22 +93,7 @@ app.get('/api/temperatura/historial', async (req, res) => {
   }
 });
 
-// 3. Registrar nueva temperatura
-app.post('/api/temperatura', async (req, res) => {
-  try {
-    const { temperatura, fecha } = req.body;
-    const nuevoClima = new Clima({
-      temperatura,
-      fecha: fecha || obtenerFechaString()
-    });
-    await nuevoClima.save();
-    res.status(201).json(nuevoClima);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
-
-// 4. Estadísticas (Promedio, Max, Min)
+// Estadísticas
 app.get('/api/temperatura/estadisticas', async (req, res) => {
   try {
     const datos = await Clima.find({});
@@ -132,7 +111,7 @@ app.get('/api/temperatura/estadisticas', async (req, res) => {
   }
 });
 
-// 5. Recomendaciones de Riego
+// Recomendaciones
 app.get('/api/recomendaciones/riego', async (req, res) => {
   try {
     const ultimo = await Clima.findOne().sort({ fecha: -1 });
@@ -148,7 +127,7 @@ app.get('/api/recomendaciones/riego', async (req, res) => {
   }
 });
 
-// 6. Estado de Floración
+// Floración
 app.get('/api/estado/floracion', async (req, res) => {
   try {
     const ultimo = await Clima.findOne().sort({ fecha: -1 });
@@ -163,20 +142,22 @@ app.get('/api/estado/floracion', async (req, res) => {
   }
 });
 
-// 7. Rutas de Plantas
-app.get('/api/plantas', async (req, res) => {
-  const plantas = await Planta.find();
-  res.json(plantas);
+// Obtener las imágenes para tu Carrusel
+app.get('/api/fotos', async (req, res) => {
+  try {
+    const fotos = await Foto.find();
+    res.json(fotos);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// Servir la página web principal
+// Servir la web
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// ==========================================
-// INICIAR SERVIDOR
-// ==========================================
+// Iniciar Servidor
 app.listen(PORT, () => {
   console.log(` Servidor corriendo en http://localhost:${PORT}`);
 });
