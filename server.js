@@ -1,12 +1,6 @@
 const dns = require('dns');
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 
-cloudinary.config({ 
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
-  api_key: process.env.CLOUDINARY_API_KEY, 
-  api_secret: process.env.CLOUDINARY_API_SECRET 
-});
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -25,7 +19,6 @@ app.use(express.static('./'));
 // ==========================================
 const mongoURI = 'mongodb+srv://yael24571_db_user:y12345@cluster0.86hmorz.mongodb.net/ClimasHuerto?appName=Cluster0';
 const port = process.env.PORT || 3000;
-const urlBackend = 'https://prueba-gmv7.onrender.com/api/subir-imagen';
 
 mongoose.connect(mongoURI)
   .then(() => console.log("Conectado a MongoDB Atlas"))
