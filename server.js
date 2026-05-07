@@ -25,6 +25,7 @@ app.use(express.static('./'));
 // ==========================================
 const mongoURI = 'mongodb+srv://yael24571_db_user:y12345@cluster0.86hmorz.mongodb.net/ClimasHuerto?appName=Cluster0';
 const port = process.env.PORT || 3000;
+const urlBackend = 'https://prueba-gmv7.onrender.com/api/subir-imagen';
 
 mongoose.connect(mongoURI)
   .then(() => console.log("Conectado a MongoDB Atlas"))
