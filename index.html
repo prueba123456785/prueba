@@ -13,7 +13,6 @@
 <div class="cursor" id="cursor"></div>
 <div class="cursor-trail" id="cursorTrail"></div>
  
-<!-- Navbar -->
 <nav class="navbar" id="navbar">
   <div class="nav-logo">
     <span class="logo-leaf"></span>
@@ -21,6 +20,7 @@
   </div>
   <ul class="nav-links">
     <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#galeria">Galería</a></li>
     <li><a href="#problema">Por Qué</a></li>
     <li><a href="#solucion">Cultivo</a></li>
     <li><a href="#impacto">Monitoreo</a></li>
@@ -32,7 +32,6 @@
   </div>
 </nav>
  
-<!-- HERO -->
 <section class="hero" id="inicio">
   <div class="hero-bg">
     <div class="hero-orb orb1"></div>
@@ -70,7 +69,6 @@
       <a href="#impacto" class="btn-ghost">Ver datos en vivo</a>
     </div>
     
-    <!-- Widget de temperatura en tiempo real -->
     <div class="temp-widget reveal" id="tempWidget">
       <div class="temp-status">
         <div class="temp-icon" id="tempIcon">🌡️</div>
@@ -90,8 +88,27 @@
     <div class="scroll-arrow"></div>
   </div>
 </section>
+
+<section class="section galeria" id="galeria">
+  <div class="section-inner">
+    <div class="section-tag reveal">Nuestras plantas</div>
+    <h2 class="section-title reveal">Galería del <em>huerto</em></h2>
+    <p class="section-sub reveal">Imágenes en vivo de nuestro progreso, obtenidas directamente de nuestra base de datos.</p>
+    
+    <div class="carousel-container reveal" id="carouselContainer">
+      <button class="carousel-btn prev" id="carouselPrev">&#10094;</button>
+      <div class="carousel-track-wrapper">
+        <ul class="carousel-track" id="carouselTrack">
+          <li class="carousel-slide current-slide">
+            <div class="slide-placeholder">Cargando fotos de la base de datos...</div>
+          </li>
+        </ul>
+      </div>
+      <button class="carousel-btn next" id="carouselNext">&#10095;</button>
+    </div>
+  </div>
+</section>
  
-<!-- PROBLEMA / POR QUÉ -->
 <section class="section problema" id="problema">
   <div class="section-inner">
     <div class="section-tag reveal">El desafío</div>
@@ -99,25 +116,25 @@
     <p class="section-sub reveal">La lavanda es una planta aromática con múltiples beneficios educativos, ambientales y económicos, perfecta para nuestro huerto escolar.</p>
     <div class="cards-grid">
       <div class="card reveal" style="--delay:0s">
-        <div class="card-icon"></div>
+        <div class="card-icon">💧</div>
         <h3>Bajo Consumo</h3>
         <p>La lavanda requiere 70% menos agua que cultivos tradicionales, enseñándonos sobre agricultura sostenible y uso eficiente de recursos.</p>
         <div class="card-bar"><div class="bar-fill" style="--pct:85%"></div></div>
       </div>
       <div class="card reveal" style="--delay:0.1s">
-        <div class="card-icon"></div>
+        <div class="card-icon">🦋</div>
         <h3>Biodiversidad</h3>
         <p>Atrae abejas y mariposas, ayudando a estudiantes a comprender la importancia de los polinizadores en nuestros ecosistemas.</p>
         <div class="card-bar"><div class="bar-fill" style="--pct:92%"></div></div>
       </div>
       <div class="card reveal" style="--delay:0.2s">
-        <div class="card-icon"></div>
+        <div class="card-icon">🔬</div>
         <h3>Aprendizaje STEM</h3>
         <p>Integramos sensores IoT para monitorear temperatura y humedad, combinando biología con tecnología y análisis de datos.</p>
         <div class="card-bar"><div class="bar-fill" style="--pct:78%"></div></div>
       </div>
       <div class="card reveal" style="--delay:0.3s">
-        <div class="card-icon"></div>
+        <div class="card-icon">🧠</div>
         <h3>Bienestar</h3>
         <p>El aroma de la lavanda reduce el estrés escolar y mejora la concentración, creando espacios de aprendizaje más saludables.</p>
         <div class="card-bar"><div class="bar-fill" style="--pct:88%"></div></div>
@@ -126,7 +143,6 @@
   </div>
 </section>
  
-<!-- SOLUCIÓN / CULTIVO -->
 <section class="section solucion" id="solucion">
   <div class="section-inner">
     <div class="section-tag reveal">Nuestro proceso</div>
@@ -169,13 +185,11 @@
   </div>
 </section>
  
-<!-- IMPACTO / MONITOREO -->
 <section class="section impacto" id="impacto">
   <div class="section-inner">
     <div class="section-tag reveal">Datos en tiempo real</div>
     <h2 class="section-title reveal">Monitoreo climático<br><em>del huerto</em></h2>
     
-    <!-- Gráfico de temperatura -->
     <div class="chart-container reveal">
       <h3>Temperatura de los últimos 7 días</h3>
       <canvas id="tempChart"></canvas>
@@ -207,28 +221,28 @@
       
       <div class="impact-numbers">
         <div class="imp-row reveal" style="--delay:0s">
-          <div class="imp-icon"></div>
+          <div class="imp-icon">💧</div>
           <div id="riegoInfo">
             <strong>Cargando...</strong>
             <span>Recomendación de riego</span>
           </div>
         </div>
         <div class="imp-row reveal" style="--delay:0.1s">
-          <div class="imp-icon"></div>
+          <div class="imp-icon">🌸</div>
           <div id="floracionInfo">
             <strong>Analizando...</strong>
             <span>Estado de floración estimado</span>
           </div>
         </div>
         <div class="imp-row reveal" style="--delay:0.2s">
-          <div class="imp-icon"></div>
+          <div class="imp-icon">☀️</div>
           <div id="optimalDays">
             <strong class="counter" data-target="0">0</strong> días
             <span>con temperatura óptima este mes</span>
           </div>
         </div>
         <div class="imp-row reveal" style="--delay:0.3s">
-          <div class="imp-icon"></div>
+          <div class="imp-icon">🌿</div>
           <div>
             <strong class="counter" data-target="67">0</strong> plantas
             <span>de lavanda cultivadas en el huerto</span>
@@ -239,7 +253,6 @@
   </div>
 </section>
  
-<!-- EQUIPO -->
 <section class="section equipo" id="equipo">
   <div class="section-inner">
     <div class="section-tag reveal">Las personas detrás</div>
@@ -273,7 +286,6 @@
   </div>
 </section>
  
-<!-- CONTACTO -->
 <section class="section contacto" id="contacto">
   <div class="cta-blob blob1"></div>
   <div class="cta-blob blob2"></div>
@@ -294,11 +306,10 @@
   </div>
 </section>
  
-<!-- FOOTER -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <div class="footer-logo"><span class="logo-leaf"></span><span class="logo-text">Huerto Escolar</span></div>
+      <div class="footer-logo"><span class="logo-leaf">🌿</span><span class="logo-text">Huerto Escolar</span></div>
       <p>Cultivando conocimiento, cosechando futuro.</p>
       <div class="api-status" id="apiStatus">
         <span class="status-dot"></span>
@@ -331,9 +342,7 @@
   </div>
 </footer>
  
-<!-- Chart.js para gráficos -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
- 
