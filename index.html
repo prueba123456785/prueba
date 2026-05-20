@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Huerto Escolar La Lavanda — Proyecto Ambiental</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -26,6 +27,9 @@
     <li><a href="#impacto">Monitoreo</a></li>
     <li><a href="#equipo">Equipo</a></li>
     <li><a href="#contacto" class="nav-cta">Únete</a></li>
+    <div class="admin-float-btn" onclick="abrirLogin(event)">
+    <i class="fas fa-shield-alt"></i>
+</div>
   </ul>
   <div class="hamburger" id="hamburger">
     <span></span><span></span><span></span>
@@ -344,5 +348,201 @@
  
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="script.js"></script>
+
+<div id="modalAdmin" class="modal-login">
+  <div class="modal-content">
+    <span class="close-btn" onclick="cerrarLogin()">&times;</span>
+    <h3 style="font-family: 'Playfair Display', serif; color: #7B68A6; margin-bottom: 15px; font-size: 1.5rem;">Acceso Restringido</h3>
+    <p style="font-size: 0.9rem; margin-bottom: 20px; color: #6b7280;">Ingresa la contraseña maestra para editar el huerto.</p>
+    <input type="password" id="passAdmin" placeholder="Contraseña..." style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 20px;">
+    <button class="adm-btn" style="width: 100%; justify-content: center;" onclick="verificarPass()">Entrar al Panel</button>
+  </div>
+</div>
+
+<div id="panelAdminCompleto" class="adm-wrapper">
+    <aside class="adm-sidebar">
+        <div class="adm-brand"><i class="fas fa-leaf"></i> Admin Lavanda</div>
+        <div class="adm-menu active"><i class="fas fa-images"></i> Galería</div>
+        <div class="adm-menu"><i class="fas fa-project-diagram"></i> Diagramas</div>
+        <div class="adm-menu"><i class="fas fa-calendar-alt"></i> Cronogramas</div>
+        <div class="adm-menu"><i class="fas fa-align-left"></i> Información</div>
+    </aside>
+
+    <main class="adm-main">
+        <div class="adm-header">
+            <div>
+                <h1>Gestor de Contenido</h1>
+                <p>Agrega o quita elementos de tu página en tiempo real.</p>
+            </div>
+            <button class="adm-btn-danger" onclick="cerrarPanelAdmin()"><i class="fas fa-times"></i> Cerrar Panel</button>
+        </div>
+
+        <div class="adm-grid">
+            <div class="adm-card">
+                <h2><i class="fas fa-camera"></i> Subir Imagen</h2>
+                <input type="text" id="tituloImagen" class="adm-input" placeholder="Título de la imagen...">
+                <input type="file" id="archivoImagen" class="adm-input" accept="image/*">
+                <button class="adm-btn" onclick="subirImagen()"><i class="fas fa-upload"></i> Guardar Imagen</button>
+            </div>
+
+            <div class="adm-card" style="grid-column: 1 / -1;">
+                <h2><i class="fas fa-trash-alt"></i> Gestionar Galería</h2>
+                <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 15px;">Aquí puedes ver todas las fotos subidas y eliminarlas si es necesario.</p>
+                <div id="listaFotosAdmin" class="admin-gallery-grid">
+                    <p>Cargando imágenes...</p>
+                </div>
+            </div>
+
+            <div class="adm-card">
+                <h2><i class="fas fa-sitemap"></i> Agregar Diagrama</h2>
+                <input type="text" class="adm-input" placeholder="Nombre del diagrama">
+                <input type="file" class="adm-input" accept="image/*, .pdf">
+                <button class="adm-btn" onclick="subirDiagrama()"><i class="fas fa-plus"></i> Publicar Diagrama</button>
+            </div>
+
+            <div class="adm-card">
+                <h2><i class="fas fa-tasks"></i> Nuevo Cronograma</h2>
+                <input type="text" class="adm-input" placeholder="Fase o Tarea">
+                <input type="date" class="adm-input">
+                <button class="adm-btn" onclick="subirCronograma()"><i class="fas fa-calendar-plus"></i> Añadir a la línea</button>
+            </div>
+
+            <div class="adm-card">
+                <h2><i class="fas fa-file-alt"></i> Actualizar Información</h2>
+                <input type="text" class="adm-input" placeholder="Título de la sección">
+                <textarea class="adm-input" placeholder="Escribe aquí la nueva información..."></textarea>
+                <button class="adm-btn" onclick="guardarInfo()"><i class="fas fa-save"></i> Publicar Texto</button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<style>
+/* Login Modal */
+.modal-login { display: none; position: fixed; z-index: 99999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); justify-content: center; align-items: center; }
+.modal-content { background: white; padding: 40px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; position: relative; }
+.close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #9ca3af; }
+
+/* Panel Overlay (Cubre toda la pantalla) */
+.adm-wrapper { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #f8f7fa; z-index: 100000; flex-direction: row; font-family: 'DM Sans', sans-serif; }
+.adm-sidebar { width: 280px; background: white; padding: 30px 20px; box-shadow: 2px 0 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+.adm-brand { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #7B68A6; font-weight: 700; margin-bottom: 40px; text-align: center; }
+.adm-menu { padding: 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; color: #4a5568; display: flex; align-items: center; gap: 10px; font-weight: 500; }
+.adm-menu.active, .adm-menu:hover { background: #7B68A6; color: white; }
+
+.adm-main { flex: 1; padding: 40px; overflow-y: auto; color: #2d3748; }
+.adm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+.adm-header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #7B68A6; }
+
+.adm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+.adm-card { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+.adm-card h2 { font-family: 'Playfair Display', serif; color: #7B68A6; margin-bottom: 20px; font-size: 1.3rem; border-bottom: 2px solid #f8f7fa; padding-bottom: 10px; }
+
+.adm-input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 15px; font-family: inherit; }
+.adm-btn { background: #7B68A6; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
+.adm-btn:hover { background: #9B88C6; }
+.adm-btn-danger { background: #fee2e2; color: #ef4444; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+.adm-btn-danger:hover { background: #fca5a5; }
+
+/* NUEVOS ESTILOS PARA LA GALERÍA DEL ADMIN */
+.admin-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+.admin-gallery-item { position: relative; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.2s; }
+.admin-gallery-item:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+.admin-gallery-item img { width: 100%; height: 140px; object-fit: cover; display: block; }
+.admin-gallery-item p { padding: 10px; font-size: 0.85rem; margin: 0; text-align: center; color: #4a5568; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-weight: 500;}
+.btn-delete-img { position: absolute; top: 8px; right: 8px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
+.btn-delete-img:hover { background: #dc2626; transform: scale(1.15); }
+</style>
+
+<script>
+    function abrirLogin(e) { 
+        e.preventDefault(); 
+        document.getElementById('modalAdmin').style.display = 'flex'; 
+    }
+    
+    function cerrarLogin() { 
+        document.getElementById('modalAdmin').style.display = 'none'; 
+        document.getElementById('passAdmin').value = ''; 
+    }
+    
+    function verificarPass() {
+        const pass = document.getElementById('passAdmin').value;
+        if(pass === "LAVANDA2026") {
+            document.getElementById('modalAdmin').style.display = 'none';
+            document.getElementById('passAdmin').value = '';
+            document.getElementById('panelAdminCompleto').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; 
+            cargarFotosAdmin();
+        } else {
+            alert("Contraseña incorrecta. Acceso denegado.");
+        }
+    }
+
+    function cerrarPanelAdmin() {
+        document.getElementById('panelAdminCompleto').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    async function cargarFotosAdmin() {
+        const contenedor = document.getElementById('listaFotosAdmin');
+        contenedor.innerHTML = '<p>Cargando imágenes desde la base de datos...</p>';
+        
+        try {
+            const respuesta = await fetch('/api/fotos');
+            const fotos = await respuesta.json();
+            
+            if (fotos.length === 0) {
+                contenedor.innerHTML = '<p style="color: #6b7280; font-style: italic;">No hay imágenes subidas aún.</p>';
+                return;
+            }
+            
+            contenedor.innerHTML = ''; 
+            
+            fotos.forEach(foto => {
+                const div = document.createElement('div');
+                div.className = 'admin-gallery-item';
+                div.innerHTML = `
+                    <img src="${foto.url}" alt="${foto.titulo || 'Foto del huerto'}">
+                    <p>${foto.titulo || 'Sin título'}</p>
+                    <button class="btn-delete-img" onclick="borrarImagen('${foto._id}')" title="Eliminar foto">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                contenedor.appendChild(div);
+            });
+        } catch (error) {
+            contenedor.innerHTML = '<p style="color: #ef4444;">Error al cargar las imágenes.</p>';
+            console.error('Error:', error);
+        }
+    }
+
+    async function borrarImagen(id) {
+        if (!confirm('¿Estás seguro de que deseas eliminar esta imagen de forma permanente?')) {
+            return;
+        }
+        
+        try {
+            const respuesta = await fetch(`/api/fotos/${id}`, {
+                method: 'DELETE'
+            });
+            
+            if (respuesta.ok) {
+                alert('🗑️ Imagen eliminada correctamente del huerto.');
+                cargarFotosAdmin(); 
+                
+                if(typeof obtenerFotos === 'function') {
+                    obtenerFotos(); 
+                } else if(typeof cargarGaleria === 'function') {
+                    cargarGaleria();
+                }
+            } else {
+                alert('❌ Error al eliminar. El servidor denegó la acción.');
+            }
+        } catch (error) {
+            alert('❌ Error de conexión. ¿El servidor está encendido?');
+            console.error('Error al borrar:', error);
+        }
+    }
+</script>
 </body>
 </html>
