@@ -1,8 +1,7 @@
-// ===== CONFIGURACIÓN DE API =====
+
 const API_URL = '/api';
 let tempChart = null;
 
-// ===== CURSOR =====
 const cursor = document.getElementById('cursor');
 const trail  = document.getElementById('cursorTrail');
 let mx = 0, my = 0, tx = 0, ty = 0;
@@ -33,13 +32,11 @@ document.querySelectorAll('a, button, input, select').forEach(el => {
   });
 });
 
-// ===== NAVBAR SCROLL =====
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
   navbar.classList.toggle('scrolled', window.scrollY > 60);
 });
 
-// ===== PARTICLES =====
 const pContainer = document.getElementById('particles');
 const colors = ['#E8E4F3','#D0C8E6','#B5A8D6','#9B88C6','#7B68A6'];
 for (let i = 0; i < 28; i++) {
@@ -56,7 +53,6 @@ for (let i = 0; i < 28; i++) {
   pContainer.appendChild(p);
 }
 
-// ===== REVEAL ON SCROLL =====
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -66,7 +62,6 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
 
-// ===== COUNTER ANIMATION =====
 function animateCounter(el, target, duration = 1800) {
   let start = null;
   const step = (ts) => {
@@ -90,7 +85,6 @@ const counterObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.3 });
 document.querySelectorAll('.stat-num, .counter').forEach(el => counterObs.observe(el));
 
-// ===== HAMBURGER =====
 const hamburger = document.getElementById('hamburger');
 const navLinks  = document.querySelector('.nav-links');
 hamburger.addEventListener('click', () => {
@@ -103,7 +97,6 @@ hamburger.addEventListener('click', () => {
   `;
 });
 
-// ===== ACTIVE NAV SECTION =====
 const sections = document.querySelectorAll('section[id]');
 const navItems = document.querySelectorAll('.nav-links a');
 window.addEventListener('scroll', () => {
@@ -114,7 +107,6 @@ window.addEventListener('scroll', () => {
   });
 });
 
-// ===== CARD 3D TILT =====
 document.querySelectorAll('.card, .team-card').forEach(card => {
   card.addEventListener('mousemove', e => {
     const r = card.getBoundingClientRect();
@@ -125,7 +117,6 @@ document.querySelectorAll('.card, .team-card').forEach(card => {
   card.addEventListener('mouseleave', () => { card.style.transform = ''; });
 });
 
-// ========== API FUNCTIONS ==========
 
 async function obtenerTemperaturaActual() {
   try {
@@ -392,7 +383,7 @@ function crearGraficoTemperaturaFallback() {
   });
 }
 
-// ========== CARRUSEL DE FOTOS ==========
+
 let currentSlideIndex = 0;
 let carouselTimer = null;
 
@@ -405,13 +396,13 @@ async function inicializarCarrusel() {
     if (!track) return;
     
     if (fotos && fotos.length > 0) {
-      track.innerHTML = ''; // Limpiar el cargador
+      track.innerHTML = ''; 
       
       fotos.forEach((foto, index) => {
         const li = document.createElement('li');
         li.className = 'carousel-slide';
         
-        // Renderizamos url, titulo y descripción
+        
         li.innerHTML = `
           <img src="${foto.url || 'https://via.placeholder.com/800x450'}" alt="${foto.titulo}" class="carousel-image">
           <div class="slide-caption">
@@ -448,11 +439,11 @@ function iniciarLogicaCarrusel(totalSlides) {
   const btnPrev = document.getElementById('carouselPrev');
   const btnNext = document.getElementById('carouselNext');
   
-  if (!track || totalSlides <= 1) return; // Si solo hay 1 o 0 fotos, no hay slider
+  if (!track || totalSlides <= 1) return; 
 
   const moverA = (index) => {
     currentSlideIndex = index;
-    // Si llegamos al final, volvemos al inicio, y viceversa
+    
     if (currentSlideIndex >= totalSlides) currentSlideIndex = 0;
     if (currentSlideIndex < 0) currentSlideIndex = totalSlides - 1;
     
@@ -476,7 +467,7 @@ function iniciarLogicaCarrusel(totalSlides) {
     carouselTimer = setInterval(autoPlay, 5000);
   });
 
-  // Autoplay de 5 segundos
+  
   carouselTimer = setInterval(autoPlay, 5000);
 }
 
@@ -514,7 +505,6 @@ async function enviarContacto() {
   document.getElementById('contactType').selectedIndex = 0;
 }
 
-// ===== INICIALIZACIÓN =====
 async function inicializarDatos() {
   console.log(' Iniciando aplicación del Huerto Escolar...');
   
@@ -523,7 +513,7 @@ async function inicializarDatos() {
   await obtenerRecomendacionesRiego();
   await obtenerEstadoFloracion();
   await obtenerHistorialTemperatura(7);
-  await inicializarCarrusel(); // Agregado el carrusel
+  await inicializarCarrusel(); 
   
   console.log('✅ Datos cargados correctamente');
 }
@@ -536,6 +526,137 @@ setInterval(async () => {
 
 window.addEventListener('DOMContentLoaded', () => {
   inicializarDatos();
+  cargarImagenes(); 
 });
 
 window.enviarContacto = enviarContacto;
+
+async function subirImagen(){
+    const titulo = document.getElementById("tituloImagen").value;
+    const archivo = document.getElementById("archivoImagen").files[0];
+
+    if(!archivo){
+        alert("Selecciona una imagen");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("titulo", titulo);
+    formData.append("imagen", archivo);
+
+    try{
+        const res = await fetch("http://localhost:3000/subir-imagen",{
+            method:"POST",
+            body:formData
+        });
+
+        const data = await res.json();
+        console.log(data);
+
+        if(data.ok){
+            alert("Imagen subida correctamente");
+            cargarImagenes();       
+            cargarFotosEnAdmin();   
+        }else{
+            alert("Error al subir");
+        }
+
+    }catch(err){
+        console.log(err);
+        alert("Error del servidor");
+    }
+}
+
+async function cargarImagenes() {
+    try {
+        const respuesta = await fetch('/api/fotos');
+        const fotos = await respuesta.json();
+        
+        const track = document.getElementById('carouselTrack');
+        if (!track) return;
+
+        track.innerHTML = ''; 
+
+        if (fotos.length === 0) {
+            track.innerHTML = '<li class="carousel-slide"><div class="slide-placeholder">No hay fotos en la galería todavía.</div></li>';
+            return;
+        }
+
+        fotos.forEach(foto => {
+            const li = document.createElement('li');
+            li.className = 'carousel-slide';
+            li.style.listStyle = 'none';
+            li.style.minWidth = '300px';
+            li.style.marginRight = '20px';
+            
+            li.innerHTML = `
+                <div style="background: white; padding: 10px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+                    <img src="${foto.url}" alt="${foto.titulo}" style="width: 100%; height: 250px; object-fit: cover; border-radius: 8px;">
+                    <h4 style="margin-top: 10px; text-align: center; color: #7B68A6; font-family: 'DM Sans', sans-serif;">${foto.titulo || 'Sin título'}</h4>
+                </div>
+            `;
+            
+            track.appendChild(li);
+        });
+
+    } catch (error) {
+        console.error("❌ Error al cargar las imágenes:", error);
+    }
+}
+
+async function cargarFotosEnAdmin() {
+    try {
+        const respuesta = await fetch('/api/fotos');
+        const fotos = await respuesta.json();
+        
+        const contenedor = document.getElementById('listaFotosAdmin');
+        if (!contenedor) return; 
+        
+        contenedor.innerHTML = ''; 
+
+        if (fotos.length === 0) {
+            contenedor.innerHTML = '<p style="font-size: 0.9rem; color: #9ca3af;">No hay fotos guardadas en la base de datos.</p>';
+            return;
+        }
+
+        fotos.forEach(foto => {
+            const div = document.createElement('div');
+            div.style.minWidth = '120px';
+            div.style.position = 'relative';
+            div.style.flexShrink = '0'; 
+            
+            div.innerHTML = `
+                <img src="${foto.url}" style="width: 120px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid #e2e8f0;">
+                <button onclick="borrarImagenDb('${foto._id}')" style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border: none; width: 25px; height: 25px; border-radius: 50%; cursor: pointer; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">X</button>
+            `;
+            contenedor.appendChild(div);
+        });
+
+    } catch (error) {
+        console.error("Error al cargar miniaturas:", error);
+    }
+}
+
+async function borrarImagenDb(id) {
+    const confirmar = confirm("¿Estás seguro de que quieres borrar esta foto definitivamente?");
+    if (!confirmar) return;
+
+    try {
+        const respuesta = await fetch(`/api/fotos/${id}`, {
+            method: 'DELETE'
+        });
+        const resultado = await respuesta.json();
+
+        if (resultado.ok) {
+            alert("¡Foto eliminada correctamente!");
+            cargarFotosEnAdmin(); 
+            cargarImagenes();     
+        } else {
+            alert("Hubo un error al borrar: " + resultado.error);
+        }
+
+    } catch (error) {
+        console.error("Error en la petición de borrado:", error);
+        alert("No se pudo conectar con el servidor.");
+    }
+}
