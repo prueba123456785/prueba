@@ -54,6 +54,32 @@ const fotoSchema = new mongoose.Schema({
 
 const Foto = mongoose.model('Foto', fotoSchema);
 
+// --- ESQUEMA PARA LOS DOCUMENTOS (PDF, EXCEL, ETC) ---
+const documentoSchema = new mongoose.Schema({
+    titulo: {
+        type: String
+    },
+    nombreArchivo: {
+        type: String
+    },
+    tipoArchivo: {
+        type: String
+    },
+    datosBase64: {
+        type: String,
+        required: true
+    },
+    fecha: {
+        type: Date,
+        default: Date.now
+    }
+}, {
+    collection: 'Documentos'
+});
+
+const Documento = mongoose.model('Documento', documentoSchema);
+// -----------------------------------------------------------
+
 
 const storage = multer.memoryStorage();
 
@@ -247,7 +273,7 @@ app.post(
     upload.single("imagen"),
     async (req, res) => {
         try {
-            console.log("📤 POST RECIBIDO");
+            console.log("📤 POST RECIBIDO (Imagen)");
 
             if (!req.file) {
                 return res.status(400).json({
@@ -282,11 +308,107 @@ app.post(
     }
 );
 
+// --- RUTA PARA SUBIR DOCUMENTOS (PDF, EXCEL, ETC) ---
+app.post(
+    "/subir-documento",
+    upload.single("documento"),
+    async (req, res) => {
+        try {
+            console.log("📤 POST RECIBIDO (Documento)");
+
+            if (!req.file) {
+                return res.status(400).json({
+                    ok: false,
+                    error: "No se recibió ningún documento"
+                });
+            }
+
+            const base64 = req.file.buffer.toString("base64");
+
+            const nuevoDocumento = new Documento({
+                titulo: req.body.titulo || "Sin título",
+                nombreArchivo: req.file.originalname,
+                tipoArchivo: req.file.mimetype,
+                datosBase64: `data:${req.file.mimetype};base64,${base64}`
+            });
+
+            await nuevoDocumento.save();
+
+            console.log("✅ Documento guardado correctamente en MongoDB");
+
+            res.json({
+                ok: true,
+                mensaje: "Documento subido correctamente"
+            });
+
+        } catch (err) {
+            console.log("❌ ERROR AL SUBIR DOCUMENTO:", err);
+            res.status(500).json({
+                ok: false,
+                error: err.message
+            });
+        }
+    }
+);
+
+// ===========================================================
+// NUEVAS RUTAS AÑADIDAS: OBTENER Y ELIMINAR DOCUMENTOS
+// ===========================================================
+
+// 1. Ruta para obtener la lista de documentos (Mapeada para tu index.html)
+app.get('/api/documentos', async (req, res) => {
+    try {
+        const documentos = await Documento.find().sort({ fecha: -1 });
+        
+        // Mapeamos los campos para que la propiedad 'datosBase64' se mande como 'url' 
+        // que es lo que el index.html está buscando de forma nativa.
+        const documentosMapeados = documentos.map(doc => ({
+            _id: doc._id,
+            titulo: doc.titulo,
+            nombreArchivo: doc.nombreArchivo,
+            tipoArchivo: doc.tipoArchivo,
+            url: doc.datosBase64, // Emparejamiento clave
+            fecha: doc.fecha
+        }));
+
+        res.json(documentosMapeados);
+    } catch (error) {
+        console.error("❌ ERROR AL OBTENER DOCUMENTOS:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// 2. Ruta para eliminar un documento por su ID
+app.delete('/api/documentos/:id', async (req, res) => {
+    try {
+        const idDoc = req.params.id;
+        const docBorrado = await Documento.findByIdAndDelete(idDoc);
+
+        if (!docBorrado) {
+            return res.status(404).json({ 
+                ok: false, 
+                error: "No se encontró el documento en la base de datos" 
+            });
+        }
+
+        console.log(`🗑️ Documento eliminado con ID: ${idDoc}`);
+        res.json({ 
+            ok: true, 
+            mensaje: "Documento eliminado correctamente" 
+        });
+    } catch (error) {
+        console.error("❌ ERROR AL BORRAR DOCUMENTO:", error);
+        res.status(500).json({ 
+            ok: false, 
+            error: error.message 
+        });
+    }
+});
+// ===========================================================
 
 app.delete('/api/fotos/:id', async (req, res) => {
     try {
         const idFoto = req.params.id;
-        
         
         const fotoBorrada = await Foto.findByIdAndDelete(idFoto);
 
