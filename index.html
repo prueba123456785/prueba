@@ -636,7 +636,17 @@
     ctx.fillText('Toca para reintentar',W/2,H/2+36);
     ctx.textAlign='left';
   }
- color:['#c45bdf','#FFD700','#ff6b9d','#7F77DD','#6bcb77','#ffb347'][Math.floor(Math.random()*6)]
+  function spawnWinParticles(){
+    for(let i=0;i<80;i++) winParticles.push({
+      x:W/2,y:H/2,vx:(Math.random()-0.5)*8,vy:(Math.random()-0.5)*8-2,
+      r:3+Math.random()*5,life:1,
+      color:['#c45bdf','#FFD700','#ff6b9d','#7F77DD','#6bcb77','#ffb347'][Math.floor(Math.random()*6)]
+    });
+  }
+  function spawnDeathParticles(){
+    for(let i=0;i<18;i++) particles.push({
+      x:bee.x,y:bee.y,vx:(Math.random()-0.5)*6,vy:(Math.random()-0.5)*6-2,
+      r:3+Math.random()*4,life:1
     });
   }
   function checkCollision(){
@@ -656,12 +666,7 @@
     }
     return false;
   }
-  function spawnDeathParticles(){
-    for(let i=0;i<18;i++) particles.push({
-      x:bee.x,y:bee.y,vx:(Math.random()-0.5)*6,vy:(Math.random()-0.5)*6-2,
-      r:3+Math.random()*4,life:1
-    });
-  }
+  let lastWasp=0;
   function gameLoop(){
     if(state==='idle'){ drawIdle(); requestAnimationFrame(gameLoop); return; }
     if(state==='win'){ frame++; spawnWinParticles(); drawWin(); requestAnimationFrame(gameLoop); return; }
