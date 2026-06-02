@@ -631,7 +631,7 @@ async function inicializarDatos() {
     inicializarCarrusel(),
     cargarDocumentosPublicos(),
   ]);
-  console.log('✅ Datos cargados.');
+  console.log('Datos cargados.');
 }
 
 setInterval(async () => {
