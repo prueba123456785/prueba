@@ -281,19 +281,15 @@
     <div class="section-tag reveal">Minijuego</div>
     <h2 class="section-title reveal">¡Ayuda a la <em>abeja</em> a llegar a la lavanda!</h2>
     <p class="section-sub reveal">Esquiva 20 avispas asesinas para ganar. Presiona Espacio o toca la pantalla para volar.</p>
-
     <div id="game-wrap" style="font-family: var(--font-sans, sans-serif); text-align: center; padding: 1rem 0;">
       <div style="display:flex; justify-content:center; gap:16px; align-items:center; margin:12px 0; flex-wrap:wrap;">
         <span style="background:#EEEDFE; color:#3C3489; border-radius:8px; padding:6px 14px; font-size:13px; font-weight:500;">🐝 Esquiva 20 avispas</span>
         <span style="background:#EEEDFE; color:#3C3489; border-radius:8px; padding:6px 14px; font-size:13px; font-weight:500;" id="scoreDisplay">Puntaje: 0</span>
         <span style="background:#EEEDFE; color:#3C3489; border-radius:8px; padding:6px 14px; font-size:13px; font-weight:500;" id="bestDisplay">Récord: 0</span>
       </div>
-
       <canvas id="gameCanvas" width="480" height="320"
         style="border-radius:16px; border:2px solid #9B88C6; display:block; margin:0 auto; cursor:pointer;"></canvas>
-
       <p style="font-size:13px; color:#6b7280; margin:8px 0 0;">Presiona <b>Espacio</b> / Toca la pantalla para volar</p>
-
       <div style="margin-top:10px;">
         <button id="startBeeBtn"
           style="background:#7F77DD; color:#fff; border:none; border-radius:10px; padding:10px 28px; font-size:15px; font-weight:500; cursor:pointer;">
@@ -497,7 +493,6 @@
   function updateScore(){
     document.getElementById('scoreDisplay').textContent='Puntaje: '+score;
   }
-
   function drawSky(){
     const grad=ctx.createLinearGradient(0,0,0,H);
     grad.addColorStop(0,'#d8d2f8'); grad.addColorStop(1,'#fce8f8');
@@ -679,6 +674,7 @@
         if(score>=20){
           state='win'; spawnWinParticles();
           if(score>best){ best=score; document.getElementById('bestDisplay').textContent='Récord: '+best; }
+          requestAnimationFrame(gameLoop);
           return;
         }
       }
@@ -686,7 +682,9 @@
     if(checkCollision()){
       spawnDeathParticles();
       if(score>best){ best=score; document.getElementById('bestDisplay').textContent='Récord: '+best; }
-      state='dead'; return;
+      state='dead';
+      requestAnimationFrame(gameLoop);
+      return;
     }
     drawSky(); drawGround(); wasps.forEach(drawWasp); drawBee();
     ctx.fillStyle='#3C3489'; ctx.font='bold 18px sans-serif'; ctx.textAlign='right';
