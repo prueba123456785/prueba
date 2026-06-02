@@ -636,32 +636,9 @@
     ctx.fillText('Toca para reintentar',W/2,H/2+36);
     ctx.textAlign='left';
   }
-  function spawnWinParticles(){
-    for(let i=0;i<80;i++) winParticles.push({
-      x:W/2,y:H/2,vx:(Math.random()-0.5)*8,vy:(Math.random()-0.5)*8-2,
-      r:3+Math.random()*5,life:1,
-      color:['#c45bdf','#FFD700','#ff6b9d','#7F77DD','#6bcb77','#ffb347'][Math.floor(Math.random()*6)]
+ color:['#c45bdf','#FFD700','#ff6b9d','#7F77DD','#6bcb77','#ffb347'][Math.floor(Math.random()*6)]
     });
   }
-  function checkCollision(){
-    if(bee.y+BEE_R>H-28||bee.y-BEE_R<0) return true;
-    for(const w of wasps){
-      if(bee.x+BEE_R>w.x+6&&bee.x-BEE_R<w.x+WASP_W-6)
-        if(bee.y-BEE_R<w.topH-4||bee.y+BEE_R>w.topH+GAP+4) return true;
-    }
-    return false;
-  }
-  function spawnDeathParticles(){
-    for(let i=0;i<18;i++) particles.push({
-      x:bee.x,y:bee.y,vx:(Math.random()-0.5)*6,vy:(Math.random()-0.5)*6-2,
-      r:3+Math.random()*4,life:1
-    });
-  }
- let lastWasp=0;
-   let canvasScrollY = 0;
-    window.addEventListener('load', function(){
-      canvasScrollY = window.scrollY + canvas.getBoundingClientRect().top - (window.innerHeight/2) + (canvas.height/2);
-    });
   function checkCollision(){
     if(bee.y+BEE_R>H-28||bee.y-BEE_R<0) return true;
     for(const w of wasps){
@@ -679,14 +656,12 @@
     }
     return false;
   }
-
   function spawnDeathParticles(){
     for(let i=0;i<18;i++) particles.push({
       x:bee.x,y:bee.y,vx:(Math.random()-0.5)*6,vy:(Math.random()-0.5)*6-2,
       r:3+Math.random()*4,life:1
     });
   }
-
   function gameLoop(){
     if(state==='idle'){ drawIdle(); requestAnimationFrame(gameLoop); return; }
     if(state==='win'){ frame++; spawnWinParticles(); drawWin(); requestAnimationFrame(gameLoop); return; }
@@ -720,17 +695,21 @@
     ctx.fillText(score+' / 20',W-14,30); ctx.textAlign='left';
     requestAnimationFrame(gameLoop);
   }
-
   function flap(){
     if(state==='idle'){ state='playing'; initGame(); bee.vy=FLAP; return; }
     if(state==='playing'){ bee.vy=FLAP; return; }
     if(state==='dead'||state==='win'){
       state='playing'; initGame(); bee.vy=FLAP;
-      window.scrollTo({ top: canvasScrollY, behavior: 'smooth' });
+      const rect = canvas.getBoundingClientRect();
+      const navbar = document.getElementById('navbar');
+      const navH = navbar ? navbar.offsetHeight : 0;
+      if(rect.top < navH || rect.bottom > window.innerHeight){
+        const top = window.scrollY + rect.top - navH - 20;
+        window.scrollTo({ top: top, behavior: 'instant' });
+      }
       return;
     }
   }
-
   canvas.addEventListener('click', function(e){ e.preventDefault(); flap(); });
   canvas.addEventListener('touchstart', function(e){ e.preventDefault(); flap(); },{passive:false});
   document.addEventListener('keydown',e=>{ if(e.code==='Space'||e.code==='ArrowUp'){ e.preventDefault(); flap(); }});
