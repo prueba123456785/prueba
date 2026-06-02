@@ -9,14 +9,13 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
- 
+
 <div class="particles" id="particles"></div>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-trail" id="cursorTrail"></div>
- 
+
+<!-- ===== NAVBAR ===== -->
 <nav class="navbar" id="navbar">
   <div class="nav-logo">
-    <span class="logo-leaf"></span>
+    <span class="logo-leaf">🌿</span>
     <span class="logo-text">Huerto Escolar</span>
   </div>
   <ul class="nav-links">
@@ -28,22 +27,23 @@
     <li><a href="#documentos">Docs</a></li>
     <li><a href="#equipo">Equipo</a></li>
     <li><a href="#contacto" class="nav-cta">Únete</a></li>
-    <div class="admin-float-btn" onclick="abrirLogin(event)">
-    <i class="fas fa-shield-alt"></i>
-</div>
   </ul>
+  <button class="admin-float-btn" id="btnAdminFloat" aria-label="Acceso administrador">
+    <i class="fas fa-shield-alt"></i>
+  </button>
   <div class="hamburger" id="hamburger">
     <span></span><span></span><span></span>
   </div>
 </nav>
- 
+
+<!-- ===== HERO ===== -->
 <section class="hero" id="inicio">
   <div class="hero-bg">
     <div class="hero-orb orb1"></div>
     <div class="hero-orb orb2"></div>
     <div class="hero-orb orb3"></div>
   </div>
- 
+
   <div class="tree-container">
     <svg class="tree-svg" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect class="trunk" x="92" y="185" width="18" height="100" rx="5" fill="#6b4226"/>
@@ -58,7 +58,7 @@
       <path class="bird b2" d="M148 38 Q153 33 158 38 Q163 33 168 38" stroke="#9B88C6" stroke-width="2" fill="none" stroke-linecap="round"/>
     </svg>
   </div>
- 
+
   <div class="hero-content">
     <div class="hero-badge reveal">Huerto Escolar 2026</div>
     <h1 class="hero-title reveal">
@@ -73,7 +73,7 @@
       <a href="#solucion" class="btn-primary">Conoce nuestro huerto</a>
       <a href="#impacto" class="btn-ghost">Ver datos en vivo</a>
     </div>
-    
+
     <div class="temp-widget reveal" id="tempWidget">
       <div class="temp-status">
         <div class="temp-icon" id="tempIcon">🌡️</div>
@@ -87,24 +87,25 @@
       </div>
     </div>
   </div>
- 
+
   <div class="scroll-hint">
     <span>Desplázate</span>
     <div class="scroll-arrow"></div>
   </div>
 </section>
 
+<!-- ===== GALERÍA ===== -->
 <section class="section galeria" id="galeria">
   <div class="section-inner">
     <div class="section-tag reveal">Nuestras plantas</div>
     <h2 class="section-title reveal">Galería del <em>huerto</em></h2>
     <p class="section-sub reveal">Imágenes en vivo de nuestro progreso, obtenidas directamente de nuestra base de datos.</p>
-    
+
     <div class="carousel-container reveal" id="carouselContainer">
       <button class="carousel-btn prev" id="carouselPrev">&#10094;</button>
       <div class="carousel-track-wrapper">
         <ul class="carousel-track" id="carouselTrack">
-          <li class="carousel-slide current-slide">
+          <li class="carousel-slide">
             <div class="slide-placeholder">Cargando fotos de la base de datos...</div>
           </li>
         </ul>
@@ -113,7 +114,8 @@
     </div>
   </div>
 </section>
- 
+
+<!-- ===== POR QUÉ ===== -->
 <section class="section problema" id="problema">
   <div class="section-inner">
     <div class="section-tag reveal">El desafío</div>
@@ -147,7 +149,8 @@
     </div>
   </div>
 </section>
- 
+
+<!-- ===== PROCESO ===== -->
 <section class="section solucion" id="solucion">
   <div class="section-inner">
     <div class="section-tag reveal">Nuestro proceso</div>
@@ -189,12 +192,13 @@
     </div>
   </div>
 </section>
- 
+
+<!-- ===== MONITOREO ===== -->
 <section class="section impacto" id="impacto">
   <div class="section-inner">
     <div class="section-tag reveal">Datos en tiempo real</div>
     <h2 class="section-title reveal">Monitoreo climático<br><em>del huerto</em></h2>
-    
+
     <div class="chart-container reveal">
       <h3>Temperatura de los últimos 7 días</h3>
       <canvas id="tempChart"></canvas>
@@ -205,7 +209,7 @@
         </div>
       </div>
     </div>
- 
+
     <div class="impact-grid">
       <div class="impact-big reveal">
         <div class="stats-card">
@@ -223,7 +227,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="impact-numbers">
         <div class="imp-row reveal" style="--delay:0s">
           <div class="imp-icon">💧</div>
@@ -258,18 +262,19 @@
   </div>
 </section>
 
+<!-- ===== DOCUMENTOS ===== -->
 <section class="section documentos" id="documentos">
   <div class="section-inner">
     <div class="section-tag reveal">Recursos y Archivos</div>
     <h2 class="section-title reveal">Nuestros <em>Documentos</em></h2>
     <p class="section-sub reveal">Descarga los cronogramas, diagramas y archivos de Excel/PDF de nuestro proyecto.</p>
-    
     <div class="docs-grid reveal" id="listaDocumentosPublicos">
       <p style="color: #6b7280;">Buscando archivos en la base de datos...</p>
     </div>
   </div>
 </section>
 
+<!-- ===== EQUIPO ===== -->
 <section class="section equipo" id="equipo">
   <div class="section-inner">
     <div class="section-tag reveal">Las personas detrás</div>
@@ -279,7 +284,7 @@
         <div class="team-avatar" style="--color:#9B88C6">YF</div>
         <h4>Yael Fernando Valdez Camacho</h4>
         <span>Estudiante del MIT</span>
-        <p>Líder del proyecto, Programacion de API</p>
+        <p>Líder del proyecto, Programación de API</p>
       </div>
       <div class="team-card reveal" style="--delay:0.1s">
         <div class="team-avatar" style="--color:#7B68A6">JA</div>
@@ -297,12 +302,13 @@
         <div class="team-avatar" style="--color:#D0C8E6">OS</div>
         <h4>Osvaldo Soto Ledezma</h4>
         <span>Estudiante del Cbtis 75</span>
-        <p>Responsable de la gestion de nuestra web.</p>
+        <p>Responsable de la gestión de nuestra web.</p>
       </div>
     </div>
   </div>
 </section>
- 
+
+<!-- ===== CONTACTO ===== -->
 <section class="section contacto" id="contacto">
   <div class="cta-blob blob1"></div>
   <div class="cta-blob blob2"></div>
@@ -318,15 +324,19 @@
         <option>Quiero donar materiales</option>
         <option>Prensa / Media</option>
       </select>
-      <button class="btn-primary btn-full" onclick="enviarContacto()">Enviar solicitud</button>
+      <button class="btn-primary btn-full" id="btnEnviarContacto">Enviar solicitud</button>
     </div>
   </div>
 </section>
- 
+
+<!-- ===== FOOTER ===== -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <div class="footer-logo"><span class="logo-leaf"></span><span class="logo-text">Huerto Escolar</span></div>
+      <div class="footer-logo">
+        <span class="logo-leaf">🌿</span>
+        <span class="logo-text">Huerto Escolar</span>
+      </div>
       <p>Cultivando conocimiento, cosechando futuro.</p>
       <div class="api-status" id="apiStatus">
         <span class="status-dot"></span>
@@ -358,364 +368,82 @@
     <p>© 2026 Huerto Escolar La Lavanda — Proyecto Ambiental CBTis 75</p>
   </div>
 </footer>
- 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script src="script.js"></script>
 
-<div id="modalAdmin" class="modal-login">
+<!-- ===== MODAL LOGIN ADMIN ===== -->
+<div id="modalAdmin" class="modal-login" role="dialog" aria-modal="true" aria-label="Acceso administrador">
   <div class="modal-content">
-    <span class="close-btn" onclick="cerrarLogin()">&times;</span>
-    <h3 style="font-family: 'Playfair Display', serif; color: #7B68A6; margin-bottom: 15px; font-size: 1.5rem;">Acceso Restringido</h3>
-    <p style="font-size: 0.9rem; margin-bottom: 20px; color: #6b7280;">Ingresa la contraseña maestra para editar el huerto.</p>
-    <input type="password" id="passAdmin" placeholder="Contraseña..." style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 20px;">
-    <button class="adm-btn" style="width: 100%; justify-content: center;" onclick="verificarPass()">Entrar al Panel</button>
+    <button class="close-btn" id="btnCerrarModal" aria-label="Cerrar">&times;</button>
+    <h3>Acceso Restringido</h3>
+    <p>Ingresa la contraseña maestra para editar el huerto.</p>
+    <input type="password" id="passAdmin" placeholder="Contraseña...">
+    <button class="adm-btn" id="btnVerificarPass">Entrar al Panel</button>
   </div>
 </div>
 
-<div id="panelAdminCompleto" class="adm-wrapper">
-    <aside class="adm-sidebar">
-        <div class="adm-brand"><i class="fas fa-leaf"></i> Admin Lavanda</div>
-        <div class="adm-menu active"><i class="fas fa-images"></i> Galería</div>
-        <div class="adm-menu"><i class="fas fa-project-diagram"></i> Diagramas</div>
-        <div class="adm-menu"><i class="fas fa-calendar-alt"></i> Cronogramas</div>
-        <div class="adm-menu"><i class="fas fa-align-left"></i> Información</div>
-    </aside>
+<!-- ===== PANEL ADMIN ===== -->
+<div id="panelAdminCompleto" class="adm-wrapper" role="main">
+  <aside class="adm-sidebar">
+    <div class="adm-brand"><i class="fas fa-leaf"></i> Admin Lavanda</div>
+    <div class="adm-menu active" data-tab="galeria"><i class="fas fa-images"></i> Galería</div>
+    <div class="adm-menu" data-tab="diagramas"><i class="fas fa-project-diagram"></i> Diagramas</div>
+    <div class="adm-menu" data-tab="cronogramas"><i class="fas fa-calendar-alt"></i> Cronogramas</div>
+    <div class="adm-menu" data-tab="info"><i class="fas fa-align-left"></i> Información</div>
+  </aside>
 
-    <main class="adm-main">
-        <div class="adm-header">
-            <div>
-                <h1>Gestor de Contenido</h1>
-                <p>Agrega o quita elementos de tu página en tiempo real.</p>
-            </div>
-            <button class="adm-btn-danger" onclick="cerrarPanelAdmin()"><i class="fas fa-times"></i> Cerrar Panel</button>
+  <main class="adm-main">
+    <div class="adm-header">
+      <div>
+        <h1>Gestor de Contenido</h1>
+        <p>Agrega o quita elementos de tu página en tiempo real.</p>
+      </div>
+      <button class="adm-btn-danger" id="btnCerrarPanel"><i class="fas fa-times"></i> Cerrar Panel</button>
+    </div>
+
+    <div class="adm-grid">
+      <div class="adm-card">
+        <h2><i class="fas fa-camera"></i> Subir Imagen</h2>
+        <input type="text" id="tituloImagen" class="adm-input" placeholder="Título de la imagen...">
+        <input type="file" id="archivoImagen" class="adm-input" accept="image/*">
+        <button class="adm-btn" id="btnSubirImagen"><i class="fas fa-upload"></i> Guardar Imagen</button>
+      </div>
+
+      <div class="adm-card" style="grid-column: 1 / -1;">
+        <h2><i class="fas fa-trash-alt"></i> Gestionar Galería</h2>
+        <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 15px;">Aquí puedes ver todas las fotos subidas y eliminarlas si es necesario.</p>
+        <div id="listaFotosAdmin" class="admin-gallery-grid">
+          <p>Cargando imágenes...</p>
         </div>
+      </div>
 
-        <div class="adm-grid">
-            <div class="adm-card">
-                <h2><i class="fas fa-camera"></i> Subir Imagen</h2>
-                <input type="text" id="tituloImagen" class="adm-input" placeholder="Título de la imagen...">
-                <input type="file" id="archivoImagen" class="adm-input" accept="image/*">
-                <button class="adm-btn" onclick="subirImagen()"><i class="fas fa-upload"></i> Guardar Imagen</button>
-            </div>
+      <div class="adm-card">
+        <h2><i class="fas fa-file-upload"></i> Subir Documento</h2>
+        <p style="font-size: 0.85rem; color: #6b7280; margin-bottom: 10px;">Formatos: PDF, Excel, Word.</p>
+        <input type="text" id="tituloCronograma" class="adm-input" placeholder="Nombre del documento...">
+        <input type="file" id="archivoCronograma" class="adm-input" accept=".pdf,.xls,.xlsx,.doc,.docx">
+        <button class="adm-btn" id="btnSubirDocumento"><i class="fas fa-upload"></i> Subir Archivo</button>
+      </div>
 
-            <div class="adm-card" style="grid-column: 1 / -1;">
-                <h2><i class="fas fa-trash-alt"></i> Gestionar Galería</h2>
-                <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 15px;">Aquí puedes ver todas las fotos subidas y eliminarlas si es necesario.</p>
-                <div id="listaFotosAdmin" class="admin-gallery-grid">
-                    <p>Cargando imágenes...</p>
-                </div>
-            </div>
-
-            <div class="adm-card">
-                <h2><i class="fas fa-sitemap"></i> Agregar Diagrama</h2>
-                <input type="text" class="adm-input" placeholder="Nombre del diagrama">
-                <input type="file" class="adm-input" accept="image/*, .pdf">
-                <button class="adm-btn" onclick="subirDiagrama()"><i class="fas fa-plus"></i> Publicar Diagrama</button>
-            </div>
-
-            <div class="adm-card">
-                <h2><i class="fas fa-file-upload"></i> Subir Documento</h2>
-                <p style="font-size: 0.85rem; color: #6b7280; margin-bottom: 10px;">Formatos permitidos: PDF, Excel, Word.</p>
-                <input type="text" id="tituloCronograma" class="adm-input" placeholder="Nombre del documento (ej. Cronograma Fase 1)">
-                <input type="file" id="archivoCronograma" class="adm-input" accept=".pdf, .xls, .xlsx, .doc, .docx">
-                <button class="adm-btn" onclick="subirCronogramaArchivo()"><i class="fas fa-upload"></i> Subir Archivo</button>
-            </div>
-            
-            <div class="adm-card" style="grid-column: 1 / -1;">
-                <h2><i class="fas fa-folder-open"></i> Gestionar Documentos</h2>
-                <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 15px;">Aquí verás los archivos que has subido. También puedes eliminarlos.</p>
-                <div id="listaDocsAdmin" class="docs-grid">
-                    <p>Cargando documentos...</p>
-                </div>
-            </div>
-
-            <div class="adm-card">
-                <h2><i class="fas fa-file-alt"></i> Actualizar Información</h2>
-                <input type="text" class="adm-input" placeholder="Título de la sección">
-                <textarea class="adm-input" placeholder="Escribe aquí la nueva información..."></textarea>
-                <button class="adm-btn" onclick="guardarInfo()"><i class="fas fa-save"></i> Publicar Texto</button>
-            </div>
+      <div class="adm-card" style="grid-column: 1 / -1;">
+        <h2><i class="fas fa-folder-open"></i> Gestionar Documentos</h2>
+        <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 15px;">Archivos subidos. Puedes eliminarlos aquí.</p>
+        <div id="listaDocsAdmin" class="docs-grid">
+          <p>Cargando documentos...</p>
         </div>
-    </main>
+      </div>
+
+      <div class="adm-card">
+        <h2><i class="fas fa-file-alt"></i> Actualizar Información</h2>
+        <input type="text" class="adm-input" placeholder="Título de la sección">
+        <textarea class="adm-input" placeholder="Escribe aquí la nueva información..."></textarea>
+        <button class="adm-btn" id="btnGuardarInfo"><i class="fas fa-save"></i> Publicar Texto</button>
+      </div>
+    </div>
+  </main>
 </div>
 
-<style>
-/* Login Modal */
-.modal-login { display: none; position: fixed; z-index: 99999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); justify-content: center; align-items: center; }
-.modal-content { background: white; padding: 40px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; position: relative; }
-.close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #9ca3af; }
+<!-- ===== SCRIPTS (al final del body) ===== -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="script.js"></script>
 
-/* Panel Overlay */
-.adm-wrapper { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #f8f7fa; z-index: 100000; flex-direction: row; font-family: 'DM Sans', sans-serif; }
-.adm-sidebar { width: 280px; background: white; padding: 30px 20px; box-shadow: 2px 0 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
-.adm-brand { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #7B68A6; font-weight: 700; margin-bottom: 40px; text-align: center; }
-.adm-menu { padding: 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; color: #4a5568; display: flex; align-items: center; gap: 10px; font-weight: 500; }
-.adm-menu.active, .adm-menu:hover { background: #7B68A6; color: white; }
-
-.adm-main { flex: 1; padding: 40px; overflow-y: auto; color: #2d3748; }
-.adm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-.adm-header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #7B68A6; }
-
-.adm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
-.adm-card { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-.adm-card h2 { font-family: 'Playfair Display', serif; color: #7B68A6; margin-bottom: 20px; font-size: 1.3rem; border-bottom: 2px solid #f8f7fa; padding-bottom: 10px; }
-
-.adm-input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 15px; font-family: inherit; }
-.adm-btn { background: #7B68A6; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
-.adm-btn:hover { background: #9B88C6; }
-.adm-btn-danger { background: #fee2e2; color: #ef4444; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-.adm-btn-danger:hover { background: #fca5a5; }
-
-/* GALERÍA ADMIN */
-.admin-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
-.admin-gallery-item { position: relative; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.2s; }
-.admin-gallery-item:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
-.admin-gallery-item img { width: 100%; height: 140px; object-fit: cover; display: block; }
-.admin-gallery-item p { padding: 10px; font-size: 0.85rem; margin: 0; text-align: center; color: #4a5568; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-weight: 500;}
-.btn-delete-img { position: absolute; top: 8px; right: 8px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
-.btn-delete-img:hover { background: #dc2626; transform: scale(1.15); }
-
-/* SECCION DOCUMENTOS PÚBLICA Y ADMIN */
-.docs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
-.doc-card { position: relative; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 15px; transition: 0.3s; text-decoration: none; color: #2d3748; border: 1px solid #e2e8f0;}
-.doc-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-color: #9B88C6;}
-.doc-icon { font-size: 2.2rem; color: #7B68A6; }
-.doc-info h4 { margin: 0 0 5px 0; font-family: 'DM Sans', sans-serif; font-size: 1.1rem; color: #2d3748; }
-.doc-info span { font-size: 0.85rem; color: #718096; background: #edf2f7; padding: 3px 8px; border-radius: 12px;}
-</style>
-
-<script>
-    function abrirLogin(e) { 
-        e.preventDefault(); 
-        document.getElementById('modalAdmin').style.display = 'flex'; 
-    }
-    
-    function cerrarLogin() { 
-        document.getElementById('modalAdmin').style.display = 'none'; 
-        document.getElementById('passAdmin').value = ''; 
-    }
-    
-    function verificarPass() {
-        const pass = document.getElementById('passAdmin').value;
-        if(pass === "LAVANDA2026") {
-            document.getElementById('modalAdmin').style.display = 'none';
-            document.getElementById('passAdmin').value = '';
-            document.getElementById('panelAdminCompleto').style.display = 'flex';
-            document.body.style.overflow = 'hidden'; 
-            cargarFotosAdmin();
-            cargarDocsAdmin(); // Carga la lista de documentos en el admin al entrar
-        } else {
-            alert("Contraseña incorrecta. Acceso denegado.");
-        }
-    }
-
-    function cerrarPanelAdmin() {
-        document.getElementById('panelAdminCompleto').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
-    // FOTOS ADMIN
-    async function cargarFotosAdmin() {
-        const contenedor = document.getElementById('listaFotosAdmin');
-        contenedor.innerHTML = '<p>Cargando imágenes desde la base de datos...</p>';
-        
-        try {
-            const respuesta = await fetch('/api/fotos');
-            const fotos = await respuesta.json();
-            
-            if (fotos.length === 0) {
-                contenedor.innerHTML = '<p style="color: #6b7280; font-style: italic;">No hay imágenes subidas aún.</p>';
-                return;
-            }
-            
-            contenedor.innerHTML = ''; 
-            
-            fotos.forEach(foto => {
-                const div = document.createElement('div');
-                div.className = 'admin-gallery-item';
-                div.innerHTML = `
-                    <img src="${foto.url}" alt="${foto.titulo || 'Foto del huerto'}">
-                    <p>${foto.titulo || 'Sin título'}</p>
-                    <button class="btn-delete-img" onclick="borrarImagen('${foto._id}')" title="Eliminar foto">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                `;
-                contenedor.appendChild(div);
-            });
-        } catch (error) {
-            contenedor.innerHTML = '<p style="color: #ef4444;">Error al cargar las imágenes.</p>';
-            console.error('Error:', error);
-        }
-    }
-
-    async function borrarImagen(id) {
-        if (!confirm('¿Estás seguro de que deseas eliminar esta imagen de forma permanente?')) {
-            return;
-        }
-        try {
-            const respuesta = await fetch(`/api/fotos/${id}`, { method: 'DELETE' });
-            if (respuesta.ok) {
-                alert('🗑️ Imagen eliminada correctamente del huerto.');
-                cargarFotosAdmin(); 
-            } else {
-                alert('❌ Error al eliminar. El servidor denegó la acción.');
-            }
-        } catch (error) {
-            alert('❌ Error de conexión. ¿El servidor está encendido?');
-        }
-    }
-
-    // SUBIR DOCUMENTO Y ACTUALIZAR VISTAS EN TIEMPO REAL
-    async function subirCronogramaArchivo() {
-        const titulo = document.getElementById('tituloCronograma').value;
-        const archivoInput = document.getElementById('archivoCronograma');
-        
-        if (!titulo || archivoInput.files.length === 0) {
-            alert('⚠️ Por favor ingresa un título y selecciona un archivo.');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('titulo', titulo);
-        formData.append('documento', archivoInput.files[0]); 
-
-        try {
-            const respuesta = await fetch('/subir-documento', { 
-                method: 'POST',
-                body: formData 
-            });
-
-            if (respuesta.ok) {
-                alert('✅ Documento subido con éxito.');
-                document.getElementById('tituloCronograma').value = '';
-                archivoInput.value = '';
-                
-                // ACTUALIZA LAS LISTAS EN TIEMPO REAL
-                cargarDocumentosPublicos(); // Vista para los usuarios
-                cargarDocsAdmin(); // Vista dentro del panel
-            } else {
-                alert('❌ Error al subir el archivo. Revisa la consola.');
-            }
-        } catch (error) {
-            alert('❌ Error de conexión. ¿El servidor está encendido?');
-        }
-    } 
-
-    // CARGAR DOCUMENTOS EN LA PÁGINA PÚBLICA
-    async function cargarDocumentosPublicos() {
-        const contenedor = document.getElementById('listaDocumentosPublicos');
-        if(!contenedor) return;
-
-        try {
-            const respuesta = await fetch('/api/documentos'); 
-            if (!respuesta.ok) throw new Error('Error al obtener documentos');
-            
-            const docs = await respuesta.json();
-            
-            if (docs.length === 0) {
-                contenedor.innerHTML = '<p style="color: #6b7280; font-style: italic;">No hay documentos disponibles aún.</p>';
-                return;
-            }
-            
-            contenedor.innerHTML = ''; 
-            
-            docs.forEach(doc => {
-                const a = document.createElement('a');
-                a.className = 'doc-card';
-                a.href = doc.url;
-                a.target = '_blank';
-                
-                let icon = 'fa-file-alt';
-                let extension = doc.url ? doc.url.toLowerCase() : '';
-                if(extension.includes('.pdf')) icon = 'fa-file-pdf';
-                else if(extension.includes('.xls') || extension.includes('.xlsx')) icon = 'fa-file-excel';
-                else if(extension.includes('.doc') || extension.includes('.docx')) icon = 'fa-file-word';
-                
-                a.innerHTML = `
-                    <i class="fas ${icon} doc-icon"></i>
-                    <div class="doc-info">
-                        <h4>${doc.titulo || 'Documento sin título'}</h4>
-                        <span>Descargar archivo</span>
-                    </div>
-                `;
-                contenedor.appendChild(a);
-            });
-        } catch (error) {
-            contenedor.innerHTML = '<p style="color: #6b7280;">Aún no hay conexión con la base de datos para los documentos.</p>';
-        }
-    }
-
-    // NUEVA FUNCIÓN: CARGAR DOCUMENTOS EN EL PANEL DE ADMIN (PARA PODER BORRARLOS)
-    async function cargarDocsAdmin() {
-        const contenedor = document.getElementById('listaDocsAdmin');
-        if(!contenedor) return;
-        contenedor.innerHTML = '<p>Cargando documentos desde la base de datos...</p>';
-        
-        try {
-            const respuesta = await fetch('/api/documentos');
-            const docs = await respuesta.json();
-            
-            if (docs.length === 0) {
-                contenedor.innerHTML = '<p style="color: #6b7280; font-style: italic;">No hay documentos subidos aún.</p>';
-                return;
-            }
-            
-            contenedor.innerHTML = ''; 
-            
-            docs.forEach(doc => {
-                const div = document.createElement('div');
-                div.className = 'doc-card';
-                
-                let icon = 'fa-file-alt';
-                let extension = doc.url ? doc.url.toLowerCase() : '';
-                if(extension.includes('.pdf')) icon = 'fa-file-pdf';
-                else if(extension.includes('.xls') || extension.includes('.xlsx')) icon = 'fa-file-excel';
-                else if(extension.includes('.doc') || extension.includes('.docx')) icon = 'fa-file-word';
-                
-                div.innerHTML = `
-                    <i class="fas ${icon} doc-icon"></i>
-                    <div class="doc-info" style="flex: 1;">
-                        <h4>${doc.titulo || 'Documento sin título'}</h4>
-                        <a href="${doc.url}" target="_blank" style="font-size: 0.85rem; color: #7B68A6; text-decoration: underline;">Ver archivo</a>
-                    </div>
-                    <button class="btn-delete-img" onclick="borrarDocumento('${doc._id}')" title="Eliminar documento" style="position: static; margin-left: auto;">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                `;
-                contenedor.appendChild(div);
-            });
-        } catch (error) {
-            contenedor.innerHTML = '<p style="color: #ef4444;">Error al cargar los documentos.</p>';
-        }
-    }
-
-    // NUEVA FUNCIÓN: BORRAR DOCUMENTO
-    async function borrarDocumento(id) {
-        if (!confirm('¿Estás seguro de que deseas eliminar este documento permanentemente?')) {
-            return;
-        }
-        
-        try {
-            const respuesta = await fetch(`/api/documentos/${id}`, {
-                method: 'DELETE'
-            });
-            
-            if (respuesta.ok) {
-                alert('🗑️ Documento eliminado correctamente.');
-                cargarDocsAdmin(); 
-                cargarDocumentosPublicos(); 
-            } else {
-                alert('❌ Error al eliminar el documento.');
-            }
-        } catch (error) {
-            alert('❌ Error de conexión con el servidor.');
-        }
-    }
-
-    // Cargar los documentos apenas entre el usuario a la página
-    document.addEventListener('DOMContentLoaded', () => {
-        cargarDocumentosPublicos();
-    });
-</script>
 </body>
 </html>
