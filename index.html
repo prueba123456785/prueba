@@ -683,8 +683,8 @@
   function checkCollision(){
     if(bee.y+BEE_R>H-28||bee.y-BEE_R<0) return true;
     for(const w of wasps){
-      if(bee.x+BEE_R*0.6>w.x+WASP_W*0.2 && bee.x-BEE_R*0.6<w.x+WASP_W*0.8)
-        if(bee.y-BEE_R*0.6<w.topH || bee.y+BEE_R*0.6>w.topH+GAP) return true;
+      if(bee.x+BEE_R>w.x+6&&bee.x-BEE_R<w.x+WASP_W-6)
+        if(bee.y-BEE_R<w.topH-4||bee.y+BEE_R>w.topH+GAP+4) return true;
     }
     return false;
   }
