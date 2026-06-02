@@ -658,6 +658,7 @@
     });
   }
   let lastWasp=0;
+  const canvasScrollY = window.scrollY + canvas.getBoundingClientRect().top - (window.innerHeight/2) + (canvas.height/2);
   function gameLoop(){
     if(state==='idle'){ drawIdle(); requestAnimationFrame(gameLoop); return; }
     if(state==='win'){ frame++; spawnWinParticles(); drawWin(); requestAnimationFrame(gameLoop); return; }
@@ -679,30 +680,26 @@
         }
       }
     }
-    if(checkCollision()){
-      spawnDeathParticles();
-      if(score>best){ best=score; document.getElementById('bestDisplay').textContent='Récord: '+best; }
-      state='dead';
-      requestAnimationFrame(gameLoop);
-      return;
+  function checkCollision(){
+    const HR = BEE_R * 0.45;
+    if(bee.y+HR>H-28||bee.y-HR<0) return true;
+    for(const w of wasps){
+      if(bee.x+HR>w.x+14&&bee.x-HR<w.x+WASP_W-14)
+        if(bee.y-HR<w.topH+8||bee.y+HR>w.topH+GAP-8) return true;
     }
+    return false;
+  }
     drawSky(); drawGround(); wasps.forEach(drawWasp); drawBee();
     ctx.fillStyle='#3C3489'; ctx.font='bold 18px sans-serif'; ctx.textAlign='right';
     ctx.fillText(score+' / 20',W-14,30); ctx.textAlign='left';
     requestAnimationFrame(gameLoop);
   }
- function flap(){
+function flap(){
     if(state==='idle'){ state='playing'; initGame(); bee.vy=FLAP; return; }
     if(state==='playing'){ bee.vy=FLAP; return; }
     if(state==='dead'||state==='win'){
       state='playing'; initGame(); bee.vy=FLAP;
-      const rect = canvas.getBoundingClientRect();
-      const isVisible = rect.top >= 80 && rect.bottom <= window.innerHeight;
-      if(!isVisible){
-        const canvasTop = canvas.getBoundingClientRect().top + window.scrollY;
-        const offset = canvasTop - (window.innerHeight / 2) + (canvas.height / 2);
-        window.scrollTo({ top: offset, behavior: 'smooth' });
-      }
+      window.scrollTo({ top: canvasScrollY, behavior: 'smooth' });
       return;
     }
   }
