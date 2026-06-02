@@ -657,8 +657,34 @@
       r:3+Math.random()*4,life:1
     });
   }
-  let lastWasp=0;
+ let lastWasp=0;
   const canvasScrollY = window.scrollY + canvas.getBoundingClientRect().top - (window.innerHeight/2) + (canvas.height/2);
+
+  function checkCollision(){
+    if(bee.y+BEE_R>H-28||bee.y-BEE_R<0) return true;
+    for(const w of wasps){
+      const beeLeft  = bee.x - BEE_R*0.6;
+      const beeRight = bee.x + BEE_R*0.6;
+      const beeTop   = bee.y - BEE_R*0.6;
+      const beeBot   = bee.y + BEE_R*0.6;
+      const waspLeft  = w.x;
+      const waspRight = w.x + WASP_W;
+      const gapTop    = w.topH;
+      const gapBot    = w.topH + GAP;
+      if(beeRight > waspLeft && beeLeft < waspRight){
+        if(beeTop < gapTop || beeBot > gapBot) return true;
+      }
+    }
+    return false;
+  }
+
+  function spawnDeathParticles(){
+    for(let i=0;i<18;i++) particles.push({
+      x:bee.x,y:bee.y,vx:(Math.random()-0.5)*6,vy:(Math.random()-0.5)*6-2,
+      r:3+Math.random()*4,life:1
+    });
+  }
+
   function gameLoop(){
     if(state==='idle'){ drawIdle(); requestAnimationFrame(gameLoop); return; }
     if(state==='win'){ frame++; spawnWinParticles(); drawWin(); requestAnimationFrame(gameLoop); return; }
@@ -680,29 +706,20 @@
         }
       }
     }
-function checkCollision(){
-    if(bee.y+BEE_R>H-28||bee.y-BEE_R<0) return true;
-    for(const w of wasps){
-      const beeLeft  = bee.x - BEE_R*0.6;
-      const beeRight = bee.x + BEE_R*0.6;
-      const beeTop   = bee.y - BEE_R*0.6;
-      const beeBot   = bee.y + BEE_R*0.6;
-      const waspLeft  = w.x;
-      const waspRight = w.x + WASP_W;
-      const gapTop    = w.topH;
-      const gapBot    = w.topH + GAP;
-      if(beeRight > waspLeft && beeLeft < waspRight){
-        if(beeTop < gapTop || beeBot > gapBot) return true;
-      }
+    if(checkCollision()){
+      spawnDeathParticles();
+      if(score>best){ best=score; document.getElementById('bestDisplay').textContent='Récord: '+best; }
+      state='dead';
+      requestAnimationFrame(gameLoop);
+      return;
     }
-    return false;
-  }
     drawSky(); drawGround(); wasps.forEach(drawWasp); drawBee();
     ctx.fillStyle='#3C3489'; ctx.font='bold 18px sans-serif'; ctx.textAlign='right';
     ctx.fillText(score+' / 20',W-14,30); ctx.textAlign='left';
     requestAnimationFrame(gameLoop);
   }
-function flap(){
+
+  function flap(){
     if(state==='idle'){ state='playing'; initGame(); bee.vy=FLAP; return; }
     if(state==='playing'){ bee.vy=FLAP; return; }
     if(state==='dead'||state==='win'){
@@ -711,6 +728,7 @@ function flap(){
       return;
     }
   }
+
   canvas.addEventListener('click', function(e){ e.preventDefault(); flap(); });
   canvas.addEventListener('touchstart', function(e){ e.preventDefault(); flap(); },{passive:false});
   document.addEventListener('keydown',e=>{ if(e.code==='Space'||e.code==='ArrowUp'){ e.preventDefault(); flap(); }});
