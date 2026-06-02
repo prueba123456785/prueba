@@ -683,8 +683,17 @@
  function checkCollision(){
     if(bee.y+BEE_R>H-28||bee.y-BEE_R<0) return true;
     for(const w of wasps){
-      if(bee.x+BEE_R*0.5>w.x+WASP_W*0.25 && bee.x-BEE_R*0.5<w.x+WASP_W*0.75)
-        if(bee.y-BEE_R*0.5<w.topH+6 || bee.y+BEE_R*0.5>w.topH+GAP-6) return true;
+      const beeLeft  = bee.x - BEE_R*0.5;
+      const beeRight = bee.x + BEE_R*0.5;
+      const beeTop   = bee.y - BEE_R*0.5;
+      const beeBot   = bee.y + BEE_R*0.5;
+      const waspLeft  = w.x + 8;
+      const waspRight = w.x + WASP_W - 8;
+      const gapTop    = w.topH;
+      const gapBot    = w.topH + GAP;
+      const inX = beeRight > waspLeft && beeLeft < waspRight;
+      const inGap = beeTop > gapTop && beeBot < gapBot;
+      if(inX && !inGap) return true;
     }
     return false;
   }
