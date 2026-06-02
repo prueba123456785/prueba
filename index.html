@@ -658,8 +658,10 @@
     });
   }
  let lastWasp=0;
-  const canvasScrollY = window.scrollY + canvas.getBoundingClientRect().top - (window.innerHeight/2) + (canvas.height/2);
-
+   let canvasScrollY = 0;
+    window.addEventListener('load', function(){
+      canvasScrollY = window.scrollY + canvas.getBoundingClientRect().top - (window.innerHeight/2) + (canvas.height/2);
+    });
   function checkCollision(){
     if(bee.y+BEE_R>H-28||bee.y-BEE_R<0) return true;
     for(const w of wasps){
