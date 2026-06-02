@@ -701,20 +701,25 @@
     requestAnimationFrame(gameLoop);
   }
   function flap(){
-    if(state==='idle'){ state='playing'; initGame(); bee.vy=FLAP; return; }
-    if(state==='playing'){ bee.vy=FLAP; return; }
-    if(state==='dead'||state==='win'){
-      state='playing'; initGame(); bee.vy=FLAP;
-      const rect = canvas.getBoundingClientRect();
-      const navbar = document.getElementById('navbar');
-      const navH = navbar ? navbar.offsetHeight : 0;
-      if(rect.top < navH || rect.bottom > window.innerHeight){
-        const top = window.scrollY + rect.top - navH - 20;
-        window.scrollTo({ top: top, behavior: 'instant' });
-      }
+    if(state==='idle'){
+      state='playing';
+      initGame();
+      bee.vy=FLAP;
       return;
     }
-  }
+
+    if(state==='playing'){
+      bee.vy=FLAP;
+      return;
+    }
+
+    if(state==='dead'||state==='win'){
+      state='playing';
+      initGame();
+      bee.vy=FLAP;
+      return;
+    }
+}
   canvas.addEventListener('click', function(e){ e.preventDefault(); flap(); });
   canvas.addEventListener('touchstart', function(e){ e.preventDefault(); flap(); },{passive:false});
   document.addEventListener('keydown',e=>{ if(e.code==='Space'||e.code==='ArrowUp'){ e.preventDefault(); flap(); }});
