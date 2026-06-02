@@ -691,12 +691,18 @@
     ctx.fillText(score+' / 20',W-14,30); ctx.textAlign='left';
     requestAnimationFrame(gameLoop);
   }
-  function flap(){
+ function flap(){
     if(state==='idle'){ state='playing'; initGame(); bee.vy=FLAP; return; }
     if(state==='playing'){ bee.vy=FLAP; return; }
     if(state==='dead'||state==='win'){
       state='playing'; initGame(); bee.vy=FLAP;
-      canvas.scrollIntoView({ behavior:'smooth', block:'center' });
+      const rect = canvas.getBoundingClientRect();
+      const isVisible = rect.top >= 80 && rect.bottom <= window.innerHeight;
+      if(!isVisible){
+        const canvasTop = canvas.getBoundingClientRect().top + window.scrollY;
+        const offset = canvasTop - (window.innerHeight / 2) + (canvas.height / 2);
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+      }
       return;
     }
   }
