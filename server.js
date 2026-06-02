@@ -19,8 +19,8 @@ app.use(express.static(path.join(__dirname, '.')));
 const MONGO_URI = 'mongodb+srv://yael24571_db_user:y12345@cluster0.86hmorz.mongodb.net/ClimasHuerto?appName=Cluster0';
 
 mongoose.connect(MONGO_URI)
-  .then(() => console.log('✅ Conectado a MongoDB Atlas (ClimasHuerto)'))
-  .catch(err => console.error('❌ Error MongoDB:', err));
+  .then(() => console.log('Conectado a MongoDB Atlas (ClimasHuerto)'))
+  .catch(err => console.error('Error MongoDB:', err));
 
 const climaSchema = new mongoose.Schema({
   fecha:       String,
