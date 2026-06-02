@@ -681,11 +681,10 @@
       }
     }
   function checkCollision(){
-    const HR = BEE_R * 0.45;
-    if(bee.y+HR>H-28||bee.y-HR<0) return true;
+    if(bee.y+BEE_R>H-28||bee.y-BEE_R<0) return true;
     for(const w of wasps){
-      if(bee.x+HR>w.x+14&&bee.x-HR<w.x+WASP_W-14)
-        if(bee.y-HR<w.topH+8||bee.y+HR>w.topH+GAP-8) return true;
+      if(bee.x+BEE_R*0.6>w.x+WASP_W*0.2 && bee.x-BEE_R*0.6<w.x+WASP_W*0.8)
+        if(bee.y-BEE_R*0.6<w.topH || bee.y+BEE_R*0.6>w.topH+GAP) return true;
     }
     return false;
   }
