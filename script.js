@@ -1,16 +1,8 @@
-/**
- * script.js — Huerto Escolar La Lavanda
- * Toda la lógica JS consolidada aquí, sin scripts en el HTML.
- */
-
 'use strict';
 
 const API_URL = '/api';
 let tempChart = null;
 
-/* =====================================================
-   PARTÍCULAS DE FONDO
-   ===================================================== */
 function initParticles() {
   const container = document.getElementById('particles');
   if (!container) return;
@@ -30,9 +22,6 @@ function initParticles() {
   }
 }
 
-/* =====================================================
-   NAVBAR
-   ===================================================== */
 function initNavbar() {
   const navbar    = document.getElementById('navbar');
   const hamburger = document.getElementById('hamburger');
@@ -42,7 +31,6 @@ function initNavbar() {
 
   if (!navbar) return;
 
-  // Scroll: clase .scrolled + active link
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 60);
     let current = '';
@@ -52,7 +40,6 @@ function initNavbar() {
     });
   });
 
-  // Menú hamburguesa
   if (hamburger && navLinks) {
     hamburger.addEventListener('click', () => {
       const isOpen = navLinks.classList.toggle('nav-open');
@@ -70,9 +57,6 @@ function initNavbar() {
   }
 }
 
-/* =====================================================
-   ANIMACIONES DE REVEAL (Intersection Observer)
-   ===================================================== */
 function initReveal() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
@@ -80,9 +64,6 @@ function initReveal() {
   document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
 }
 
-/* =====================================================
-   COUNTER ANIMADO
-   ===================================================== */
 function animateCounter(el, target, duration = 1800) {
   let start = null;
   const step = (ts) => {
@@ -108,9 +89,6 @@ function initCounters() {
   document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
 }
 
-/* =====================================================
-   TILT EN CARDS
-   ===================================================== */
 function initCardTilt() {
   document.querySelectorAll('.card, .team-card').forEach(card => {
     card.addEventListener('mousemove', e => {
@@ -123,9 +101,6 @@ function initCardTilt() {
   });
 }
 
-/* =====================================================
-   API: TEMPERATURA
-   ===================================================== */
 async function obtenerTemperaturaActual() {
   try {
     const response = await fetch(`${API_URL}/temperatura/actual`);
@@ -171,12 +146,9 @@ function mostrarTemperaturaFallback() {
   const tempRecommendation = document.getElementById('tempRecommendation');
   if (tempValue) tempValue.textContent = '--°C';
   if (tempLabel) tempLabel.textContent = 'Sin conexión';
-  if (tempRecommendation) tempRecommendation.textContent = '⚠️ Sin conexión con el servidor.';
+  if (tempRecommendation) tempRecommendation.textContent = 'Sin conexión con el servidor.';
 }
 
-/* =====================================================
-   API: ESTADÍSTICAS
-   ===================================================== */
 async function obtenerEstadisticas() {
   try {
     const response = await fetch(`${API_URL}/temperatura/estadisticas?dias=30`);
@@ -196,9 +168,6 @@ async function obtenerEstadisticas() {
   }
 }
 
-/* =====================================================
-   API: RECOMENDACIONES DE RIEGO
-   ===================================================== */
 async function obtenerRecomendacionesRiego() {
   try {
     const response = await fetch(`${API_URL}/recomendaciones/riego`);
@@ -218,9 +187,6 @@ async function obtenerRecomendacionesRiego() {
   }
 }
 
-/* =====================================================
-   API: ESTADO DE FLORACIÓN
-   ===================================================== */
 async function obtenerEstadoFloracion() {
   try {
     const response = await fetch(`${API_URL}/estado/floracion`);
@@ -240,9 +206,6 @@ async function obtenerEstadoFloracion() {
   }
 }
 
-/* =====================================================
-   GRÁFICO DE TEMPERATURA
-   ===================================================== */
 async function obtenerHistorialTemperatura(dias = 7) {
   try {
     const response = await fetch(`${API_URL}/temperatura/historial?dias=${dias}`);
@@ -327,9 +290,6 @@ function crearGraficoTemperaturaFallback() {
   });
 }
 
-/* =====================================================
-   CARRUSEL
-   ===================================================== */
 let currentSlideIndex = 0;
 let carouselTimer = null;
 
@@ -392,9 +352,6 @@ function iniciarLogicaCarrusel(totalSlides) {
   carouselTimer = setInterval(autoPlay, 5000);
 }
 
-/* =====================================================
-   DOCUMENTOS PÚBLICOS
-   ===================================================== */
 async function cargarDocumentosPublicos() {
   const contenedor = document.getElementById('listaDocumentosPublicos');
   if (!contenedor) return;
@@ -434,9 +391,6 @@ async function cargarDocumentosPublicos() {
   }
 }
 
-/* =====================================================
-   ESTADO DE API (FOOTER)
-   ===================================================== */
 function actualizarEstadoAPI(conectado) {
   const apiStatus = document.getElementById('apiStatus');
   if (!apiStatus) return;
@@ -451,9 +405,6 @@ function actualizarEstadoAPI(conectado) {
   }
 }
 
-/* =====================================================
-   CONTACTO
-   ===================================================== */
 function initContacto() {
   const btn = document.getElementById('btnEnviarContacto');
   if (!btn) return;
@@ -473,9 +424,6 @@ function initContacto() {
   });
 }
 
-/* =====================================================
-   ADMIN — MODAL & PANEL
-   ===================================================== */
 function initAdmin() {
   const btnFloat    = document.getElementById('btnAdminFloat');
   const modal       = document.getElementById('modalAdmin');
@@ -488,14 +436,12 @@ function initAdmin() {
   if (btnFloat) btnFloat.addEventListener('click', () => modal.classList.add('active'));
   if (btnCerrar) btnCerrar.addEventListener('click', () => { modal.classList.remove('active'); passInput.value = ''; });
 
-  // Cerrar modal al hacer clic fuera
   if (modal) {
     modal.addEventListener('click', e => {
       if (e.target === modal) { modal.classList.remove('active'); passInput.value = ''; }
     });
   }
 
-  // Verificar contraseña
   if (btnVerif) {
     btnVerif.addEventListener('click', () => {
       if (passInput.value === 'LAVANDA2026') {
@@ -513,12 +459,10 @@ function initAdmin() {
     });
   }
 
-  // Enter en el input de contraseña
   if (passInput) {
     passInput.addEventListener('keydown', e => { if (e.key === 'Enter') btnVerif.click(); });
   }
-
-  // Cerrar panel
+   
   if (btnCerrarPn) {
     btnCerrarPn.addEventListener('click', () => {
       panel.classList.remove('active');
@@ -526,7 +470,6 @@ function initAdmin() {
     });
   }
 
-  // Botones de subida
   const btnSubirImg = document.getElementById('btnSubirImagen');
   if (btnSubirImg) btnSubirImg.addEventListener('click', subirImagen);
 
@@ -537,7 +480,6 @@ function initAdmin() {
   if (btnGuardarInfo) btnGuardarInfo.addEventListener('click', () => alert('Función de información próximamente.'));
 }
 
-/* ---- ADMIN: GALERÍA ---- */
 async function cargarFotosAdmin() {
   const contenedor = document.getElementById('listaFotosAdmin');
   if (!contenedor) return;
@@ -574,16 +516,16 @@ async function subirImagen() {
     const res  = await fetch('/subir-imagen', { method: 'POST', body: formData });
     const data = await res.json();
     if (data.ok) {
-      alert('✅ Imagen subida correctamente.');
+      alert('Imagen subida correctamente.');
       document.getElementById('tituloImagen').value = '';
       document.getElementById('archivoImagen').value = '';
       cargarFotosAdmin();
       inicializarCarrusel();
     } else {
-      alert('❌ Error al subir: ' + data.error);
+      alert('Error al subir: ' + data.error);
     }
   } catch (err) {
-    alert('❌ Error de conexión con el servidor.');
+    alert('Error de conexión con el servidor.');
   }
 }
 
@@ -592,14 +534,14 @@ async function borrarImagen(id) {
   try {
     const res = await fetch(`/api/fotos/${id}`, { method: 'DELETE' });
     if (res.ok) {
-      alert('🗑️ Imagen eliminada.');
+      alert('Imagen eliminada.');
       cargarFotosAdmin();
       inicializarCarrusel();
     } else {
-      alert('❌ Error al eliminar la imagen.');
+      alert('Error al eliminar la imagen.');
     }
   } catch {
-    alert('❌ Error de conexión.');
+    alert('Error de conexión.');
   }
 }
 
@@ -642,23 +584,23 @@ async function cargarDocsAdmin() {
 async function subirCronogramaArchivo() {
   const titulo        = document.getElementById('tituloCronograma').value;
   const archivoInput  = document.getElementById('archivoCronograma');
-  if (!titulo || archivoInput.files.length === 0) { alert('⚠️ Ingresa un título y selecciona un archivo.'); return; }
+  if (!titulo || archivoInput.files.length === 0) { alert('Ingresa un título y selecciona un archivo.'); return; }
   const formData = new FormData();
   formData.append('titulo', titulo);
   formData.append('documento', archivoInput.files[0]);
   try {
     const res = await fetch('/subir-documento', { method: 'POST', body: formData });
     if (res.ok) {
-      alert('✅ Documento subido con éxito.');
+      alert('Documento subido con éxito.');
       document.getElementById('tituloCronograma').value = '';
       archivoInput.value = '';
       cargarDocumentosPublicos();
       cargarDocsAdmin();
     } else {
-      alert('❌ Error al subir el archivo.');
+      alert('Error al subir el archivo.');
     }
   } catch {
-    alert('❌ Error de conexión.');
+    alert('Error de conexión.');
   }
 }
 
@@ -667,22 +609,19 @@ async function borrarDocumento(id) {
   try {
     const res = await fetch(`/api/documentos/${id}`, { method: 'DELETE' });
     if (res.ok) {
-      alert('🗑️ Documento eliminado.');
+      alert('Documento eliminado.');
       cargarDocsAdmin();
       cargarDocumentosPublicos();
     } else {
-      alert('❌ Error al eliminar el documento.');
+      alert('Error al eliminar el documento.');
     }
   } catch {
-    alert('❌ Error de conexión.');
+    alert('Error de conexión.');
   }
 }
 
-/* =====================================================
-   INICIALIZACIÓN PRINCIPAL
-   ===================================================== */
 async function inicializarDatos() {
-  console.log('🌿 Iniciando Huerto Escolar La Lavanda...');
+  console.log('Iniciando Huerto Escolar La Lavanda...');
   await Promise.allSettled([
     obtenerTemperaturaActual(),
     obtenerEstadisticas(),
@@ -695,14 +634,12 @@ async function inicializarDatos() {
   console.log('✅ Datos cargados.');
 }
 
-// Actualización automática cada 30 segundos
 setInterval(async () => {
-  console.log('🔄 Actualizando temperatura...');
+  console.log('Actualizando temperatura...');
   await obtenerTemperaturaActual();
   await obtenerEstadisticas();
 }, 30000);
 
-// Arranque
 document.addEventListener('DOMContentLoaded', () => {
   initParticles();
   initNavbar();
