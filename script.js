@@ -650,3 +650,223 @@ document.addEventListener('DOMContentLoaded', () => {
   initAdmin();
   inicializarDatos();
 });
+
+const canvas = document.getElementById("beeGame");
+const ctx = canvas.getContext("2d");
+
+const startBtn = document.getElementById("startGame");
+const scoreElement = document.getElementById("score");
+
+let bee;
+let obstacles;
+let score;
+let gameRunning;
+let reachedLavender;
+
+function initGame(){
+
+    bee = {
+        x:120,
+        y:220,
+        radius:20,
+        velocity:0
+    };
+
+    obstacles = [];
+    score = 0;
+    reachedLavender = false;
+    gameRunning = true;
+
+    scoreElement.textContent = "0";
+
+    requestAnimationFrame(gameLoop);
+}
+
+function createObstacle(){
+
+    let gap = 170;
+
+    let topHeight =
+        Math.random() * 180 + 40;
+
+    obstacles.push({
+        x: canvas.width,
+        top: topHeight,
+        bottom:
+            topHeight + gap
+    });
+}
+
+function drawBee(){
+
+    ctx.font = "40px Arial";
+    ctx.fillText(
+        "🐝",
+        bee.x - 20,
+        bee.y + 15
+    );
+}
+
+function drawBackground(){
+
+    let gradient =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            canvas.height
+        );
+
+    gradient.addColorStop(0,"#87CEEB");
+    gradient.addColorStop(1,"#98FB98");
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    ctx.font = "50px Arial";
+
+    for(let i=0;i<5;i++){
+        ctx.fillText(
+            "🌼",
+            i*180+60,
+            canvas.height-20
+        );
+    }
+}
+
+function drawLavender(){
+
+    ctx.font = "100px Arial";
+
+    ctx.fillText(
+        "💜",
+        canvas.width-130,
+        canvas.height/2
+    );
+}
+
+function gameLoop(){
+
+    if(!gameRunning) return;
+
+    drawBackground();
+
+    bee.velocity += 0.5;
+    bee.y += bee.velocity;
+
+    drawBee();
+
+    if(score >= 20){
+        drawLavender();
+
+        if(bee.x > canvas.width-170){
+
+            gameRunning = false;
+
+            setTimeout(()=>{
+                alert(
+                    "🌸 ¡Ganaste! La abeja llegó a la lavanda y ayudó a polinizar el huerto."
+                );
+            },100);
+
+            return;
+        }
+
+        bee.x += 2;
+    }
+
+    if(Math.random() < 0.02 &&
+       score < 20){
+
+        createObstacle();
+    }
+
+    obstacles.forEach((obs,index)=>{
+
+        obs.x -= 4;
+
+        ctx.font = "55px Arial";
+
+        ctx.fillText(
+            "🐝",
+            obs.x,
+            obs.top - 20
+        );
+
+        ctx.fillText(
+            "🐝",
+            obs.x,
+            obs.bottom + 80
+        );
+
+        if(
+            bee.x + bee.radius > obs.x &&
+            bee.x - bee.radius < obs.x + 50
+        ){
+
+            if(
+                bee.y < obs.top ||
+                bee.y > obs.bottom
+            ){
+
+                gameRunning = false;
+
+                alert(
+                    "⚠️ Una avispa te atrapó. Inténtalo otra vez."
+                );
+
+                return;
+            }
+        }
+
+        if(obs.x === 120){
+
+            score++;
+
+            scoreElement.textContent =
+                score;
+        }
+    });
+
+    if(
+        bee.y < 0 ||
+        bee.y > canvas.height
+    ){
+
+        gameRunning = false;
+
+        alert(
+            "La abeja salió del huerto."
+        );
+
+        return;
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+document.addEventListener(
+    "keydown",
+    e=>{
+        if(e.code==="Space"){
+            bee.velocity = -8;
+        }
+    }
+);
+
+canvas.addEventListener(
+    "click",
+    ()=>{
+        bee.velocity = -8;
+    }
+);
+
+startBtn.addEventListener(
+    "click",
+    initGame
+);
