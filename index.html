@@ -277,52 +277,36 @@
 
 </section>
 
-<!-- ===== MINIJUEGO ===== -->
-<section class="section minijuego" id="minijuego">
-    <div class="section-inner">
+<!-- ===== MINIJUEGO HAPPY BEE ===== -->
+<section class="section" id="minijuego" style="background: linear-gradient(135deg, #f3f0ff 0%, #fce8f8 100%); padding: 60px 0;">
+  <div class="section-inner">
+    <div class="section-tag reveal">Minijuego</div>
+    <h2 class="section-title reveal">¡Ayuda a la <em>abeja</em> a llegar a la lavanda!</h2>
+    <p class="section-sub reveal">Esquiva 20 avispas asesinas para ganar. Presiona Espacio o toca la pantalla para volar.</p>
 
-        <div class="section-tag reveal">
-            Aprendiendo Jugando
-        </div>
+    <div id="game-wrap" style="font-family: var(--font-sans, sans-serif); text-align: center; padding: 1rem 0;">
+      <div style="display:flex; justify-content:center; gap:16px; align-items:center; margin:12px 0; flex-wrap:wrap;">
+        <span style="background:#EEEDFE; color:#3C3489; border-radius:8px; padding:6px 14px; font-size:13px; font-weight:500;">🐝 Esquiva 20 avispas</span>
+        <span style="background:#EEEDFE; color:#3C3489; border-radius:8px; padding:6px 14px; font-size:13px; font-weight:500;" id="scoreDisplay">Puntaje: 0</span>
+        <span style="background:#EEEDFE; color:#3C3489; border-radius:8px; padding:6px 14px; font-size:13px; font-weight:500;" id="bestDisplay">Récord: 0</span>
+      </div>
 
-        <h2 class="section-title reveal">
-            La misión de la <em>abeja</em>
-        </h2>
+      <canvas id="gameCanvas" width="480" height="320"
+        style="border-radius:16px; border:2px solid #9B88C6; display:block; margin:0 auto; cursor:pointer;"></canvas>
 
-        <p class="section-sub reveal">
-            Ayuda a nuestra abeja polinizadora a esquivar las avispas asesinas
-            y llegar hasta la flor de lavanda.
-        </p>
+      <p style="font-size:13px; color:#6b7280; margin:8px 0 0;">Presiona <b>Espacio</b> / Toca la pantalla para volar</p>
 
-        <div class="game-wrapper reveal">
-
-            <div class="game-header">
-                <div class="game-score">
-                    🌸 Puntos:
-                    <span id="score">0</span>/20
-                </div>
-
-                <button
-                    id="startGame"
-                    class="btn-primary">
-                    Iniciar Juego
-                </button>
-            </div>
-
-            <canvas
-                id="beeGame"
-                width="900"
-                height="450">
-            </canvas>
-
-            <p class="game-help">
-                Haz clic o presiona ESPACIO para volar.
-            </p>
-
-        </div>
-
+      <div style="margin-top:10px;">
+        <button id="startBeeBtn"
+          style="background:#7F77DD; color:#fff; border:none; border-radius:10px; padding:10px 28px; font-size:15px; font-weight:500; cursor:pointer;">
+          ▶ Iniciar juego
+        </button>
+      </div>
     </div>
+  </div>
 </section>
+<!-- ===== FIN MINIJUEGO ===== -->
+
 
 <!-- ===== EQUIPO ===== -->
 <section class="section equipo" id="equipo">
@@ -496,6 +480,237 @@
 
 <!-- ===== SCRIPTS (al final del body) ===== -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+(function(){
+  const canvas = document.getElementById('gameCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  let state = 'idle', score = 0, best = 0, frame = 0;
+  let bee, wasps, particles, winParticles;
+  const GRAVITY=0.38, FLAP=-7.2, WASP_SPEED=3.2, GAP=130;
+  const WASP_W=52, BEE_R=14;
+
+  function initBee(){ bee={x:80,y:H/2,vy:0,wing:0,wingDir:1}; }
+  function initGame(){
+    initBee(); wasps=[]; particles=[]; winParticles=[];
+    score=0; frame=0; updateScore();
+  }
+  function spawnWasp(){
+    const gapY=60+Math.random()*(H-120-GAP);
+    wasps.push({x:W+10,topH:gapY,gapY,legPhase:Math.random()*Math.PI*2,passed:false});
+  }
+  function updateScore(){
+    document.getElementById('scoreDisplay').textContent='Puntaje: '+score;
+  }
+
+  function drawSky(){
+    const grad=ctx.createLinearGradient(0,0,0,H);
+    grad.addColorStop(0,'#d8d2f8'); grad.addColorStop(1,'#fce8f8');
+    ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(255,255,255,0.3)';
+    for(let i=0;i<6;i++){
+      const cx=(i*90+frame*0.4)%W, cy=40+i*30;
+      ctx.beginPath(); ctx.ellipse(cx,cy,30,12,0,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(cx+18,cy-6,20,10,0,0,Math.PI*2); ctx.fill();
+    }
+  }
+  function drawGround(){
+    ctx.fillStyle='#b5a8d6'; ctx.fillRect(0,H-28,W,28);
+    ctx.fillStyle='#9B88C6'; ctx.fillRect(0,H-28,W,4);
+    for(let x=0;x<W;x+=16){
+      ctx.fillStyle='#c8bfe8';
+      ctx.beginPath(); ctx.ellipse(x+8,H-26,6,4,0,0,Math.PI*2); ctx.fill();
+    }
+  }
+  function drawBee(){
+    const b=bee;
+    const angle=Math.min(Math.max(b.vy*0.05,-0.5),0.5);
+    ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(angle);
+    ctx.fillStyle='#FFD700';
+    ctx.beginPath(); ctx.ellipse(0,0,BEE_R,BEE_R*0.75,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#2C2C2A';
+    for(let i=-1;i<=1;i+=2) ctx.fillRect(-BEE_R*0.2+i*3,-BEE_R*0.4,BEE_R*0.35,BEE_R*1.3);
+    ctx.fillStyle='rgba(200,220,255,0.7)';
+    ctx.save(); ctx.rotate(-0.4);
+    ctx.beginPath(); ctx.ellipse(-4,-BEE_R*0.5,12,6,-.3,0,Math.PI*2); ctx.fill(); ctx.restore();
+    ctx.save(); ctx.rotate(0.4);
+    ctx.beginPath(); ctx.ellipse(4,-BEE_R*0.5,12,6,.3,0,Math.PI*2); ctx.fill(); ctx.restore();
+    ctx.fillStyle='#FFB300';
+    ctx.beginPath(); ctx.moveTo(BEE_R,0); ctx.lineTo(BEE_R+8,0); ctx.lineTo(BEE_R+4,-4); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#2C2C2A';
+    ctx.beginPath(); ctx.arc(-4,-2,2.5,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+  function drawWaspBody(t,bH){
+    const h=Math.min(bH*0.7,80);
+    ctx.fillStyle='#2C2C2A';
+    ctx.beginPath(); ctx.ellipse(0,0,WASP_W*0.4,h/2,0,0,Math.PI*2); ctx.fill();
+    for(let i=0;i<4;i++){
+      ctx.fillStyle=i%2===0?'#FFB300':'#2C2C2A';
+      ctx.fillRect(-WASP_W*0.38,-h/2+i*(h/4),WASP_W*0.76,h/4+1);
+    }
+    ctx.fillStyle='rgba(180,200,255,0.6)';
+    [-1,1].forEach(side=>{
+      ctx.save(); ctx.rotate(side*(-0.5+Math.sin(t)*0.3));
+      ctx.beginPath(); ctx.ellipse(side*WASP_W*0.35,-h*0.1,WASP_W*0.35,h*0.18,0,0,Math.PI*2);
+      ctx.fill(); ctx.restore();
+    });
+    ctx.fillStyle='#2C2C2A';
+    ctx.beginPath(); ctx.ellipse(0,-h/2-8,9,8,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#CC0000';
+    ctx.beginPath(); ctx.arc(-3,-h/2-8,3,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(3,-h/2-8,3,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='#2C2C2A'; ctx.lineWidth=1.5;
+    [-1,1].forEach(side=>{
+      for(let i=0;i<3;i++){
+        ctx.beginPath();
+        ctx.moveTo(side*WASP_W*0.38,-h*0.1+i*12);
+        ctx.lineTo(side*(WASP_W*0.38+14)+side*Math.sin(t+i)*4,-h*0.1+i*12+Math.sin(t)*5);
+        ctx.stroke();
+      }
+    });
+    ctx.fillStyle='#FFB300';
+    ctx.beginPath(); ctx.moveTo(0,h/2); ctx.lineTo(-5,h/2+h*0.2); ctx.lineTo(5,h/2+h*0.2); ctx.closePath(); ctx.fill();
+  }
+  function drawWasp(w){
+    const t=w.legPhase+frame*0.12;
+    ctx.save(); ctx.translate(w.x+WASP_W/2,w.topH/2); drawWaspBody(t,w.topH); ctx.restore();
+    ctx.save(); ctx.translate(w.x+WASP_W/2,w.topH+GAP+(H-w.topH-GAP-28)/2+28);
+    ctx.rotate(Math.PI); drawWaspBody(t,H-w.topH-GAP-28); ctx.restore();
+    ctx.fillStyle='rgba(80,40,120,0.25)';
+    ctx.fillRect(w.x+(WASP_W*0.22),w.topH,WASP_W*0.56,GAP);
+  }
+  function drawWin(){
+    winParticles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.12; p.life-=0.012;
+      ctx.globalAlpha=Math.max(0,p.life);
+      ctx.fillStyle=p.color;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+    });
+    ctx.globalAlpha=1;
+    const cx=W/2,cy=H/2;
+    const grad=ctx.createRadialGradient(cx,cy,20,cx,cy,200);
+    ['#fff0fb','#e8d5ff','#ffd6f0','#d6eeff'].forEach((c,i)=>grad.addColorStop(i/3,c));
+    ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
+    const petalColors=['#c45bdf','#9B88C6','#b5a8d6','#d8b4fe','#7F77DD','#e9d5ff'];
+    const t=frame*0.04;
+    for(let i=0;i<8;i++){
+      const ang=i*Math.PI/4+t;
+      ctx.fillStyle=petalColors[i%6];
+      ctx.beginPath(); ctx.ellipse(cx+Math.cos(ang)*55,cy+Math.sin(ang)*55,22,38,ang,0,Math.PI*2); ctx.fill();
+    }
+    ctx.fillStyle='#FFD700'; ctx.beginPath(); ctx.arc(cx,cy,30,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#FFB300'; ctx.beginPath(); ctx.arc(cx,cy,22,0,Math.PI*2); ctx.fill();
+    for(let i=0;i<12;i++){
+      const a=i*Math.PI/6;
+      ctx.fillStyle='#2C2C2A';
+      ctx.beginPath(); ctx.arc(cx+Math.cos(a)*16,cy+Math.sin(a)*16,2,0,Math.PI*2); ctx.fill();
+    }
+    ['💜','🌸','✨','🌿','🦋'].forEach((e,i)=>{
+      const a=i*Math.PI*2/5+t;
+      ctx.font='24px serif';
+      ctx.fillText(e,cx+Math.cos(a)*120-10,cy+Math.sin(a)*90);
+    });
+    ctx.fillStyle='#3C3489'; ctx.font='bold 22px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('¡Llegaste a la lavanda! 🐝',cx,cy-100);
+    ctx.font='15px sans-serif'; ctx.fillStyle='#534AB7';
+    ctx.fillText('Puntaje final: '+score,cx,cy-74);
+    ctx.fillStyle='#7F77DD';
+    ctx.fillText('Toca o presiona Espacio para jugar de nuevo',cx,H-36);
+    ctx.textAlign='left';
+  }
+  function drawIdle(){
+    drawSky(); drawGround();
+    ctx.fillStyle='#3C3489'; ctx.font='bold 24px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('Happy Bee 🐝',W/2,H/2-40);
+    ctx.font='15px sans-serif'; ctx.fillStyle='#534AB7';
+    ctx.fillText('Esquiva 20 avispas para ganar 🌸',W/2,H/2);
+    ctx.textAlign='left';
+    bee.y=H/2-40; drawBee();
+  }
+  function drawDead(){
+    drawSky(); drawGround(); wasps.forEach(drawWasp); drawBee();
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.15; p.life-=0.025;
+      ctx.globalAlpha=Math.max(0,p.life);
+      ctx.fillStyle='#FFD700';
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+    });
+    ctx.globalAlpha=1;
+    ctx.fillStyle='rgba(255,255,255,0.88)';
+    ctx.beginPath(); ctx.roundRect(W/2-120,H/2-55,240,100,14); ctx.fill();
+    ctx.fillStyle='#A32D2D'; ctx.font='bold 22px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('¡Te picaron! 🐝',W/2,H/2-20);
+    ctx.fillStyle='#534AB7'; ctx.font='15px sans-serif';
+    ctx.fillText('Puntaje: '+score+' | Récord: '+best,W/2,H/2+12);
+    ctx.fillText('Toca para reintentar',W/2,H/2+36);
+    ctx.textAlign='left';
+  }
+  function spawnWinParticles(){
+    for(let i=0;i<80;i++) winParticles.push({
+      x:W/2,y:H/2,vx:(Math.random()-0.5)*8,vy:(Math.random()-0.5)*8-2,
+      r:3+Math.random()*5,life:1,
+      color:['#c45bdf','#FFD700','#ff6b9d','#7F77DD','#6bcb77','#ffb347'][Math.floor(Math.random()*6)]
+    });
+  }
+  function checkCollision(){
+    if(bee.y+BEE_R>H-28||bee.y-BEE_R<0) return true;
+    for(const w of wasps){
+      if(bee.x+BEE_R>w.x+6&&bee.x-BEE_R<w.x+WASP_W-6)
+        if(bee.y-BEE_R<w.topH-4||bee.y+BEE_R>w.topH+GAP+4) return true;
+    }
+    return false;
+  }
+  function spawnDeathParticles(){
+    for(let i=0;i<18;i++) particles.push({
+      x:bee.x,y:bee.y,vx:(Math.random()-0.5)*6,vy:(Math.random()-0.5)*6-2,
+      r:3+Math.random()*4,life:1
+    });
+  }
+  let lastWasp=0;
+  function gameLoop(){
+    if(state==='idle'){ drawIdle(); requestAnimationFrame(gameLoop); return; }
+    if(state==='win'){ frame++; spawnWinParticles(); drawWin(); requestAnimationFrame(gameLoop); return; }
+    if(state==='dead'){ drawDead(); requestAnimationFrame(gameLoop); return; }
+    frame++;
+    bee.vy+=GRAVITY; bee.y+=bee.vy;
+    bee.wing+=bee.wingDir*0.6; if(Math.abs(bee.wing)>8) bee.wingDir*=-1;
+    if(frame-lastWasp>88){ spawnWasp(); lastWasp=frame; }
+    wasps.forEach(w=>{ w.x-=WASP_SPEED; w.legPhase+=0.08; });
+    wasps=wasps.filter(w=>w.x>-WASP_W-10);
+    for(const w of wasps){
+      if(!w.passed&&w.x+WASP_W<bee.x){
+        w.passed=true; score++; updateScore();
+        if(score>=20){
+          state='win'; spawnWinParticles();
+          if(score>best){ best=score; document.getElementById('bestDisplay').textContent='Récord: '+best; }
+          return;
+        }
+      }
+    }
+    if(checkCollision()){
+      spawnDeathParticles();
+      if(score>best){ best=score; document.getElementById('bestDisplay').textContent='Récord: '+best; }
+      state='dead'; return;
+    }
+    drawSky(); drawGround(); wasps.forEach(drawWasp); drawBee();
+    ctx.fillStyle='#3C3489'; ctx.font='bold 18px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(score+' / 20',W-14,30); ctx.textAlign='left';
+    requestAnimationFrame(gameLoop);
+  }
+  function flap(){
+    if(state==='idle'){ state='playing'; initGame(); bee.vy=FLAP; return; }
+    if(state==='playing'){ bee.vy=FLAP; return; }
+    if(state==='dead'||state==='win'){ state='playing'; initGame(); bee.vy=FLAP; }
+  }
+  canvas.addEventListener('click',flap);
+  canvas.addEventListener('touchstart',e=>{e.preventDefault();flap();},{passive:false});
+  document.addEventListener('keydown',e=>{ if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();flap();} });
+  document.getElementById('startBeeBtn').addEventListener('click',flap);
+  initBee(); gameLoop();
+})();
+</script>
 <script src="script.js"></script>
 
 </body>
