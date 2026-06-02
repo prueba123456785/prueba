@@ -694,16 +694,19 @@
   function flap(){
     if(state==='idle'){ state='playing'; initGame(); bee.vy=FLAP; return; }
     if(state==='playing'){ bee.vy=FLAP; return; }
-    if(state==='dead'||state==='win'){ state='playing'; initGame(); bee.vy=FLAP; }
+    if(state==='dead'||state==='win'){
+      state='playing'; initGame(); bee.vy=FLAP;
+      canvas.scrollIntoView({ behavior:'smooth', block:'center' });
+      return;
+    }
   }
-  canvas.addEventListener('click',flap);
-  canvas.addEventListener('touchstart',e=>{e.preventDefault();flap();},{passive:false});
-  document.addEventListener('keydown',e=>{ if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();flap();} });
-  document.getElementById('startBeeBtn').addEventListener('click',flap);
+  canvas.addEventListener('click', function(e){ e.preventDefault(); flap(); });
+  canvas.addEventListener('touchstart', function(e){ e.preventDefault(); flap(); },{passive:false});
+  document.addEventListener('keydown',e=>{ if(e.code==='Space'||e.code==='ArrowUp'){ e.preventDefault(); flap(); }});
+  document.getElementById('startBeeBtn').addEventListener('click', function(e){ e.preventDefault(); flap(); });
   initBee(); gameLoop();
 })();
 </script>
-<script src="script.js"></script>
 
 </body>
 </html>
