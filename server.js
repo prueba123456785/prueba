@@ -22,6 +22,9 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log('Conectado a MongoDB Atlas (ClimasHuerto)'))
   .catch(err => console.error('Error MongoDB:', err));
 
+// =====================================================
+// SCHEMAS / MODELS
+// =====================================================
 const climaSchema = new mongoose.Schema({
   fecha:       String,
   temperatura: Number
@@ -37,24 +40,40 @@ const fotoSchema = new mongoose.Schema({
 
 const Foto = mongoose.model('Foto', fotoSchema);
 
+// NUEVO: Schema para imágenes del procedimiento
+const procedimientoSchema = new mongoose.Schema({
+  url:         { type: String, required: true },
+  titulo:      { type: String, default: 'Sin título' },
+  descripcion: { type: String, default: '' },
+  fecha:       { type: Date, default: Date.now }
+}, { collection: 'Procedimiento' });
+
+const ImagenProcedimiento = mongoose.model('ImagenProcedimiento', procedimientoSchema);
+
 const documentoSchema = new mongoose.Schema({
-  titulo:       String,
+  titulo:        String,
   nombreArchivo: String,
-  tipoArchivo:  String,
-  datosBase64:  { type: String, required: true },
-  fecha:        { type: Date, default: Date.now }
+  tipoArchivo:   String,
+  datosBase64:   { type: String, required: true },
+  fecha:         { type: Date, default: Date.now }
 }, { collection: 'Documentos' });
 
 const Documento = mongoose.model('Documento', documentoSchema);
 
 const upload = multer({ storage: multer.memoryStorage() });
 
+// =====================================================
+// HELPERS
+// =====================================================
 const obtenerFechaString = (diasAtras = 0) => {
   const d = new Date();
   d.setDate(d.getDate() - diasAtras);
   return d.toISOString().split('T')[0];
 };
 
+// =====================================================
+// RUTAS: TEMPERATURA
+// =====================================================
 app.get('/api/temperatura/actual', async (req, res) => {
   try {
     const ultimo = await Clima.findOne().sort({ fecha: -1 });
@@ -71,13 +90,12 @@ app.get('/api/temperatura/actual', async (req, res) => {
     let estado  = 'ÓPTIMO';
     let mensaje = '🟣 Temperatura ideal';
 
-    if (ultimo.temperatura > 25) { estado = 'CÁLIDO';  mensaje = '🟠 Hace calor'; }
-    if (ultimo.temperatura < 15) { estado = 'FRESCO';  mensaje = '🔵 Temperatura baja'; }
+    if (ultimo.temperatura > 25) { estado = 'CÁLIDO';        mensaje = '🟠 Hace calor'; }
+    if (ultimo.temperatura < 15) { estado = 'FRESCO';        mensaje = '🔵 Temperatura baja'; }
     if (ultimo.temperatura > 35) { estado = 'EXTREMO CALOR'; mensaje = '🔴 Temperatura peligrosa'; }
-    if (ultimo.temperatura < 5)  { estado = 'HELADA';  mensaje = '❄️ Riesgo de helada'; }
+    if (ultimo.temperatura < 5)  { estado = 'HELADA';        mensaje = '❄️ Riesgo de helada'; }
 
     res.json({ temperatura: ultimo.temperatura, fecha: ultimo.fecha, estado, mensaje });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -100,19 +118,21 @@ app.get('/api/temperatura/estadisticas', async (req, res) => {
       return res.json({ promedio: 0, maxima: 0, minima: 0, diasOptimos: 0 });
     }
 
-    const temps      = datos.map(d => d.temperatura);
-    const promedio   = (temps.reduce((a, b) => a + b, 0) / temps.length).toFixed(1);
-    const maxima     = Math.max(...temps);
-    const minima     = Math.min(...temps);
+    const temps       = datos.map(d => d.temperatura);
+    const promedio    = (temps.reduce((a, b) => a + b, 0) / temps.length).toFixed(1);
+    const maxima      = Math.max(...temps);
+    const minima      = Math.min(...temps);
     const diasOptimos = datos.filter(d => d.temperatura >= 15 && d.temperatura <= 25).length;
 
     res.json({ promedio, maxima, minima, diasOptimos });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
+// =====================================================
+// RUTAS: RECOMENDACIONES
+// =====================================================
 app.get('/api/recomendaciones/riego', async (req, res) => {
   try {
     const ultimo = await Clima.findOne().sort({ fecha: -1 });
@@ -124,7 +144,6 @@ app.get('/api/recomendaciones/riego', async (req, res) => {
     if (temp < 15) riego = { recomendacion: 'Riego escaso',    frecuencia: 'Cada 12 días',  cantidad: 'Mínima' };
 
     res.json(riego);
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -142,12 +161,14 @@ app.get('/api/estado/floracion', async (req, res) => {
     }
 
     res.json(flor);
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
+// =====================================================
+// RUTAS: GALERÍA (fotos generales)
+// =====================================================
 app.get('/api/fotos', async (req, res) => {
   try {
     const fotos = await Foto.find().sort({ _id: -1 });
@@ -170,9 +191,8 @@ app.post('/subir-imagen', upload.single('imagen'), async (req, res) => {
     });
 
     await nuevaFoto.save();
-    console.log('✅ Imagen guardada');
+    console.log('✅ Imagen guardada en galería');
     res.json({ ok: true, mensaje: 'Imagen subida correctamente' });
-
   } catch (err) {
     console.error('❌ Error al subir imagen:', err);
     res.status(500).json({ ok: false, error: err.message });
@@ -187,15 +207,72 @@ app.delete('/api/fotos/:id', async (req, res) => {
       return res.status(404).json({ ok: false, error: 'No se encontró la imagen' });
     }
 
-    console.log(`🗑️ Imagen eliminada: ${req.params.id}`);
+    console.log(`🗑️ Imagen de galería eliminada: ${req.params.id}`);
     res.json({ ok: true, mensaje: 'Imagen eliminada correctamente' });
-
   } catch (error) {
     console.error('❌ Error al borrar imagen:', error);
     res.status(500).json({ ok: false, error: error.message });
   }
 });
 
+// =====================================================
+// RUTAS: PROCEDIMIENTO (NUEVO)
+// =====================================================
+
+// GET: obtener todas las imágenes del procedimiento (orden cronológico)
+app.get('/api/procedimiento', async (req, res) => {
+  try {
+    const fotos = await ImagenProcedimiento.find().sort({ fecha: 1 });
+    res.json(fotos);
+  } catch (error) {
+    console.error('❌ Error al obtener procedimiento:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST: subir una imagen al procedimiento
+app.post('/subir-procedimiento', upload.single('imagen'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ ok: false, error: 'No se recibió imagen' });
+    }
+
+    const base64   = req.file.buffer.toString('base64');
+    const nuevaImg = new ImagenProcedimiento({
+      titulo:      req.body.titulo      || 'Sin título',
+      descripcion: req.body.descripcion || '',
+      url:         `data:${req.file.mimetype};base64,${base64}`
+    });
+
+    await nuevaImg.save();
+    console.log('✅ Imagen de procedimiento guardada');
+    res.json({ ok: true, mensaje: 'Imagen de procedimiento subida correctamente' });
+  } catch (err) {
+    console.error('❌ Error al subir imagen de procedimiento:', err);
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// DELETE: eliminar una imagen del procedimiento
+app.delete('/api/procedimiento/:id', async (req, res) => {
+  try {
+    const borrada = await ImagenProcedimiento.findByIdAndDelete(req.params.id);
+
+    if (!borrada) {
+      return res.status(404).json({ ok: false, error: 'No se encontró la imagen del procedimiento' });
+    }
+
+    console.log(`🗑️ Imagen de procedimiento eliminada: ${req.params.id}`);
+    res.json({ ok: true, mensaje: 'Imagen de procedimiento eliminada correctamente' });
+  } catch (error) {
+    console.error('❌ Error al borrar imagen de procedimiento:', error);
+    res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
+// =====================================================
+// RUTAS: DOCUMENTOS
+// =====================================================
 app.get('/api/documentos', async (req, res) => {
   try {
     const documentos = await Documento.find().sort({ fecha: -1 });
@@ -210,7 +287,6 @@ app.get('/api/documentos', async (req, res) => {
     }));
 
     res.json(mapeados);
-
   } catch (error) {
     console.error('❌ Error al obtener documentos:', error);
     res.status(500).json({ error: error.message });
@@ -234,7 +310,6 @@ app.post('/subir-documento', upload.single('documento'), async (req, res) => {
     await nuevoDocumento.save();
     console.log('✅ Documento guardado correctamente');
     res.json({ ok: true, mensaje: 'Documento subido correctamente' });
-
   } catch (err) {
     console.error('❌ Error al subir documento:', err);
     res.status(500).json({ ok: false, error: err.message });
@@ -251,13 +326,15 @@ app.delete('/api/documentos/:id', async (req, res) => {
 
     console.log(`🗑️ Documento eliminado: ${req.params.id}`);
     res.json({ ok: true, mensaje: 'Documento eliminado correctamente' });
-
   } catch (error) {
     console.error('❌ Error al borrar documento:', error);
     res.status(500).json({ ok: false, error: error.message });
   }
 });
 
+// =====================================================
+// RUTA PRINCIPAL
+// =====================================================
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
