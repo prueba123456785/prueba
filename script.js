@@ -3,6 +3,9 @@
 const API_URL = '/api';
 let tempChart = null;
 
+// =====================================================
+// PARTÍCULAS
+// =====================================================
 function initParticles() {
   const container = document.getElementById('particles');
   if (!container) return;
@@ -22,6 +25,9 @@ function initParticles() {
   }
 }
 
+// =====================================================
+// NAVBAR
+// =====================================================
 function initNavbar() {
   const navbar    = document.getElementById('navbar');
   const hamburger = document.getElementById('hamburger');
@@ -57,6 +63,9 @@ function initNavbar() {
   }
 }
 
+// =====================================================
+// REVEAL / COUNTERS / TILT
+// =====================================================
 function initReveal() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
@@ -101,6 +110,9 @@ function initCardTilt() {
   });
 }
 
+// =====================================================
+// TEMPERATURA
+// =====================================================
 async function obtenerTemperaturaActual() {
   try {
     const response = await fetch(`${API_URL}/temperatura/actual`);
@@ -290,6 +302,9 @@ function crearGraficoTemperaturaFallback() {
   });
 }
 
+// =====================================================
+// CARRUSEL GALERÍA
+// =====================================================
 let currentSlideIndex = 0;
 let carouselTimer = null;
 
@@ -314,7 +329,7 @@ async function inicializarCarrusel() {
         `;
         track.appendChild(li);
       });
-      iniciarLogicaCarrusel(fotos.length);
+      iniciarLogicaCarrusel('carouselTrack', 'carouselPrev', 'carouselNext', fotos.length);
     } else {
       track.innerHTML = '<li class="carousel-slide"><div class="slide-placeholder">No hay fotos en la galería todavía.</div></li>';
     }
@@ -325,33 +340,107 @@ async function inicializarCarrusel() {
   }
 }
 
-function iniciarLogicaCarrusel(totalSlides) {
-  const track   = document.getElementById('carouselTrack');
-  const btnPrev = document.getElementById('carouselPrev');
-  const btnNext = document.getElementById('carouselNext');
+function iniciarLogicaCarrusel(trackId, prevId, nextId, totalSlides) {
+  const track   = document.getElementById(trackId);
+  const btnPrev = document.getElementById(prevId);
+  const btnNext = document.getElementById(nextId);
   if (!track || totalSlides <= 1) return;
 
+  let currentIdx = 0;
+
   const moverA = (index) => {
-    currentSlideIndex = ((index % totalSlides) + totalSlides) % totalSlides;
-    track.style.transform = `translateX(${-(currentSlideIndex * 100)}%)`;
+    currentIdx = ((index % totalSlides) + totalSlides) % totalSlides;
+    track.style.transform = `translateX(${-(currentIdx * 100)}%)`;
   };
 
-  const autoPlay = () => moverA(currentSlideIndex + 1);
+  let timer = setInterval(() => moverA(currentIdx + 1), 5000);
 
-  btnPrev.addEventListener('click', () => {
-    clearInterval(carouselTimer);
-    moverA(currentSlideIndex - 1);
-    carouselTimer = setInterval(autoPlay, 5000);
+  if (btnPrev) btnPrev.addEventListener('click', () => {
+    clearInterval(timer);
+    moverA(currentIdx - 1);
+    timer = setInterval(() => moverA(currentIdx + 1), 5000);
   });
-  btnNext.addEventListener('click', () => {
-    clearInterval(carouselTimer);
-    moverA(currentSlideIndex + 1);
-    carouselTimer = setInterval(autoPlay, 5000);
+  if (btnNext) btnNext.addEventListener('click', () => {
+    clearInterval(timer);
+    moverA(currentIdx + 1);
+    timer = setInterval(() => moverA(currentIdx + 1), 5000);
   });
-
-  carouselTimer = setInterval(autoPlay, 5000);
 }
 
+// =====================================================
+// CARRUSEL PROCEDIMIENTO
+// =====================================================
+async function inicializarCarruselProcedimiento() {
+  try {
+    const response = await fetch(`${API_URL}/procedimiento`);
+    const fotos = await response.json();
+    const track = document.getElementById('procCarouselTrack');
+    const thumbsContainer = document.getElementById('procThumbnails');
+    if (!track) return;
+
+    if (fotos && fotos.length > 0) {
+      track.innerHTML = '';
+      if (thumbsContainer) thumbsContainer.innerHTML = '';
+
+      fotos.forEach((foto, i) => {
+        // Slide principal
+        const li = document.createElement('li');
+        li.className = 'carousel-slide';
+        li.innerHTML = `
+          <img src="${foto.url || 'https://via.placeholder.com/800x450'}" alt="${foto.titulo || 'Paso ' + (i+1)}" class="carousel-image">
+          <div class="slide-caption">
+            <span class="proc-step-badge">Paso ${i + 1}</span>
+            <h4>${foto.titulo || 'Sin título'}</h4>
+            <p>${foto.descripcion || ''}</p>
+          </div>
+        `;
+        track.appendChild(li);
+
+        // Miniatura
+        if (thumbsContainer) {
+          const thumb = document.createElement('div');
+          thumb.className = 'proc-thumb';
+          thumb.dataset.index = i;
+          thumb.innerHTML = `
+            <img src="${foto.url}" alt="${foto.titulo || 'Paso ' + (i+1)}">
+            <span>Paso ${i + 1}</span>
+          `;
+          thumb.addEventListener('click', () => {
+            irAPasoProc(i, fotos.length);
+            document.querySelectorAll('.proc-thumb').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+          });
+          if (i === 0) thumb.classList.add('active');
+          thumbsContainer.appendChild(thumb);
+        }
+      });
+
+      iniciarLogicaCarrusel('procCarouselTrack', 'procCarouselPrev', 'procCarouselNext', fotos.length);
+    } else {
+      track.innerHTML = `
+        <li class="carousel-slide">
+          <div class="slide-placeholder">📷 Aún no hay imágenes del procedimiento. Agrégalas desde el panel de administración.</div>
+        </li>
+      `;
+      if (thumbsContainer) thumbsContainer.innerHTML = '';
+    }
+  } catch (error) {
+    console.error('Error al cargar procedimiento:', error);
+    const track = document.getElementById('procCarouselTrack');
+    if (track) track.innerHTML = '<li class="carousel-slide"><div class="slide-placeholder">⚠️ Error de conexión.</div></li>';
+  }
+}
+
+function irAPasoProc(index, total) {
+  const track = document.getElementById('procCarouselTrack');
+  if (!track) return;
+  const idx = ((index % total) + total) % total;
+  track.style.transform = `translateX(${-(idx * 100)}%)`;
+}
+
+// =====================================================
+// DOCUMENTOS PÚBLICOS
+// =====================================================
 async function cargarDocumentosPublicos() {
   const contenedor = document.getElementById('listaDocumentosPublicos');
   if (!contenedor) return;
@@ -391,6 +480,9 @@ async function cargarDocumentosPublicos() {
   }
 }
 
+// =====================================================
+// API STATUS
+// =====================================================
 function actualizarEstadoAPI(conectado) {
   const apiStatus = document.getElementById('apiStatus');
   if (!apiStatus) return;
@@ -405,6 +497,9 @@ function actualizarEstadoAPI(conectado) {
   }
 }
 
+// =====================================================
+// CONTACTO
+// =====================================================
 function initContacto() {
   const btn = document.getElementById('btnEnviarContacto');
   if (!btn) return;
@@ -424,6 +519,9 @@ function initContacto() {
   });
 }
 
+// =====================================================
+// ADMIN PANEL
+// =====================================================
 function initAdmin() {
   const btnFloat    = document.getElementById('btnAdminFloat');
   const modal       = document.getElementById('modalAdmin');
@@ -449,6 +547,7 @@ function initAdmin() {
         passInput.value = '';
         panel.classList.add('active');
         document.body.style.overflow = 'hidden';
+        // Cargar tab activo por defecto (galería)
         cargarFotosAdmin();
         cargarDocsAdmin();
       } else {
@@ -462,7 +561,7 @@ function initAdmin() {
   if (passInput) {
     passInput.addEventListener('keydown', e => { if (e.key === 'Enter') btnVerif.click(); });
   }
-   
+
   if (btnCerrarPn) {
     btnCerrarPn.addEventListener('click', () => {
       panel.classList.remove('active');
@@ -470,8 +569,33 @@ function initAdmin() {
     });
   }
 
+  // ===== TABS del panel admin =====
+  document.querySelectorAll('.adm-menu').forEach(menu => {
+    menu.addEventListener('click', () => {
+      const tab = menu.dataset.tab;
+
+      // Activar menú
+      document.querySelectorAll('.adm-menu').forEach(m => m.classList.remove('active'));
+      menu.classList.add('active');
+
+      // Mostrar tab correspondiente
+      document.querySelectorAll('.adm-tab-content').forEach(t => t.style.display = 'none');
+      const tabEl = document.getElementById('tab-' + tab);
+      if (tabEl) tabEl.style.display = 'contents';
+
+      // Cargar datos del tab si aplica
+      if (tab === 'galeria')       cargarFotosAdmin();
+      if (tab === 'procedimiento') cargarProcAdmin();
+      if (tab === 'cronogramas')   cargarDocsAdmin();
+    });
+  });
+
+  // Botones de subida
   const btnSubirImg = document.getElementById('btnSubirImagen');
   if (btnSubirImg) btnSubirImg.addEventListener('click', subirImagen);
+
+  const btnSubirProc = document.getElementById('btnSubirProc');
+  if (btnSubirProc) btnSubirProc.addEventListener('click', subirImagenProcedimiento);
 
   const btnSubirDoc = document.getElementById('btnSubirDocumento');
   if (btnSubirDoc) btnSubirDoc.addEventListener('click', subirCronogramaArchivo);
@@ -480,6 +604,9 @@ function initAdmin() {
   if (btnGuardarInfo) btnGuardarInfo.addEventListener('click', () => alert('Función de información próximamente.'));
 }
 
+// =====================================================
+// ADMIN: GALERÍA
+// =====================================================
 async function cargarFotosAdmin() {
   const contenedor = document.getElementById('listaFotosAdmin');
   if (!contenedor) return;
@@ -545,7 +672,87 @@ async function borrarImagen(id) {
   }
 }
 
-/* ---- ADMIN: DOCUMENTOS ---- */
+// =====================================================
+// ADMIN: PROCEDIMIENTO
+// =====================================================
+async function cargarProcAdmin() {
+  const contenedor = document.getElementById('listaProcAdmin');
+  if (!contenedor) return;
+  contenedor.innerHTML = '<p>Cargando imágenes del procedimiento...</p>';
+  try {
+    const res   = await fetch('/api/procedimiento');
+    const fotos = await res.json();
+    if (fotos.length === 0) {
+      contenedor.innerHTML = '<p style="color:#6b7280;font-style:italic;">No hay imágenes del procedimiento aún. Sube la primera.</p>';
+      return;
+    }
+    contenedor.innerHTML = '';
+    fotos.forEach((foto, i) => {
+      const div = document.createElement('div');
+      div.className = 'admin-gallery-item';
+      div.innerHTML = `
+        <img src="${foto.url}" alt="${foto.titulo || 'Paso ' + (i+1)}">
+        <p><strong>Paso ${i + 1}:</strong> ${foto.titulo || 'Sin título'}</p>
+        <button class="btn-delete-img" data-id="${foto._id}" title="Eliminar imagen"><i class="fas fa-trash"></i></button>
+      `;
+      div.querySelector('.btn-delete-img').addEventListener('click', () => borrarImagenProcedimiento(foto._id));
+      contenedor.appendChild(div);
+    });
+  } catch (error) {
+    contenedor.innerHTML = '<p style="color:#ef4444;">Error al cargar las imágenes del procedimiento.</p>';
+  }
+}
+
+async function subirImagenProcedimiento() {
+  const titulo      = document.getElementById('tituloProc').value.trim();
+  const descripcion = document.getElementById('descripcionProc').value.trim();
+  const archivo     = document.getElementById('archivoProc').files[0];
+
+  if (!titulo) { alert('Escribe el título/nombre del paso primero.'); return; }
+  if (!archivo) { alert('Selecciona una imagen primero.'); return; }
+
+  const formData = new FormData();
+  formData.append('titulo', titulo);
+  formData.append('descripcion', descripcion);
+  formData.append('imagen', archivo);
+
+  try {
+    const res  = await fetch('/subir-procedimiento', { method: 'POST', body: formData });
+    const data = await res.json();
+    if (data.ok) {
+      alert('Imagen del procedimiento subida correctamente.');
+      document.getElementById('tituloProc').value = '';
+      document.getElementById('descripcionProc').value = '';
+      document.getElementById('archivoProc').value = '';
+      cargarProcAdmin();
+      inicializarCarruselProcedimiento();
+    } else {
+      alert('Error al subir: ' + data.error);
+    }
+  } catch (err) {
+    alert('Error de conexión con el servidor.');
+  }
+}
+
+async function borrarImagenProcedimiento(id) {
+  if (!confirm('¿Eliminar esta imagen del procedimiento permanentemente?')) return;
+  try {
+    const res = await fetch(`/api/procedimiento/${id}`, { method: 'DELETE' });
+    if (res.ok) {
+      alert('Imagen eliminada.');
+      cargarProcAdmin();
+      inicializarCarruselProcedimiento();
+    } else {
+      alert('Error al eliminar la imagen.');
+    }
+  } catch {
+    alert('Error de conexión.');
+  }
+}
+
+// =====================================================
+// ADMIN: DOCUMENTOS
+// =====================================================
 async function cargarDocsAdmin() {
   const contenedor = document.getElementById('listaDocsAdmin');
   if (!contenedor) return;
@@ -620,6 +827,9 @@ async function borrarDocumento(id) {
   }
 }
 
+// =====================================================
+// INICIALIZACIÓN
+// =====================================================
 async function inicializarDatos() {
   console.log('Iniciando Huerto Escolar La Lavanda...');
   await Promise.allSettled([
@@ -629,6 +839,7 @@ async function inicializarDatos() {
     obtenerEstadoFloracion(),
     obtenerHistorialTemperatura(7),
     inicializarCarrusel(),
+    inicializarCarruselProcedimiento(),
     cargarDocumentosPublicos(),
   ]);
   console.log('Datos cargados.');
