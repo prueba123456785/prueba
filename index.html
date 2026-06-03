@@ -12,11 +12,90 @@
 
 <div class="particles" id="particles"></div>
 
+<!-- Estilos extra solo para el nuevo nav-logo -->
+<style>
+  .nav-logo {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0px !important;
+    text-decoration: none;
+  }
+ 
+  .nav-logo-top-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #7B68A6;
+    text-decoration: underline;
+    text-decoration-color: #ff69b4;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    padding-left: 2px;
+    line-height: 1.4;
+  }
+ 
+  .nav-logo-bottom-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+ 
+  .nav-logo-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #d0c8e6;
+    box-shadow: 0 2px 8px rgba(155,136,198,0.25);
+    flex-shrink: 0;
+  }
+ 
+  .nav-logo-text-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+ 
+  .nav-logo-leaf {
+    font-size: 14px;
+    line-height: 1;
+  }
+ 
+  .nav-logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #3C3489;
+    line-height: 1.2;
+  }
+</style>
+</head>
+<body>
+ 
+<div class="particles" id="particles"></div>
+
 <!-- ===== NAVBAR ===== -->
 <nav class="navbar" id="navbar">
+ 
+  <!-- LOGO MODIFICADO -->
   <div class="nav-logo">
-    <span class="logo-leaf">🌿</span>
-    <span class="logo-text">Huerto Escolar</span>
+    <!-- Texto de arriba subrayado en rosa -->
+    <span class="nav-logo-top-label"></span>
+    <!-- Fila de abajo: imagen circular + nombre -->
+    <div class="nav-logo-bottom-row">
+      <img
+        src="logo_paec.png"
+        alt="Logo PAEC Jardín Polinizador"
+        class="nav-logo-img"
+      >
+      <div class="nav-logo-text-wrap">
+        <span class="nav-logo-leaf"></span>
+        <span class="nav-logo-text">Huerto Escolar</span>
+      </div>
+    </div>
   </div>
   <ul class="nav-links">
     <li><a href="#inicio">Inicio</a></li>
@@ -315,7 +394,7 @@
       </div>
       <div class="team-card reveal" style="--delay:0.1s">
         <div class="team-avatar" style="--color:#7B68A6">JA</div>
-        <h4>Jesus Alonso Tapia Muñoz</h4>
+        <h4>Jesus Alonso Tapia+ Muñoz</h4>
         <span>Estudiante del Cbtis75</span>
         <p>Encargado de monitoreo técnico.</p>
       </div>
