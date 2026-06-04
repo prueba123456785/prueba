@@ -457,20 +457,34 @@ async function cargarDocumentosPublicos() {
     docs.forEach(doc => {
       const a = document.createElement('a');
       a.className = 'doc-card';
-      a.href = doc.url;
+      // Usamos la ruta del servidor que sirve el archivo con Content-Type correcto
+      // Los PDFs se abren en el navegador, los demás se descargan
+      a.href   = `/ver-documento/${doc._id}`;
       a.target = '_blank';
+      a.rel    = 'noopener noreferrer';
 
-      let icon = 'fa-file-alt';
-      const ext = (doc.url || '').toLowerCase();
-      if (ext.includes('.pdf'))  icon = 'fa-file-pdf';
-      else if (ext.includes('.xls') || ext.includes('.xlsx')) icon = 'fa-file-excel';
-      else if (ext.includes('.doc') || ext.includes('.docx')) icon = 'fa-file-word';
+      // Detectar ícono por tipoArchivo (MIME) o por nombre de archivo
+      let icon  = 'fa-file-alt';
+      let label = 'Abrir archivo';
+      const mime = (doc.tipoArchivo || '').toLowerCase();
+      const name = (doc.nombreArchivo || '').toLowerCase();
+
+      if (mime === 'application/pdf' || name.endsWith('.pdf')) {
+        icon = 'fa-file-pdf';
+        label = 'Abrir PDF';
+      } else if (mime.includes('excel') || mime.includes('spreadsheet') || name.endsWith('.xls') || name.endsWith('.xlsx')) {
+        icon = 'fa-file-excel';
+        label = 'Descargar Excel';
+      } else if (mime.includes('word') || mime.includes('document') || name.endsWith('.doc') || name.endsWith('.docx')) {
+        icon = 'fa-file-word';
+        label = 'Descargar Word';
+      }
 
       a.innerHTML = `
         <i class="fas ${icon} doc-icon"></i>
         <div class="doc-info">
           <h4>${doc.titulo || 'Documento sin título'}</h4>
-          <span>Descargar archivo</span>
+          <span>${label}</span>
         </div>
       `;
       contenedor.appendChild(a);
@@ -765,16 +779,33 @@ async function cargarDocsAdmin() {
     docs.forEach(doc => {
       const div = document.createElement('div');
       div.className = 'doc-card';
-      let icon = 'fa-file-alt';
-      const ext = (doc.url || '').toLowerCase();
-      if (ext.includes('.pdf'))  icon = 'fa-file-pdf';
-      else if (ext.includes('.xls') || ext.includes('.xlsx')) icon = 'fa-file-excel';
-      else if (ext.includes('.doc') || ext.includes('.docx')) icon = 'fa-file-word';
+
+      let icon  = 'fa-file-alt';
+      let label = 'Abrir archivo';
+      const mime = (doc.tipoArchivo || '').toLowerCase();
+      const name = (doc.nombreArchivo || '').toLowerCase();
+
+      if (mime === 'application/pdf' || name.endsWith('.pdf')) {
+        icon = 'fa-file-pdf';
+        label = 'Abrir PDF';
+      } else if (mime.includes('excel') || mime.includes('spreadsheet') || name.endsWith('.xls') || name.endsWith('.xlsx')) {
+        icon = 'fa-file-excel';
+        label = 'Descargar Excel';
+      } else if (mime.includes('word') || mime.includes('document') || name.endsWith('.doc') || name.endsWith('.docx')) {
+        icon = 'fa-file-word';
+        label = 'Descargar Word';
+      }
+
+      // Ruta limpia que sirve el archivo con Content-Type correcto
+      const urlVer = `/ver-documento/${doc._id}`;
+
       div.innerHTML = `
         <i class="fas ${icon} doc-icon"></i>
         <div class="doc-info" style="flex:1;">
           <h4>${doc.titulo || 'Sin título'}</h4>
-          <a href="${doc.url}" target="_blank" style="font-size:0.85rem;color:#7B68A6;text-decoration:underline;">Ver archivo</a>
+          <p style="font-size:0.78rem;color:#9ca3af;margin:2px 0 4px;">${doc.nombreArchivo || ''}</p>
+          <a href="${urlVer}" target="_blank" rel="noopener noreferrer"
+             style="font-size:0.85rem;color:#7B68A6;text-decoration:underline;">${label}</a>
         </div>
         <button class="btn-delete-img" title="Eliminar documento" style="position:static;margin-left:auto;flex-shrink:0;">
           <i class="fas fa-trash"></i>
