@@ -59,10 +59,10 @@ const documentoSchema = new mongoose.Schema({
 
 const Documento = mongoose.model('Documento', documentoSchema);
 
-// Multer — límite 25 MB para permitir PDFs
+// Multer — límite 50 MB para permitir PDFs
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 25 * 1024 * 1024 }
+  limits: { fileSize: 50 * 1024 * 1024 }  // 50 MB para tener margen
 });
 
 // =====================================================
