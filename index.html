@@ -63,7 +63,6 @@
   }
 </style>
 
-<!-- ===== NAVBAR ===== -->
 <nav class="navbar" id="navbar">
   <div class="nav-logo">
     <span class="nav-logo-top-label"></span>
@@ -79,6 +78,7 @@
     <li><a href="#inicio">Inicio</a></li>
     <li><a href="#galeria">Galería</a></li>
     <li><a href="#procedimiento">Procedimiento</a></li>
+    <li><a href="#diagrama">Diagrama</a></li>
     <li><a href="#problema">Por Qué</a></li>
     <li><a href="#solucion">Cultivo</a></li>
     <li><a href="#impacto">Monitoreo</a></li>
@@ -95,7 +95,6 @@
   </div>
 </nav>
 
-<!-- ===== HERO ===== -->
 <section class="hero" id="inicio">
   <div class="hero-bg">
     <div class="hero-orb orb1"></div>
@@ -149,7 +148,6 @@
   </div>
 </section>
 
-<!-- ===== GALERÍA ===== -->
 <section class="section galeria" id="galeria">
   <div class="section-inner">
     <div class="section-tag reveal">Nuestras plantas</div>
@@ -169,14 +167,12 @@
   </div>
 </section>
 
-<!-- ===== PROCEDIMIENTO ===== -->
 <section class="section procedimiento" id="procedimiento">
   <div class="section-inner">
     <div class="section-tag reveal">Paso a paso</div>
     <h2 class="section-title reveal">Procedimiento del <em>cultivo</em></h2>
     <p class="section-sub reveal">Documentamos cada etapa del proceso con fotografías tomadas por nuestro equipo durante el desarrollo del huerto.</p>
 
-    <!-- Carrusel de procedimiento -->
     <div class="proc-carousel-wrap reveal" id="procCarouselWrap">
       <button class="carousel-btn prev" id="procCarouselPrev">&#10094;</button>
       <div class="carousel-track-wrapper">
@@ -189,12 +185,35 @@
       <button class="carousel-btn next" id="procCarouselNext">&#10095;</button>
     </div>
 
-    <!-- Miniaturas del procedimiento -->
     <div class="proc-thumbnails" id="procThumbnails"></div>
   </div>
 </section>
 
-<!-- ===== POR QUÉ ===== -->
+<section class="section diagrama" id="diagrama">
+  <div class="section-inner">
+    <div class="section-tag reveal">Arquitectura del Proyecto</div>
+    <h2 class="section-title reveal">Diagrama de <em>Procesos</em></h2>
+    <p class="section-sub reveal">Visualización interactiva de la toma de decisiones automatizada y el monitoreo IoT de nuestro huerto.</p>
+    
+    <div class="mermaid" style="text-align: center; margin-top: 30px; background: #ffffff; padding: 25px; border-radius: 16px; box-shadow: 0 4px 20px rgba(155,136,198,0.15); overflow-x: auto;">
+      graph TD
+        A[Lectura de Sensores IoT] --> B{¿Humedad < 40%?}
+        B -- Sí --> C[Enviar Alerta a la API]
+        C --> D[Activar Riego Automatizado]
+        B -- No --> E[Mantener Sistema en Espera]
+        D --> F[Registrar Evento en Base de Datos]
+        E --> F
+        F --> G{¿Temperatura > 25°C?}
+        G -- Sí --> H[Notificar Recomendación de Sombra]
+        G -- No --> I[Condiciones Climáticas Óptimas]
+        
+        classDef default fill:#f3f0ff,stroke:#9B88C6,stroke-width:2px,color:#3C3489;
+        classDef decision fill:#D0C8E6,stroke:#7B68A6,stroke-width:2px,color:#3C3489;
+        class B,G decision;
+    </div>
+  </div>
+</section>
+
 <section class="section problema" id="problema">
   <div class="section-inner">
     <div class="section-tag reveal">El desafío</div>
@@ -229,7 +248,6 @@
   </div>
 </section>
 
-<!-- ===== PROCESO ===== -->
 <section class="section solucion" id="solucion">
   <div class="section-inner">
     <div class="section-tag reveal">Nuestro proceso</div>
@@ -272,7 +290,6 @@
   </div>
 </section>
 
-<!-- ===== MONITOREO ===== -->
 <section class="section impacto" id="impacto">
   <div class="section-inner">
     <div class="section-tag reveal">Datos en tiempo real</div>
@@ -338,7 +355,6 @@
   </div>
 </section>
 
-<!-- ===== DOCUMENTOS ===== -->
 <section class="section documentos" id="documentos">
   <div class="section-inner">
     <div class="section-tag reveal">Recursos y Archivos</div>
@@ -350,7 +366,6 @@
   </div>
 </section>
 
-<!-- ===== MINIJUEGO HAPPY BEE ===== -->
 <section class="section" id="minijuego" style="background: linear-gradient(135deg, #f3f0ff 0%, #fce8f8 100%); padding: 60px 0;">
   <div class="section-inner">
     <div class="section-tag reveal">Minijuego</div>
@@ -375,7 +390,6 @@
   </div>
 </section>
 
-<!-- ===== EQUIPO ===== -->
 <section class="section equipo" id="equipo">
   <div class="section-inner">
     <div class="section-tag reveal">Las personas detrás</div>
@@ -409,7 +423,6 @@
   </div>
 </section>
 
-<!-- ===== CONTACTO ===== -->
 <section class="section contacto" id="contacto">
   <div class="cta-blob blob1"></div>
   <div class="cta-blob blob2"></div>
@@ -430,7 +443,6 @@
   </div>
 </section>
 
-<!-- ===== FOOTER ===== -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
@@ -470,7 +482,6 @@
   </div>
 </footer>
 
-<!-- ===== MODAL LOGIN ADMIN ===== -->
 <div id="modalAdmin" class="modal-login" role="dialog" aria-modal="true" aria-label="Acceso administrador">
   <div class="modal-content">
     <button class="close-btn" id="btnCerrarModal" aria-label="Cerrar">&times;</button>
@@ -481,7 +492,6 @@
   </div>
 </div>
 
-<!-- ===== PANEL ADMIN ===== -->
 <div id="panelAdminCompleto" class="adm-wrapper" role="main">
   <aside class="adm-sidebar">
     <div class="adm-brand"><i class="fas fa-leaf"></i> Admin Lavanda</div>
@@ -503,7 +513,6 @@
 
     <div class="adm-grid">
 
-      <!-- ===== TAB: GALERÍA ===== -->
       <div class="adm-tab-content" id="tab-galeria">
         <div class="adm-card">
           <h2><i class="fas fa-camera"></i> Subir Imagen a Galería</h2>
@@ -520,7 +529,6 @@
         </div>
       </div>
 
-      <!-- ===== TAB: PROCEDIMIENTO ===== -->
       <div class="adm-tab-content" id="tab-procedimiento" style="display:none;">
         <div class="adm-card">
           <h2><i class="fas fa-camera-retro"></i> Subir Imagen de Procedimiento</h2>
@@ -543,7 +551,17 @@
         </div>
       </div>
 
-      <!-- ===== TAB: DOCUMENTOS ===== -->
+      <div class="adm-tab-content" id="tab-diagramas" style="display:none;">
+        <div class="adm-card" style="grid-column: 1 / -1;">
+          <h2><i class="fas fa-project-diagram"></i> Panel de Control del Diagrama</h2>
+          <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 15px;">Previsualización de la lógica del sistema cargada en producción:</p>
+          <div class="mermaid" style="background:#fff; padding:15px; border-radius:8px; border:1px solid #e5e7eb;">
+            graph LR
+              Sensors[Sensores IoT] --> API[Tu API Gateway] --> DB[(Base de Datos)]
+          </div>
+        </div>
+      </div>
+
       <div class="adm-tab-content" id="tab-cronogramas" style="display:none;">
         <div class="adm-card">
           <h2><i class="fas fa-file-upload"></i> Subir Documento</h2>
@@ -564,7 +582,6 @@
         </div>
       </div>
 
-      <!-- ===== TAB: INFO ===== -->
       <div class="adm-tab-content" id="tab-info" style="display:none;">
         <div class="adm-card">
           <h2><i class="fas fa-file-alt"></i> Actualizar Información</h2>
@@ -574,12 +591,19 @@
         </div>
       </div>
 
-    </div><!-- /adm-grid -->
-  </main>
+    </div></main>
 </div>
 
-<!-- ===== SCRIPTS ===== -->
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ 
+    startOnLoad: true, 
+    theme: 'default',
+    securityLevel: 'loose'
+  });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
 <script>
 (function(){
   const canvas = document.getElementById('gameCanvas');
@@ -813,6 +837,7 @@
   initBee(); gameLoop();
 })();
 </script>
+
 <script src="script.js"></script>
 </body>
 </html>
