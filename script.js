@@ -4,7 +4,7 @@ const API_URL = '/api';
 let tempChart = null;
 
 // =====================================================
-// PARTÍCULAS
+// PARTICULAS
 // =====================================================
 function initParticles() {
   const container = document.getElementById('particles');
@@ -127,6 +127,8 @@ async function obtenerTemperaturaActual() {
   }
 }
 
+// FIX 1: usa innerHTML para que los iconos unicode se rendericen bien
+// y los estados coinciden con los que manda el server (sin acento)
 function actualizarWidgetTemperatura(data) {
   const tempValue          = document.getElementById('tempValue');
   const tempLabel          = document.getElementById('tempLabel');
@@ -139,10 +141,13 @@ function actualizarWidgetTemperatura(data) {
   if (tempRecommendation) tempRecommendation.textContent = data.mensaje || '';
 
   const iconos = {
-    'ÓPTIMO': '🟣', 'CÁLIDO': '🟠',
-    'EXTREMO CALOR': '🔴', 'FRESCO': '🔵', 'HELADA': '❄️'
+    'OPTIMO':       '&#128994;',
+    'CALIDO':       '&#128992;',
+    'EXTREMO CALOR':'&#128308;',
+    'FRESCO':       '&#128309;',
+    'HELADA':       '&#10052;'
   };
-  if (tempIcon) tempIcon.textContent = iconos[data.estado] || '🌡️';
+  if (tempIcon) tempIcon.innerHTML = iconos[data.estado] || '&#127777;';
 
   if (tempWidget) {
     tempWidget.className = 'temp-widget reveal visible';
@@ -157,8 +162,8 @@ function mostrarTemperaturaFallback() {
   const tempLabel          = document.getElementById('tempLabel');
   const tempRecommendation = document.getElementById('tempRecommendation');
   if (tempValue) tempValue.textContent = '--°C';
-  if (tempLabel) tempLabel.textContent = 'Sin conexión';
-  if (tempRecommendation) tempRecommendation.textContent = 'Sin conexión con el servidor.';
+  if (tempLabel) tempLabel.textContent = 'Sin conexion';
+  if (tempRecommendation) tempRecommendation.textContent = 'Sin conexion con el servidor.';
 }
 
 async function obtenerEstadisticas() {
@@ -176,7 +181,7 @@ async function obtenerEstadisticas() {
     }
     return data;
   } catch (error) {
-    console.error('Error al obtener estadísticas:', error);
+    console.error('Error al obtener estadisticas:', error);
   }
 }
 
@@ -195,7 +200,7 @@ async function obtenerRecomendacionesRiego() {
   } catch (error) {
     console.error('Error al obtener recomendaciones:', error);
     const riegoInfo = document.getElementById('riegoInfo');
-    if (riegoInfo) riegoInfo.innerHTML = '<strong>Sin datos</strong><span>Sin información disponible</span>';
+    if (riegoInfo) riegoInfo.innerHTML = '<strong>Sin datos</strong><span>Sin informacion disponible</span>';
   }
 }
 
@@ -212,9 +217,9 @@ async function obtenerEstadoFloracion() {
     }
     return data;
   } catch (error) {
-    console.error('Error al obtener floración:', error);
+    console.error('Error al obtener floracion:', error);
     const floracionInfo = document.getElementById('floracionInfo');
-    if (floracionInfo) floracionInfo.innerHTML = '<strong>Sin datos</strong><span>Sin información disponible</span>';
+    if (floracionInfo) floracionInfo.innerHTML = '<strong>Sin datos</strong><span>Sin informacion disponible</span>';
   }
 }
 
@@ -303,7 +308,7 @@ function crearGraficoTemperaturaFallback() {
 }
 
 // =====================================================
-// CARRUSEL GALERÍA
+// CARRUSEL GALERIA
 // =====================================================
 async function inicializarCarrusel() {
   try {
@@ -320,7 +325,7 @@ async function inicializarCarrusel() {
         li.innerHTML = `
           <img src="${foto.url || 'https://via.placeholder.com/800x450'}" alt="${foto.titulo || 'Foto'}" class="carousel-image">
           <div class="slide-caption">
-            <h4>${foto.titulo || 'Sin título'}</h4>
+            <h4>${foto.titulo || 'Sin titulo'}</h4>
             <p>${foto.descripcion || ''}</p>
           </div>
         `;
@@ -328,12 +333,12 @@ async function inicializarCarrusel() {
       });
       iniciarLogicaCarrusel('carouselTrack', 'carouselPrev', 'carouselNext', fotos.length);
     } else {
-      track.innerHTML = '<li class="carousel-slide"><div class="slide-placeholder">No hay fotos en la galería todavía.</div></li>';
+      track.innerHTML = '<li class="carousel-slide"><div class="slide-placeholder">No hay fotos en la galeria todavia.</div></li>';
     }
   } catch (error) {
     console.error('Error al cargar carrusel:', error);
     const track = document.getElementById('carouselTrack');
-    if (track) track.innerHTML = '<li class="carousel-slide"><div class="slide-placeholder">⚠️ Error de conexión con la galería.</div></li>';
+    if (track) track.innerHTML = '<li class="carousel-slide"><div class="slide-placeholder">Error de conexion con la galeria.</div></li>';
   }
 }
 
@@ -383,10 +388,10 @@ async function inicializarCarruselProcedimiento() {
         const li = document.createElement('li');
         li.className = 'carousel-slide';
         li.innerHTML = `
-          <img src="${foto.url || 'https://via.placeholder.com/800x450'}" alt="${foto.titulo || 'Paso ' + (i+1)}" class="carousel-image">
+          <img src="${foto.url || 'https://via.placeholder.com/800x480'}" alt="${foto.titulo || 'Paso ' + (i+1)}" class="carousel-image">
           <div class="slide-caption">
             <span class="proc-step-badge">Paso ${i + 1}</span>
-            <h4>${foto.titulo || 'Sin título'}</h4>
+            <h4>${foto.titulo || 'Sin titulo'}</h4>
             <p>${foto.descripcion || ''}</p>
           </div>
         `;
@@ -414,7 +419,7 @@ async function inicializarCarruselProcedimiento() {
     } else {
       track.innerHTML = `
         <li class="carousel-slide">
-          <div class="slide-placeholder">📷 Aún no hay imágenes del procedimiento. Agrégalas desde el panel de administración.</div>
+          <div class="slide-placeholder">Aun no hay imagenes del procedimiento. Agregalas desde el panel de administracion.</div>
         </li>
       `;
       if (thumbsContainer) thumbsContainer.innerHTML = '';
@@ -422,7 +427,7 @@ async function inicializarCarruselProcedimiento() {
   } catch (error) {
     console.error('Error al cargar procedimiento:', error);
     const track = document.getElementById('procCarouselTrack');
-    if (track) track.innerHTML = '<li class="carousel-slide"><div class="slide-placeholder">⚠️ Error de conexión.</div></li>';
+    if (track) track.innerHTML = '<li class="carousel-slide"><div class="slide-placeholder">Error de conexion.</div></li>';
   }
 }
 
@@ -434,7 +439,100 @@ function irAPasoProc(index, total) {
 }
 
 // =====================================================
-// DOCUMENTOS PÚBLICOS
+// DIAGRAMA DE FLUJO INTERACTIVO
+// =====================================================
+const flowData = {
+  inicio: {
+    icon: '&#127807;',
+    title: 'Inicio del proyecto',
+    desc: 'El proyecto Huerto Escolar La Lavanda comenzo con la idea de combinar educacion ambiental, tecnologia IoT y agricultura sostenible en un espacio escolar.',
+    items: ['Planeacion del proyecto por el equipo', 'Seleccion del cultivo: lavanda', 'Gestion de recursos y materiales', 'Formacion de equipos de trabajo']
+  },
+  suelo: {
+    icon: '&#9878;',
+    title: 'Analisis del suelo',
+    desc: 'Antes de plantar, analizamos las propiedades del suelo para garantizar condiciones optimas de crecimiento para la lavanda.',
+    items: ['Medicion de pH (optimo: 6.5 - 7.5)', 'Evaluacion de drenaje y textura', 'Si pH bajo: se agrega cal agricola', 'Si pH optimo: se procede directamente']
+  },
+  preparacion: {
+    icon: '&#128247;',
+    title: 'Preparacion y compost',
+    desc: 'Con los resultados del analisis preparamos el terreno con compost organico y ajustamos las condiciones para maximizar el desarrollo de la lavanda.',
+    items: ['Mezcla con compost organico (30%)', 'Aireacion y volteo del suelo', 'Nivelacion de las camas de cultivo', 'Instalacion del sistema de riego por goteo']
+  },
+  sensores: {
+    icon: '&#128268;',
+    title: 'Instalacion de sensores IoT',
+    desc: 'Colocamos sensores de temperatura y humedad conectados a nuestra base de datos en MongoDB Atlas. Los datos se actualizan automaticamente.',
+    items: ['Sensor DHT22 de temperatura y humedad', 'Conexion WiFi via microcontrolador', 'Sincronizacion con MongoDB Atlas', 'Dashboard en tiempo real en la web']
+  },
+  plantacion: {
+    icon: '&#127807;',
+    title: 'Plantacion de lavanda',
+    desc: 'Cada equipo de estudiantes planta y adopta su seccion del huerto, registrando el progreso semanal con fotografias y datos.',
+    items: ['Variedad: Lavandula angustifolia', 'Espaciado: 40 cm entre plantas', '67 plantas en total', 'Registro fotografico semanal']
+  },
+  monitoreo: {
+    icon: '&#128200;',
+    title: 'Monitoreo semanal',
+    desc: 'Revisamos los datos de los sensores semanalmente. Si las condiciones no son optimas, ajustamos el riego y los cuidados.',
+    items: ['Temperatura optima: 15 - 25 C', 'Si condiciones incorrectas: ajuste de riego', 'Si condiciones OK: se continua normalmente', 'Registro en bitacora escolar']
+  },
+  cosecha: {
+    icon: '&#9986;',
+    title: 'Cosecha',
+    desc: 'Cuando la lavanda alcanza su punto de floracion, realizamos la cosecha con tecnicas manuales aprendidas durante el proceso.',
+    items: ['Cosecha a inicio de floracion', 'Tecnica de corte correcto', 'Secado natural en espacios ventilados', 'Clasificacion por calidad']
+  },
+  productos: {
+    icon: '&#127801;',
+    title: 'Productos y analisis final',
+    desc: 'Con la lavanda cosechada elaboramos productos artesanales para la comunidad escolar y realizamos el analisis final del proyecto.',
+    items: ['Jarabe artesanal de lavanda para cafe', 'Sachets aromaticos', 'Aceites esenciales', 'Informe final y presentacion de resultados']
+  }
+};
+
+function initFlowchart() {
+  const panel      = document.getElementById('flowDetailPanel');
+  const panelTitle = document.getElementById('flowDetailTitle');
+  const panelDesc  = document.getElementById('flowDetailDesc');
+  const panelList  = document.getElementById('flowDetailList');
+  const panelIcon  = document.getElementById('flowDetailIcon');
+  const closeBtn   = document.getElementById('flowDetailClose');
+
+  if (!panel) return;
+
+  document.querySelectorAll('.flow-node[data-step]').forEach(node => {
+    node.addEventListener('click', () => {
+      const step = node.dataset.step;
+      const data = flowData[step];
+      if (!data) return;
+
+      document.querySelectorAll('.flow-node').forEach(n => n.classList.remove('flow-active'));
+      node.classList.add('flow-active');
+
+      panelIcon.innerHTML  = data.icon;
+      panelTitle.textContent = data.title;
+      panelDesc.textContent  = data.desc;
+      panelList.innerHTML    = data.items.map(item => `<li>${item}</li>`).join('');
+      panel.classList.remove('hidden');
+
+      if (window.innerWidth < 700) {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      panel.classList.add('hidden');
+      document.querySelectorAll('.flow-node').forEach(n => n.classList.remove('flow-active'));
+    });
+  }
+}
+
+// =====================================================
+// DOCUMENTOS PUBLICOS
 // =====================================================
 async function cargarDocumentosPublicos() {
   const contenedor = document.getElementById('listaDocumentosPublicos');
@@ -445,7 +543,7 @@ async function cargarDocumentosPublicos() {
     const docs = await respuesta.json();
 
     if (docs.length === 0) {
-      contenedor.innerHTML = '<p style="color:#6b7280;font-style:italic;">No hay documentos disponibles aún.</p>';
+      contenedor.innerHTML = '<p style="color:#6b7280;font-style:italic;">No hay documentos disponibles aun.</p>';
       return;
     }
     contenedor.innerHTML = '';
@@ -462,27 +560,24 @@ async function cargarDocumentosPublicos() {
       const name = (doc.nombreArchivo || '').toLowerCase();
 
       if (mime === 'application/pdf' || name.endsWith('.pdf')) {
-        icon = 'fa-file-pdf';
-        label = 'Abrir PDF';
+        icon = 'fa-file-pdf'; label = 'Abrir PDF';
       } else if (mime.includes('excel') || mime.includes('spreadsheet') || name.endsWith('.xls') || name.endsWith('.xlsx')) {
-        icon = 'fa-file-excel';
-        label = 'Descargar Excel';
+        icon = 'fa-file-excel'; label = 'Descargar Excel';
       } else if (mime.includes('word') || mime.includes('document') || name.endsWith('.doc') || name.endsWith('.docx')) {
-        icon = 'fa-file-word';
-        label = 'Descargar Word';
+        icon = 'fa-file-word'; label = 'Descargar Word';
       }
 
       a.innerHTML = `
         <i class="fas ${icon} doc-icon"></i>
         <div class="doc-info">
-          <h4>${doc.titulo || 'Documento sin título'}</h4>
+          <h4>${doc.titulo || 'Documento sin titulo'}</h4>
           <span>${label}</span>
         </div>
       `;
       contenedor.appendChild(a);
     });
   } catch (error) {
-    contenedor.innerHTML = '<p style="color:#6b7280;">Aún no hay conexión con la base de datos.</p>';
+    contenedor.innerHTML = '<p style="color:#6b7280;">Aun no hay conexion con la base de datos.</p>';
   }
 }
 
@@ -504,61 +599,8 @@ function actualizarEstadoAPI(conectado) {
 }
 
 // =====================================================
-// CONTACTO — FORMULARIO FUNCIONAL CON API
+// NOTIFICACION VISUAL
 // =====================================================
-function initContacto() {
-  const btn = document.getElementById('btnEnviarContacto');
-  if (!btn) return;
-
-  btn.addEventListener('click', async () => {
-    const nombre  = document.getElementById('contactName').value.trim();
-    const email   = document.getElementById('contactEmail').value.trim();
-    const tipo    = document.getElementById('contactType').value;
-    const mensaje = document.getElementById('contactMessage') ? document.getElementById('contactMessage').value.trim() : '';
-
-    if (!nombre || !email) {
-      mostrarNotificacion('Por favor completa nombre y correo.', 'error');
-      return;
-    }
-
-    // Validar email básico
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      mostrarNotificacion('Por favor ingresa un correo válido.', 'error');
-      return;
-    }
-
-    btn.disabled = true;
-    btn.textContent = 'Enviando...';
-
-    try {
-      const res = await fetch('/api/comentarios', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, email, tipo, mensaje })
-      });
-      const data = await res.json();
-
-      if (data.ok) {
-        mostrarNotificacion(`¡Gracias ${nombre}! Tu mensaje fue enviado correctamente. 🌿`, 'success');
-        document.getElementById('contactName').value    = '';
-        document.getElementById('contactEmail').value   = '';
-        document.getElementById('contactType').selectedIndex = 0;
-        if (document.getElementById('contactMessage')) document.getElementById('contactMessage').value = '';
-      } else {
-        mostrarNotificacion('Error al enviar: ' + (data.error || 'Intenta de nuevo.'), 'error');
-      }
-    } catch (err) {
-      console.error(err);
-      mostrarNotificacion('Error de conexión con el servidor.', 'error');
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Enviar solicitud';
-    }
-  });
-}
-
-// Notificación visual en lugar de alert()
 function mostrarNotificacion(texto, tipo = 'success') {
   const existente = document.getElementById('toastNotif');
   if (existente) existente.remove();
@@ -580,7 +622,196 @@ function mostrarNotificacion(texto, tipo = 'success') {
   document.head.appendChild(style);
 
   document.body.appendChild(toast);
-  setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.4s'; setTimeout(() => toast.remove(), 400); }, 4000);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.4s';
+    setTimeout(() => toast.remove(), 400);
+  }, 4000);
+}
+
+// =====================================================
+// FORMULARIO OPINION
+// FIX 2: stopPropagation en inputs para que el juego
+// no consuma Espacio cuando el usuario escribe
+// =====================================================
+function initOpinionForm() {
+  let ratingSelected = 5;
+
+  const stars = document.querySelectorAll('.rating-star');
+  stars.forEach(star => {
+    star.addEventListener('mouseenter', () => {
+      const val = parseInt(star.dataset.val);
+      stars.forEach(s => {
+        s.classList.toggle('active', parseInt(s.dataset.val) <= val);
+      });
+    });
+    star.addEventListener('mouseleave', () => {
+      stars.forEach(s => {
+        s.classList.toggle('active', parseInt(s.dataset.val) <= ratingSelected);
+      });
+    });
+    star.addEventListener('click', () => {
+      ratingSelected = parseInt(star.dataset.val);
+      stars.forEach(s => {
+        s.classList.toggle('active', parseInt(s.dataset.val) <= ratingSelected);
+      });
+    });
+  });
+
+  // Marcar todas activas por defecto
+  stars.forEach(s => s.classList.add('active'));
+
+  // Evitar que el juego consuma teclas cuando el usuario escribe en los inputs
+  ['opinionNombre', 'opinionRol', 'opinionTexto'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', e => e.stopPropagation());
+  });
+
+  const btnEnviar = document.getElementById('btnEnviarOpinion');
+  if (!btnEnviar) return;
+
+  btnEnviar.addEventListener('click', async () => {
+    const nombre = document.getElementById('opinionNombre')?.value.trim() || '';
+    const rol    = document.getElementById('opinionRol')?.value.trim() || 'Usuario';
+    const texto  = document.getElementById('opinionTexto')?.value.trim() || '';
+
+    if (!nombre) { mostrarNotificacion('Escribe tu nombre para publicar.', 'error'); return; }
+    if (!texto)  { mostrarNotificacion('Escribe tu opinion antes de publicar.', 'error'); return; }
+
+    const groseriasPatron = /\b(puta|mierda|joder|cabron|puto|pendejo|chinga|verga|culo|idiota|estupido|imbecil|pinche)\b/gi;
+    if (groseriasPatron.test(texto) || groseriasPatron.test(nombre)) {
+      mostrarNotificacion('Tu opinion contiene lenguaje inapropiado. Por favor reescribela.', 'error');
+      return;
+    }
+
+    btnEnviar.disabled = true;
+    btnEnviar.textContent = 'Publicando...';
+
+    try {
+      const res = await fetch('/api/opiniones', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, rol, texto, estrellas: ratingSelected })
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        mostrarNotificacion(`Gracias ${nombre}! Tu opinion fue publicada.`, 'success');
+        document.getElementById('opinionNombre').value = '';
+        document.getElementById('opinionRol').value = '';
+        document.getElementById('opinionTexto').value = '';
+        ratingSelected = 5;
+        stars.forEach(s => s.classList.add('active'));
+        cargarOpiniones();
+      } else {
+        mostrarNotificacion('Error al publicar: ' + (data.error || 'Intenta de nuevo.'), 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      mostrarNotificacion('Error de conexion con el servidor.', 'error');
+    } finally {
+      btnEnviar.disabled = false;
+      btnEnviar.textContent = 'Publicar opinion';
+    }
+  });
+}
+
+async function cargarOpiniones() {
+  const grid = document.getElementById('testimoniosGrid');
+  if (!grid) return;
+  try {
+    const res  = await fetch('/api/opiniones');
+    const data = await res.json();
+    if (!data || data.length === 0) return;
+
+    const staticCards = Array.from(grid.querySelectorAll('.testimonial-card')).slice(0, 3);
+    grid.innerHTML = '';
+    staticCards.forEach(c => grid.appendChild(c));
+
+    data.forEach(op => {
+      const card = document.createElement('div');
+      card.className = 'testimonial-card reveal visible';
+      const starsHtml = Array.from({length: 5}, (_, i) =>
+        `<span style="color:${i < (op.estrellas || 5) ? '#FFB300' : '#d1ccdf'}">&#9733;</span>`
+      ).join('');
+      const inicial = (op.nombre || '?').charAt(0).toUpperCase();
+      card.innerHTML = `
+        <div class="testimonial-stars">${starsHtml}</div>
+        <p class="testimonial-text">${op.texto || ''}</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">${inicial}</div>
+          <div>
+            <div class="testimonial-name">${op.nombre || 'Anonimo'}</div>
+            <div class="testimonial-role">${op.rol || 'Usuario'}</div>
+            <span class="testimonial-badge">Verificado</span>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  } catch (err) {
+    console.error('Error al cargar opiniones:', err);
+  }
+}
+
+// =====================================================
+// FORMULARIO CONTACTO
+// =====================================================
+function initContacto() {
+  const btn = document.getElementById('btnEnviarContacto');
+  if (!btn) return;
+
+  // Evitar que el juego consuma teclas en los inputs de contacto
+  ['contactName', 'contactEmail', 'contactMessage'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', e => e.stopPropagation());
+  });
+
+  btn.addEventListener('click', async () => {
+    const nombre  = document.getElementById('contactName').value.trim();
+    const email   = document.getElementById('contactEmail').value.trim();
+    const tipo    = document.getElementById('contactType').value;
+    const mensaje = document.getElementById('contactMessage') ? document.getElementById('contactMessage').value.trim() : '';
+
+    if (!nombre || !email) {
+      mostrarNotificacion('Por favor completa nombre y correo.', 'error');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      mostrarNotificacion('Por favor ingresa un correo valido.', 'error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    try {
+      const res = await fetch('/api/comentarios', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, email, tipo, mensaje })
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        mostrarNotificacion(`Gracias ${nombre}! Tu mensaje fue enviado correctamente.`, 'success');
+        document.getElementById('contactName').value    = '';
+        document.getElementById('contactEmail').value   = '';
+        document.getElementById('contactType').selectedIndex = 0;
+        if (document.getElementById('contactMessage')) document.getElementById('contactMessage').value = '';
+      } else {
+        mostrarNotificacion('Error al enviar: ' + (data.error || 'Intenta de nuevo.'), 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      mostrarNotificacion('Error de conexion con el servidor.', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Enviar solicitud';
+    }
+  });
 }
 
 // =====================================================
@@ -614,7 +845,7 @@ function initAdmin() {
         cargarFotosAdmin();
         cargarDocsAdmin();
       } else {
-        alert('Contraseña incorrecta. Acceso denegado.');
+        alert('Contrasena incorrecta. Acceso denegado.');
         passInput.value = '';
         passInput.focus();
       }
@@ -643,6 +874,7 @@ function initAdmin() {
       if (tab === 'galeria')       cargarFotosAdmin();
       if (tab === 'procedimiento') cargarProcAdmin();
       if (tab === 'cronogramas')   cargarDocsAdmin();
+      if (tab === 'comentarios')   cargarComentariosAdmin();
     });
   });
 
@@ -656,34 +888,34 @@ function initAdmin() {
   if (btnSubirDoc) btnSubirDoc.addEventListener('click', subirCronogramaArchivo);
 
   const btnGuardarInfo = document.getElementById('btnGuardarInfo');
-  if (btnGuardarInfo) btnGuardarInfo.addEventListener('click', () => alert('Función de información próximamente.'));
+  if (btnGuardarInfo) btnGuardarInfo.addEventListener('click', () => alert('Funcion de informacion proximamente.'));
 }
 
 // =====================================================
-// ADMIN: GALERÍA
+// ADMIN: GALERIA
 // =====================================================
 async function cargarFotosAdmin() {
   const contenedor = document.getElementById('listaFotosAdmin');
   if (!contenedor) return;
-  contenedor.innerHTML = '<p>Cargando imágenes...</p>';
+  contenedor.innerHTML = '<p>Cargando imagenes...</p>';
   try {
     const res   = await fetch('/api/fotos');
     const fotos = await res.json();
-    if (fotos.length === 0) { contenedor.innerHTML = '<p style="color:#6b7280;font-style:italic;">No hay imágenes subidas aún.</p>'; return; }
+    if (fotos.length === 0) { contenedor.innerHTML = '<p style="color:#6b7280;font-style:italic;">No hay imagenes subidas aun.</p>'; return; }
     contenedor.innerHTML = '';
     fotos.forEach(foto => {
       const div = document.createElement('div');
       div.className = 'admin-gallery-item';
       div.innerHTML = `
         <img src="${foto.url}" alt="${foto.titulo || 'Foto'}">
-        <p>${foto.titulo || 'Sin título'}</p>
+        <p>${foto.titulo || 'Sin titulo'}</p>
         <button class="btn-delete-img" data-id="${foto._id}" title="Eliminar foto"><i class="fas fa-trash"></i></button>
       `;
       div.querySelector('.btn-delete-img').addEventListener('click', () => borrarImagen(foto._id));
       contenedor.appendChild(div);
     });
   } catch (error) {
-    contenedor.innerHTML = '<p style="color:#ef4444;">Error al cargar las imágenes.</p>';
+    contenedor.innerHTML = '<p style="color:#ef4444;">Error al cargar las imagenes.</p>';
   }
 }
 
@@ -707,12 +939,12 @@ async function subirImagen() {
       alert('Error al subir: ' + data.error);
     }
   } catch (err) {
-    alert('Error de conexión con el servidor.');
+    alert('Error de conexion con el servidor.');
   }
 }
 
 async function borrarImagen(id) {
-  if (!confirm('¿Eliminar esta imagen permanentemente?')) return;
+  if (!confirm('Eliminar esta imagen permanentemente?')) return;
   try {
     const res = await fetch(`/api/fotos/${id}`, { method: 'DELETE' });
     if (res.ok) {
@@ -723,7 +955,7 @@ async function borrarImagen(id) {
       alert('Error al eliminar la imagen.');
     }
   } catch {
-    alert('Error de conexión.');
+    alert('Error de conexion.');
   }
 }
 
@@ -733,12 +965,12 @@ async function borrarImagen(id) {
 async function cargarProcAdmin() {
   const contenedor = document.getElementById('listaProcAdmin');
   if (!contenedor) return;
-  contenedor.innerHTML = '<p>Cargando imágenes del procedimiento...</p>';
+  contenedor.innerHTML = '<p>Cargando imagenes del procedimiento...</p>';
   try {
     const res   = await fetch('/api/procedimiento');
     const fotos = await res.json();
     if (fotos.length === 0) {
-      contenedor.innerHTML = '<p style="color:#6b7280;font-style:italic;">No hay imágenes del procedimiento aún. Sube la primera.</p>';
+      contenedor.innerHTML = '<p style="color:#6b7280;font-style:italic;">No hay imagenes del procedimiento aun.</p>';
       return;
     }
     contenedor.innerHTML = '';
@@ -747,14 +979,14 @@ async function cargarProcAdmin() {
       div.className = 'admin-gallery-item';
       div.innerHTML = `
         <img src="${foto.url}" alt="${foto.titulo || 'Paso ' + (i+1)}">
-        <p><strong>Paso ${i + 1}:</strong> ${foto.titulo || 'Sin título'}</p>
+        <p><strong>Paso ${i + 1}:</strong> ${foto.titulo || 'Sin titulo'}</p>
         <button class="btn-delete-img" data-id="${foto._id}" title="Eliminar imagen"><i class="fas fa-trash"></i></button>
       `;
       div.querySelector('.btn-delete-img').addEventListener('click', () => borrarImagenProcedimiento(foto._id));
       contenedor.appendChild(div);
     });
   } catch (error) {
-    contenedor.innerHTML = '<p style="color:#ef4444;">Error al cargar las imágenes del procedimiento.</p>';
+    contenedor.innerHTML = '<p style="color:#ef4444;">Error al cargar las imagenes del procedimiento.</p>';
   }
 }
 
@@ -762,15 +994,12 @@ async function subirImagenProcedimiento() {
   const titulo      = document.getElementById('tituloProc').value.trim();
   const descripcion = document.getElementById('descripcionProc').value.trim();
   const archivo     = document.getElementById('archivoProc').files[0];
-
-  if (!titulo) { alert('Escribe el título/nombre del paso primero.'); return; }
+  if (!titulo) { alert('Escribe el titulo/nombre del paso primero.'); return; }
   if (!archivo) { alert('Selecciona una imagen primero.'); return; }
-
   const formData = new FormData();
   formData.append('titulo', titulo);
   formData.append('descripcion', descripcion);
   formData.append('imagen', archivo);
-
   try {
     const res  = await fetch('/subir-procedimiento', { method: 'POST', body: formData });
     const data = await res.json();
@@ -785,12 +1014,12 @@ async function subirImagenProcedimiento() {
       alert('Error al subir: ' + data.error);
     }
   } catch (err) {
-    alert('Error de conexión con el servidor.');
+    alert('Error de conexion con el servidor.');
   }
 }
 
 async function borrarImagenProcedimiento(id) {
-  if (!confirm('¿Eliminar esta imagen del procedimiento permanentemente?')) return;
+  if (!confirm('Eliminar esta imagen del procedimiento permanentemente?')) return;
   try {
     const res = await fetch(`/api/procedimiento/${id}`, { method: 'DELETE' });
     if (res.ok) {
@@ -801,7 +1030,7 @@ async function borrarImagenProcedimiento(id) {
       alert('Error al eliminar la imagen.');
     }
   } catch {
-    alert('Error de conexión.');
+    alert('Error de conexion.');
   }
 }
 
@@ -815,34 +1044,25 @@ async function cargarDocsAdmin() {
   try {
     const res  = await fetch('/api/documentos');
     const docs = await res.json();
-    if (docs.length === 0) { contenedor.innerHTML = '<p style="color:#6b7280;font-style:italic;">No hay documentos subidos aún.</p>'; return; }
+    if (docs.length === 0) { contenedor.innerHTML = '<p style="color:#6b7280;font-style:italic;">No hay documentos subidos aun.</p>'; return; }
     contenedor.innerHTML = '';
     docs.forEach(doc => {
       const div = document.createElement('div');
       div.className = 'doc-card';
-
       let icon  = 'fa-file-alt';
       let label = 'Abrir archivo';
       const mime = (doc.tipoArchivo || '').toLowerCase();
       const name = (doc.nombreArchivo || '').toLowerCase();
-
-      if (mime === 'application/pdf' || name.endsWith('.pdf')) {
-        icon = 'fa-file-pdf'; label = 'Abrir PDF';
-      } else if (mime.includes('excel') || mime.includes('spreadsheet') || name.endsWith('.xls') || name.endsWith('.xlsx')) {
-        icon = 'fa-file-excel'; label = 'Descargar Excel';
-      } else if (mime.includes('word') || mime.includes('document') || name.endsWith('.doc') || name.endsWith('.docx')) {
-        icon = 'fa-file-word'; label = 'Descargar Word';
-      }
-
+      if (mime === 'application/pdf' || name.endsWith('.pdf')) { icon = 'fa-file-pdf'; label = 'Abrir PDF'; }
+      else if (mime.includes('excel') || mime.includes('spreadsheet') || name.endsWith('.xls') || name.endsWith('.xlsx')) { icon = 'fa-file-excel'; label = 'Descargar Excel'; }
+      else if (mime.includes('word') || mime.includes('document') || name.endsWith('.doc') || name.endsWith('.docx')) { icon = 'fa-file-word'; label = 'Descargar Word'; }
       const urlVer = `/ver-documento/${doc._id}`;
-
       div.innerHTML = `
         <i class="fas ${icon} doc-icon"></i>
         <div class="doc-info" style="flex:1;">
-          <h4>${doc.titulo || 'Sin título'}</h4>
+          <h4>${doc.titulo || 'Sin titulo'}</h4>
           <p style="font-size:0.78rem;color:#9ca3af;margin:2px 0 4px;">${doc.nombreArchivo || ''}</p>
-          <a href="${urlVer}" target="_blank" rel="noopener noreferrer"
-             style="font-size:0.85rem;color:#7B68A6;text-decoration:underline;">${label}</a>
+          <a href="${urlVer}" target="_blank" rel="noopener noreferrer" style="font-size:0.85rem;color:#7B68A6;text-decoration:underline;">${label}</a>
         </div>
         <button class="btn-delete-img" title="Eliminar documento" style="position:static;margin-left:auto;flex-shrink:0;">
           <i class="fas fa-trash"></i>
@@ -857,16 +1077,16 @@ async function cargarDocsAdmin() {
 }
 
 async function subirCronogramaArchivo() {
-  const titulo        = document.getElementById('tituloCronograma').value;
-  const archivoInput  = document.getElementById('archivoCronograma');
-  if (!titulo || archivoInput.files.length === 0) { alert('Ingresa un título y selecciona un archivo.'); return; }
+  const titulo       = document.getElementById('tituloCronograma').value;
+  const archivoInput = document.getElementById('archivoCronograma');
+  if (!titulo || archivoInput.files.length === 0) { alert('Ingresa un titulo y selecciona un archivo.'); return; }
   const formData = new FormData();
   formData.append('titulo', titulo);
   formData.append('documento', archivoInput.files[0]);
   try {
     const res = await fetch('/subir-documento', { method: 'POST', body: formData });
     if (res.ok) {
-      alert('Documento subido con éxito.');
+      alert('Documento subido con exito.');
       document.getElementById('tituloCronograma').value = '';
       archivoInput.value = '';
       cargarDocumentosPublicos();
@@ -875,12 +1095,12 @@ async function subirCronogramaArchivo() {
       alert('Error al subir el archivo.');
     }
   } catch {
-    alert('Error de conexión.');
+    alert('Error de conexion.');
   }
 }
 
 async function borrarDocumento(id) {
-  if (!confirm('¿Eliminar este documento permanentemente?')) return;
+  if (!confirm('Eliminar este documento permanentemente?')) return;
   try {
     const res = await fetch(`/api/documentos/${id}`, { method: 'DELETE' });
     if (res.ok) {
@@ -891,12 +1111,141 @@ async function borrarDocumento(id) {
       alert('Error al eliminar el documento.');
     }
   } catch {
-    alert('Error de conexión.');
+    alert('Error de conexion.');
   }
 }
 
 // =====================================================
-// INICIALIZACIÓN
+// ADMIN: COMENTARIOS
+// =====================================================
+async function cargarComentariosAdmin() {
+  const contenedor = document.getElementById('listaComentariosAdmin');
+  if (!contenedor) return;
+  contenedor.innerHTML = '<p>Cargando comentarios...</p>';
+
+  try {
+    const [resComentarios, resOpiniones] = await Promise.allSettled([
+      fetch('/api/comentarios'),
+      fetch('/api/opiniones')
+    ]);
+
+    const comentarios = resComentarios.status === 'fulfilled' ? await resComentarios.value.json() : [];
+    const opiniones   = resOpiniones.status === 'fulfilled'   ? await resOpiniones.value.json()   : [];
+
+    if (comentarios.length === 0 && opiniones.length === 0) {
+      contenedor.innerHTML = '<div class="admin-comments-empty">No hay comentarios ni opiniones todavia.</div>';
+      return;
+    }
+
+    contenedor.innerHTML = '';
+
+    if (opiniones.length > 0) {
+      const h = document.createElement('h3');
+      h.style.cssText = 'font-family:"Playfair Display",serif; color:#7B68A6; margin-bottom:12px; font-size:1.1rem;';
+      h.textContent = 'Opiniones del jarabe (' + opiniones.length + ')';
+      contenedor.appendChild(h);
+
+      const listaOp = document.createElement('div');
+      listaOp.className = 'admin-comment-list';
+      opiniones.forEach(op => {
+        const item = buildCommentItem({
+          _id:    op._id,
+          nombre: op.nombre,
+          rol:    op.rol || 'Usuario',
+          texto:  op.texto,
+          fecha:  op.fecha,
+          estrellas: op.estrellas
+        }, 'opinion');
+        listaOp.appendChild(item);
+      });
+      contenedor.appendChild(listaOp);
+    }
+
+    if (comentarios.length > 0) {
+      const h2 = document.createElement('h3');
+      h2.style.cssText = 'font-family:"Playfair Display",serif; color:#7B68A6; margin-top:24px; margin-bottom:12px; font-size:1.1rem;';
+      h2.textContent = 'Mensajes de contacto (' + comentarios.length + ')';
+      contenedor.appendChild(h2);
+
+      const listaCo = document.createElement('div');
+      listaCo.className = 'admin-comment-list';
+      comentarios.forEach(co => {
+        const item = buildCommentItem({
+          _id:    co._id,
+          nombre: co.nombre,
+          rol:    co.tipo || co.email || 'Contacto',
+          texto:  co.mensaje || '(sin mensaje)',
+          fecha:  co.fecha
+        }, 'comentario');
+        listaCo.appendChild(item);
+      });
+      contenedor.appendChild(listaCo);
+    }
+
+  } catch (err) {
+    console.error(err);
+    contenedor.innerHTML = '<p style="color:#ef4444;">Error al cargar los comentarios.</p>';
+  }
+}
+
+function buildCommentItem(data, tipo) {
+  const groseriasPatron = /\b(puta|mierda|joder|cabron|puto|pendejo|chinga|verga|culo|idiota|estupido|imbecil|pinche)\b/gi;
+  const esSospechoso = groseriasPatron.test(data.texto || '') || groseriasPatron.test(data.nombre || '');
+
+  const item = document.createElement('div');
+  item.className = 'admin-comment-item' + (esSospechoso ? ' admin-comment-flagged' : '');
+  const inicial = (data.nombre || '?').charAt(0).toUpperCase();
+
+  let starsHtml = '';
+  if (data.estrellas) {
+    starsHtml = Array.from({length: 5}, (_, i) =>
+      `<span style="color:${i < data.estrellas ? '#FFB300' : '#d1ccdf'};font-size:0.85rem;">&#9733;</span>`
+    ).join('');
+  }
+
+  const fechaStr = data.fecha ? new Date(data.fecha).toLocaleDateString('es-MX', { day:'numeric', month:'short', year:'numeric' }) : '';
+
+  item.innerHTML = `
+    <div class="admin-comment-avatar">${inicial}</div>
+    <div class="admin-comment-body">
+      <div class="admin-comment-header">
+        <span class="admin-comment-name">${data.nombre || 'Anonimo'}</span>
+        <span class="admin-comment-role">${data.rol}</span>
+        ${starsHtml}
+        <span class="admin-comment-date">${fechaStr}</span>
+      </div>
+      <p class="admin-comment-text">${data.texto || ''}</p>
+      ${esSospechoso ? '<p style="font-size:0.75rem;color:#ef4444;margin-top:4px;font-weight:600;">Lenguaje inapropiado detectado</p>' : ''}
+    </div>
+    <button class="btn-delete-comment" title="Eliminar este comentario">
+      <i class="fas fa-trash"></i> Eliminar
+    </button>
+  `;
+
+  item.querySelector('.btn-delete-comment').addEventListener('click', async () => {
+    if (!confirm('Eliminar este comentario permanentemente?')) return;
+    const endpoint = tipo === 'opinion' ? `/api/opiniones/${data._id}` : `/api/comentarios/${data._id}`;
+    try {
+      const res = await fetch(endpoint, { method: 'DELETE' });
+      if (res.ok) {
+        item.style.opacity = '0';
+        item.style.transition = 'opacity 0.3s';
+        setTimeout(() => { item.remove(); }, 320);
+        mostrarNotificacion('Comentario eliminado.', 'success');
+        if (tipo === 'opinion') cargarOpiniones();
+      } else {
+        alert('Error al eliminar.');
+      }
+    } catch {
+      alert('Error de conexion.');
+    }
+  });
+
+  return item;
+}
+
+// =====================================================
+// INICIALIZACION
 // =====================================================
 async function inicializarDatos() {
   console.log('Iniciando Huerto Escolar La Lavanda...');
@@ -909,6 +1258,7 @@ async function inicializarDatos() {
     inicializarCarrusel(),
     inicializarCarruselProcedimiento(),
     cargarDocumentosPublicos(),
+    cargarOpiniones(),
   ]);
   console.log('Datos cargados.');
 }
@@ -927,5 +1277,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCardTilt();
   initContacto();
   initAdmin();
+  initFlowchart();
+  initOpinionForm();
   inicializarDatos();
 });
