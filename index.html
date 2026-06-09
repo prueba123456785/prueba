@@ -518,7 +518,7 @@
   <div class="section-inner">
     <div class="section-tag reveal">Lo que dicen de nosotros</div>
     <h2 class="section-title reveal">Opiniones sobre nuestro<br><em>jarabe de lavanda</em></h2>
-    <p class="section-sub reveal">Figuras reconocidas a nivel mundial han probado nuestro jarabe artesanal de lavanda para café y compartieron su experiencia.</p>
+    <p class="section-sub reveal">Figuras reconocidas a nivel mundial han probado nuestro jarabe artesanal de lavanda para cafe </p>
 
     <div class="testimonios-grid">
 
@@ -614,31 +614,38 @@
   </div>
 </section>
 
-<!-- ===== CONTACTO ===== -->
 <section class="section contacto" id="contacto">
   <div class="cta-blob blob1"></div>
   <div class="cta-blob blob2"></div>
   <div class="section-inner cta-inner">
     <h2 class="cta-title reveal">¿Listo para<br><em>cultivar con nosotros</em>?</h2>
     <p class="cta-sub reveal">Únete como estudiante, maestro, o apoya nuestro proyecto. Cada semilla cuenta.</p>
-    <div class="cta-form reveal">
-      <input type="text" placeholder="Tu nombre" class="form-input" id="contactName">
-      <input type="email" placeholder="Tu correo electrónico" class="form-input" id="contactEmail">
-      <select class="form-input" id="contactType">
+    
+    <form action="lavandagarabe@gmail.com" method="POST" class="cta-form reveal">
+      
+      <input type="text" name="nombre" placeholder="Tu nombre" class="form-input" id="contactName" required>
+      
+      <input type="email" name="correo" placeholder="Tu correo electrónico" class="form-input" id="contactEmail" required>
+      
+      <select name="tipo_solicitud" class="form-input" id="contactType">
         <option>Quiero ser estudiante voluntario</option>
         <option>Soy maestro interesado</option>
         <option>Quiero donar materiales</option>
         <option>Prensa / Media</option>
       </select>
+      
       <textarea
+        name="mensaje"
         id="contactMessage"
         class="form-input"
         placeholder="Escribe tu mensaje o comentario aquí (opcional)..."
         rows="3"
         style="resize:vertical; min-height:80px;"
       ></textarea>
-      <button class="btn-primary btn-full" id="btnEnviarContacto">Enviar solicitud</button>
-    </div>
+      
+      <button type="submit" class="btn-primary btn-full" id="btnEnviarContacto">Enviar solicitud</button>
+    </form>
+
   </div>
 </section>
 
@@ -684,7 +691,7 @@
     </div>
     <div class="footer-links">
       <h5>Contacto</h5>
-      <a href="#">huerto@cbtis75.edu.mx</a>
+      <a href="#">lavandagarabe@gmail.com</a>
       <a href="#">+52 442 123 4567</a>
       <a href="#">CBTis 75, Dolores Hidalgo C.I.N.</a>
     </div>
