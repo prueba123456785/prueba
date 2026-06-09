@@ -205,13 +205,13 @@
     
     <div class="mermaid interactive-diagram">
       graph TD
-        A[Lectura de Sensores IoT] --> B{¿Humedad &lt; 40%?}
+        A[Lectura de Sensores IoT] --> B{Humedad &lt; 40%}
         B -- Sí --> C[Enviar Alerta a la API]
         C --> D[Activar Riego Automatizado]
         B -- No --> E[Mantener Sistema en Espera]
         D --> F[Registrar Evento en Base de Datos]
         E --> F
-        F --> G{¿Temperatura &gt; 25°C?}
+        F --> G{Temperatura &gt; 25°C}
         G -- Sí --> H[Notificar Recomendación de Sombra]
         G -- No --> I[Condiciones Climáticas Óptimas]
         
@@ -602,61 +602,65 @@
     </div></main>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    // 1. Configuramos Mermaid desactivando la auto-inicialización rápida
+
     mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
 
-    // 2. Buscamos todas las cajas de clase .mermaid en el documento
+
     const diagramContainers = document.querySelectorAll('.mermaid');
     
     diagramContainers.forEach((container, i) => {
       const rawCode = container.textContent.trim();
       if (!rawCode) return;
 
-      // Vaciamos el contenedor para inyectar el canvas interactivo ordenadamente
       container.textContent = '';
-      
       const uniqueSVGId = 'interactive-mermaid-' + i;
 
-      // 3. Modificamos estilos CSS por JS para convertir el contenedor en un Workbench táctil/arrastrable
       container.style.height = '480px';
       container.style.position = 'relative';
       container.style.overflow = 'hidden';
       container.style.cursor = 'grab';
-      
-      // Feedback visual al dar click para arrastrar
+
       container.addEventListener('mousedown', () => container.style.cursor = 'grabbing');
       container.addEventListener('mouseup', () => container.style.cursor = 'grab');
 
       try {
-        // 4. Renderizamos manualmente el string y le aplicamos el control de paneo y zoom
-        mermaid.render(uniqueSVGId, rawCode, function(svgHTML) {
-          container.innerHTML = svgHTML;
-          const svgDomElement = container.querySelector('svg');
+
+        mermaid.render(uniqueSVGId, rawCode).then(function(result) {
+
+          container.innerHTML = result.svg;
+          
+
+          const svgDomElement = document.getElementById(uniqueSVGId);
           
           if (svgDomElement) {
             svgDomElement.style.width = '100%';
             svgDomElement.style.height = '100%';
             
-            // Adjuntamos los eventos de arrastrar y rueda del ratón
+
             svgPanZoom(svgDomElement, {
               zoomEnabled: true,
-              controlIconsEnabled: true, // Agrega botones flotantes (+ , - , reset) abajo a la derecha
+              controlIconsEnabled: true, 
               fit: true,
               center: true,
               minZoom: 0.2,
               maxZoom: 8
             });
           }
+        }).catch(function(err) {
+
+          console.error("Fallo estructural en el árbol de Mermaid v10 render: ", err);
+          container.textContent = "Error al compilar la arquitectura del proceso.";
         });
       } catch (err) {
-        console.error("Fallo estructural en el árbol de Mermaid: ", err);
-        container.textContent = "Error al compilar la arquitectura del proceso.";
+
+        console.error("Fallo estructural en el catch externo de Mermaid v10 render setup: ", err);
+        container.textContent = "Error al configurar la renderización del diagrama.";
       }
     });
   });
