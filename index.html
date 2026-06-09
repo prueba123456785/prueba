@@ -61,16 +61,151 @@
     color: #3C3489;
     line-height: 1.2;
   }
-  /* Estilo base para que el lienzo interactivo se vea limpio */
-  .interactive-diagram {
-    background: #ffffff; 
-    border-radius: 16px; 
-    box-shadow: 0 4px 20px rgba(155,136,198,0.15);
-    border: 1px solid #e5e7eb;
-    margin-top: 30px;
+
+  /* ===== TESTIMONIOS ===== */
+  .testimonios {
+    background: linear-gradient(160deg, #f5f3fa 0%, #fce8f8 100%);
+    padding: 6rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .testimonios::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: -80px;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(155,136,198,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .testimonios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .testimonial-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2rem 1.75rem;
+    border: 1px solid #e8e4f3;
+    box-shadow: 0 8px 32px rgba(90,74,122,0.08);
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .testimonial-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(90,74,122,0.15);
+  }
+  .testimonial-card::before {
+    content: '\201C';
+    position: absolute;
+    top: 1.2rem; left: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    color: #d0c8e6;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .testimonial-stars {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 1rem;
+  }
+  .testimonial-stars span {
+    color: #FFB300;
+    font-size: 1.1rem;
+  }
+  .testimonial-text {
+    font-size: 0.97rem;
+    color: #4a3a5a;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+    padding-top: 1rem;
+  }
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px solid #f0ecfa;
+    padding-top: 1.25rem;
+  }
+  .testimonial-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background: var(--av-bg, #e8e4f3);
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .testimonial-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #3C3489;
+    margin-bottom: 0.15rem;
+  }
+  .testimonial-role {
+    font-size: 0.78rem;
+    color: #9B88C6;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+  .testimonial-badge {
+    display: inline-block;
+    background: #eeedfe;
+    color: #5a4a7a;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.2rem 0.65rem;
+    border-radius: 50px;
+    margin-top: 0.3rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* ===== FOOTER REDES SOCIALES ===== */
+  .footer-social {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .footer-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .footer-social a.ig {
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    color: #fff;
+  }
+  .footer-social a.yt {
+    background: #ff0000;
+    color: #fff;
+  }
+  .footer-social a:hover {
+    transform: translateY(-3px) scale(1.12);
+  }
+  .footer-social-label {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
   }
 </style>
 
+<!-- ===== NAVBAR ===== -->
 <nav class="navbar" id="navbar">
   <div class="nav-logo">
     <span class="nav-logo-top-label"></span>
@@ -86,7 +221,6 @@
     <li><a href="#inicio">Inicio</a></li>
     <li><a href="#galeria">Galería</a></li>
     <li><a href="#procedimiento">Procedimiento</a></li>
-    <li><a href="#diagrama">Diagrama</a></li>
     <li><a href="#problema">Por Qué</a></li>
     <li><a href="#solucion">Cultivo</a></li>
     <li><a href="#impacto">Monitoreo</a></li>
@@ -103,6 +237,7 @@
   </div>
 </nav>
 
+<!-- ===== HERO ===== -->
 <section class="hero" id="inicio">
   <div class="hero-bg">
     <div class="hero-orb orb1"></div>
@@ -156,6 +291,7 @@
   </div>
 </section>
 
+<!-- ===== GALERÍA ===== -->
 <section class="section galeria" id="galeria">
   <div class="section-inner">
     <div class="section-tag reveal">Nuestras plantas</div>
@@ -175,12 +311,12 @@
   </div>
 </section>
 
+<!-- ===== PROCEDIMIENTO ===== -->
 <section class="section procedimiento" id="procedimiento">
   <div class="section-inner">
     <div class="section-tag reveal">Paso a paso</div>
     <h2 class="section-title reveal">Procedimiento del <em>cultivo</em></h2>
     <p class="section-sub reveal">Documentamos cada etapa del proceso con fotografías tomadas por nuestro equipo durante el desarrollo del huerto.</p>
-
     <div class="proc-carousel-wrap reveal" id="procCarouselWrap">
       <button class="carousel-btn prev" id="procCarouselPrev">&#10094;</button>
       <div class="carousel-track-wrapper">
@@ -192,36 +328,11 @@
       </div>
       <button class="carousel-btn next" id="procCarouselNext">&#10095;</button>
     </div>
-
     <div class="proc-thumbnails" id="procThumbnails"></div>
   </div>
 </section>
 
-<section class="section diagrama" id="diagrama">
-  <div class="section-inner">
-    <div class="section-tag reveal">Arquitectura del Proyecto</div>
-    <h2 class="section-title reveal">Diagrama de <em>Procesos</em></h2>
-    <p class="section-sub reveal">Visualización interactiva (Arrastra para mover, usa la rueda para hacer Zoom 🔍).</p>
-    
-    <div class="mermaid interactive-diagram">
-      graph TD
-        A[Lectura de Sensores IoT] --> B{Humedad &lt; 40%}
-        B -- Sí --> C[Enviar Alerta a la API]
-        C --> D[Activar Riego Automatizado]
-        B -- No --> E[Mantener Sistema en Espera]
-        D --> F[Registrar Evento en Base de Datos]
-        E --> F
-        F --> G{Temperatura &gt; 25°C}
-        G -- Sí --> H[Notificar Recomendación de Sombra]
-        G -- No --> I[Condiciones Climáticas Óptimas]
-        
-        classDef default fill:#f3f0ff,stroke:#9B88C6,stroke-width:2px,color:#3C3489;
-        classDef decision fill:#D0C8E6,stroke:#7B68A6,stroke-width:2px,color:#3C3489;
-        class B,G decision;
-    </div>
-  </div>
-</section>
-
+<!-- ===== POR QUÉ ===== -->
 <section class="section problema" id="problema">
   <div class="section-inner">
     <div class="section-tag reveal">El desafío</div>
@@ -256,6 +367,7 @@
   </div>
 </section>
 
+<!-- ===== PROCESO ===== -->
 <section class="section solucion" id="solucion">
   <div class="section-inner">
     <div class="section-tag reveal">Nuestro proceso</div>
@@ -298,6 +410,7 @@
   </div>
 </section>
 
+<!-- ===== MONITOREO ===== -->
 <section class="section impacto" id="impacto">
   <div class="section-inner">
     <div class="section-tag reveal">Datos en tiempo real</div>
@@ -363,6 +476,7 @@
   </div>
 </section>
 
+<!-- ===== DOCUMENTOS ===== -->
 <section class="section documentos" id="documentos">
   <div class="section-inner">
     <div class="section-tag reveal">Recursos y Archivos</div>
@@ -374,6 +488,7 @@
   </div>
 </section>
 
+<!-- ===== MINIJUEGO HAPPY BEE ===== -->
 <section class="section" id="minijuego" style="background: linear-gradient(135deg, #f3f0ff 0%, #fce8f8 100%); padding: 60px 0;">
   <div class="section-inner">
     <div class="section-tag reveal">Minijuego</div>
@@ -398,6 +513,74 @@
   </div>
 </section>
 
+<!-- ===== TESTIMONIOS ===== -->
+<section class="testimonios" id="testimonios">
+  <div class="section-inner">
+    <div class="section-tag reveal">Lo que dicen de nosotros</div>
+    <h2 class="section-title reveal">Opiniones sobre nuestro<br><em>jarabe de lavanda</em></h2>
+    <p class="section-sub reveal">Figuras reconocidas a nivel mundial han probado nuestro jarabe artesanal de lavanda para café y compartieron su experiencia.</p>
+
+    <div class="testimonios-grid">
+
+      <!-- Mark Rober -->
+      <div class="testimonial-card reveal" style="--delay:0s">
+        <div class="testimonial-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <p class="testimonial-text">
+          Chingon
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="--av-bg: #e0f2fe;">G</div>
+          <div>
+            <div class="testimonial-name">German</div>
+            <div class="testimonial-role">Estudiante </div>
+            <span class="testimonial-badge">✔ Verificado</span>
+          </div>
+        </div>
+      </div>
+
+     
+      <div class="testimonial-card reveal" style="--delay:0.12s">
+        <div class="testimonial-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <p class="testimonial-text">
+         Buena idea y sabor 
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="--av-bg: #fef3c7;">F</div>
+          <div>
+            <div class="testimonial-name">Francisco</div>
+            <div class="testimonial-role">Estudiante</div>
+            <span class="testimonial-badge">✔ Verificado</span>
+          </div>
+        </div>
+      </div>
+
+     
+      <div class="testimonial-card reveal" style="--delay:0.24s">
+        <div class="testimonial-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <p class="testimonial-text">
+         Me gusto       
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="--av-bg: #fce7f3;">M</div>
+          <div>
+            <div class="testimonial-name">Mizael</div>
+            <div class="testimonial-role">Estudiante 4SV</div>
+            <span class="testimonial-badge">✔ Verificado</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== EQUIPO ===== -->
 <section class="section equipo" id="equipo">
   <div class="section-inner">
     <div class="section-tag reveal">Las personas detrás</div>
@@ -431,6 +614,7 @@
   </div>
 </section>
 
+<!-- ===== CONTACTO ===== -->
 <section class="section contacto" id="contacto">
   <div class="cta-blob blob1"></div>
   <div class="cta-blob blob2"></div>
@@ -446,11 +630,19 @@
         <option>Quiero donar materiales</option>
         <option>Prensa / Media</option>
       </select>
+      <textarea
+        id="contactMessage"
+        class="form-input"
+        placeholder="Escribe tu mensaje o comentario aquí (opcional)..."
+        rows="3"
+        style="resize:vertical; min-height:80px;"
+      ></textarea>
       <button class="btn-primary btn-full" id="btnEnviarContacto">Enviar solicitud</button>
     </div>
   </div>
 </section>
 
+<!-- ===== FOOTER ===== -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
@@ -462,6 +654,18 @@
       <div class="api-status" id="apiStatus">
         <span class="status-dot"></span>
         <span class="status-text">Conectando con API...</span>
+      </div>
+      <!-- REDES SOCIALES -->
+      <div style="margin-top:1.25rem;">
+        <p class="footer-social-label">Síguenos</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/lavanda_proyecto2026?igsh=OXNvM2s4dGxnZWV2" target="_blank" rel="noopener noreferrer" class="ig" title="Instagram del Huerto">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.youtube.com/@cristiano" target="_blank" rel="noopener noreferrer" class="yt" title="YouTube del Huerto">
+            <i class="fab fa-youtube"></i>
+          </a>
+        </div>
       </div>
     </div>
     <div class="footer-links">
@@ -490,6 +694,7 @@
   </div>
 </footer>
 
+<!-- ===== MODAL LOGIN ADMIN ===== -->
 <div id="modalAdmin" class="modal-login" role="dialog" aria-modal="true" aria-label="Acceso administrador">
   <div class="modal-content">
     <button class="close-btn" id="btnCerrarModal" aria-label="Cerrar">&times;</button>
@@ -500,6 +705,7 @@
   </div>
 </div>
 
+<!-- ===== PANEL ADMIN ===== -->
 <div id="panelAdminCompleto" class="adm-wrapper" role="main">
   <aside class="adm-sidebar">
     <div class="adm-brand"><i class="fas fa-leaf"></i> Admin Lavanda</div>
@@ -521,6 +727,7 @@
 
     <div class="adm-grid">
 
+      <!-- ===== TAB: GALERÍA ===== -->
       <div class="adm-tab-content" id="tab-galeria">
         <div class="adm-card">
           <h2><i class="fas fa-camera"></i> Subir Imagen a Galería</h2>
@@ -537,6 +744,7 @@
         </div>
       </div>
 
+      <!-- ===== TAB: PROCEDIMIENTO ===== -->
       <div class="adm-tab-content" id="tab-procedimiento" style="display:none;">
         <div class="adm-card">
           <h2><i class="fas fa-camera-retro"></i> Subir Imagen de Procedimiento</h2>
@@ -559,17 +767,7 @@
         </div>
       </div>
 
-      <div class="adm-tab-content" id="tab-diagramas" style="display:none;">
-        <div class="adm-card" style="grid-column: 1 / -1;">
-          <h2><i class="fas fa-project-diagram"></i> Panel de Control del Diagrama</h2>
-          <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 15px;">Previsualización de la lógica del sistema cargada en producción:</p>
-          <div class="mermaid" style="background:#fff; padding:15px; border-radius:8px; border:1px solid #e5e7eb;">
-            graph LR
-              Sensors[Sensores IoT] --> API[Tu API Gateway] --> DB[(Base de Datos)]
-          </div>
-        </div>
-      </div>
-
+      <!-- ===== TAB: DOCUMENTOS ===== -->
       <div class="adm-tab-content" id="tab-cronogramas" style="display:none;">
         <div class="adm-card">
           <h2><i class="fas fa-file-upload"></i> Subir Documento</h2>
@@ -590,6 +788,7 @@
         </div>
       </div>
 
+      <!-- ===== TAB: INFO ===== -->
       <div class="adm-tab-content" id="tab-info" style="display:none;">
         <div class="adm-card">
           <h2><i class="fas fa-file-alt"></i> Actualizar Información</h2>
@@ -599,73 +798,12 @@
         </div>
       </div>
 
-    </div></main>
+    </div><!-- /adm-grid -->
+  </main>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+<!-- ===== SCRIPTS ===== -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-
-    mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
-
-
-    const diagramContainers = document.querySelectorAll('.mermaid');
-    
-    diagramContainers.forEach((container, i) => {
-      const rawCode = container.textContent.trim();
-      if (!rawCode) return;
-
-      container.textContent = '';
-      const uniqueSVGId = 'interactive-mermaid-' + i;
-
-      container.style.height = '480px';
-      container.style.position = 'relative';
-      container.style.overflow = 'hidden';
-      container.style.cursor = 'grab';
-
-      container.addEventListener('mousedown', () => container.style.cursor = 'grabbing');
-      container.addEventListener('mouseup', () => container.style.cursor = 'grab');
-
-      try {
-
-        mermaid.render(uniqueSVGId, rawCode).then(function(result) {
-
-          container.innerHTML = result.svg;
-          
-
-          const svgDomElement = document.getElementById(uniqueSVGId);
-          
-          if (svgDomElement) {
-            svgDomElement.style.width = '100%';
-            svgDomElement.style.height = '100%';
-            
-
-            svgPanZoom(svgDomElement, {
-              zoomEnabled: true,
-              controlIconsEnabled: true, 
-              fit: true,
-              center: true,
-              minZoom: 0.2,
-              maxZoom: 8
-            });
-          }
-        }).catch(function(err) {
-
-          console.error("Fallo estructural en el árbol de Mermaid v10 render: ", err);
-          container.textContent = "Error al compilar la arquitectura del proceso.";
-        });
-      } catch (err) {
-
-        console.error("Fallo estructural en el catch externo de Mermaid v10 render setup: ", err);
-        container.textContent = "Error al configurar la renderización del diagrama.";
-      }
-    });
-  });
-</script>
-
 <script>
 (function(){
   const canvas = document.getElementById('gameCanvas');
@@ -899,7 +1037,6 @@
   initBee(); gameLoop();
 })();
 </script>
-
 <script src="script.js"></script>
 </body>
 </html>
