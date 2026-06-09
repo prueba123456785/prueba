@@ -61,148 +61,6 @@
     color: #3C3489;
     line-height: 1.2;
   }
-
-  /* ===== TESTIMONIOS ===== */
-  .testimonios {
-    background: linear-gradient(160deg, #f5f3fa 0%, #fce8f8 100%);
-    padding: 6rem 0;
-    position: relative;
-    overflow: hidden;
-  }
-  .testimonios::before {
-    content: '';
-    position: absolute;
-    top: -80px; left: -80px;
-    width: 350px; height: 350px;
-    background: radial-gradient(circle, rgba(155,136,198,0.1) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-  }
-  .testimonios-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-  }
-  .testimonial-card {
-    background: #fff;
-    border-radius: 20px;
-    padding: 2rem 1.75rem;
-    border: 1px solid #e8e4f3;
-    box-shadow: 0 8px 32px rgba(90,74,122,0.08);
-    position: relative;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  .testimonial-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 48px rgba(90,74,122,0.15);
-  }
-  .testimonial-card::before {
-    content: '\201C';
-    position: absolute;
-    top: 1.2rem; left: 1.5rem;
-    font-family: 'Playfair Display', serif;
-    font-size: 5rem;
-    color: #d0c8e6;
-    line-height: 1;
-    pointer-events: none;
-  }
-  .testimonial-stars {
-    display: flex;
-    gap: 3px;
-    margin-bottom: 1rem;
-  }
-  .testimonial-stars span {
-    color: #FFB300;
-    font-size: 1.1rem;
-  }
-  .testimonial-text {
-    font-size: 0.97rem;
-    color: #4a3a5a;
-    line-height: 1.75;
-    margin-bottom: 1.5rem;
-    padding-top: 1rem;
-  }
-  .testimonial-author {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    border-top: 1px solid #f0ecfa;
-    padding-top: 1.25rem;
-  }
-  .testimonial-avatar {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    background: var(--av-bg, #e8e4f3);
-    flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
-  .testimonial-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #3C3489;
-    margin-bottom: 0.15rem;
-  }
-  .testimonial-role {
-    font-size: 0.78rem;
-    color: #9B88C6;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-  }
-  .testimonial-badge {
-    display: inline-block;
-    background: #eeedfe;
-    color: #5a4a7a;
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 0.2rem 0.65rem;
-    border-radius: 50px;
-    margin-top: 0.3rem;
-    letter-spacing: 0.04em;
-  }
-
-  /* ===== FOOTER REDES SOCIALES ===== */
-  .footer-social {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-  .footer-social a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: transform 0.2s, background 0.2s;
-  }
-  .footer-social a.ig {
-    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
-    color: #fff;
-  }
-  .footer-social a.yt {
-    background: #ff0000;
-    color: #fff;
-  }
-  .footer-social a:hover {
-    transform: translateY(-3px) scale(1.12);
-  }
-  .footer-social-label {
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.45);
-    margin-bottom: 0.5rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 500;
-  }
 </style>
 
 <!-- ===== NAVBAR ===== -->
@@ -210,7 +68,7 @@
   <div class="nav-logo">
     <span class="nav-logo-top-label"></span>
     <div class="nav-logo-bottom-row">
-      <img src="logo_paec.png" alt="Logo PAEC Jardín Polinizador" class="nav-logo-img">
+      <img src="logo_paec.png" alt="Logo PAEC Jardin Polinizador" class="nav-logo-img">
       <div class="nav-logo-text-wrap">
         <span class="nav-logo-leaf"></span>
         <span class="nav-logo-text">Huerto Escolar</span>
@@ -219,15 +77,16 @@
   </div>
   <ul class="nav-links">
     <li><a href="#inicio">Inicio</a></li>
-    <li><a href="#galeria">Galería</a></li>
+    <li><a href="#galeria">Galeria</a></li>
     <li><a href="#procedimiento">Procedimiento</a></li>
-    <li><a href="#problema">Por Qué</a></li>
+    <li><a href="#problema">Por Que</a></li>
     <li><a href="#solucion">Cultivo</a></li>
     <li><a href="#impacto">Monitoreo</a></li>
+    <li><a href="#diagrama">Diagrama</a></li>
     <li><a href="#documentos">Docs</a></li>
     <li><a href="#minijuego">Minijuego</a></li>
     <li><a href="#equipo">Equipo</a></li>
-    <li><a href="#contacto" class="nav-cta">Únete</a></li>
+    <li><a href="#contacto" class="nav-cta">Unete</a></li>
   </ul>
   <button class="admin-float-btn" id="btnAdminFloat" aria-label="Acceso administrador">
     <i class="fas fa-shield-alt"></i>
@@ -266,7 +125,7 @@
       con ciencia
     </h1>
     <p class="hero-sub reveal">
-      Un huerto escolar que combina agricultura, tecnología y monitoreo climático para aprender sobre el cultivo sostenible de lavanda.
+      Un huerto escolar que combina agricultura, tecnologia y monitoreo climatico para aprender sobre el cultivo sostenible de lavanda.
     </p>
     <div class="hero-btns reveal">
       <a href="#solucion" class="btn-primary">Conoce nuestro huerto</a>
@@ -274,7 +133,7 @@
     </div>
     <div class="temp-widget reveal" id="tempWidget">
       <div class="temp-status">
-        <div class="temp-icon" id="tempIcon">🌡️</div>
+        <div class="temp-icon" id="tempIcon">&#127777;</div>
         <div class="temp-data">
           <div class="temp-value" id="tempValue">--°C</div>
           <div class="temp-label" id="tempLabel">Cargando...</div>
@@ -286,17 +145,17 @@
     </div>
   </div>
   <div class="scroll-hint">
-    <span>Desplázate</span>
+    <span>Desplazate</span>
     <div class="scroll-arrow"></div>
   </div>
 </section>
 
-<!-- ===== GALERÍA ===== -->
+<!-- ===== GALERIA ===== -->
 <section class="section galeria" id="galeria">
   <div class="section-inner">
     <div class="section-tag reveal">Nuestras plantas</div>
-    <h2 class="section-title reveal">Galería del <em>huerto</em></h2>
-    <p class="section-sub reveal">Imágenes en vivo de nuestro progreso, obtenidas directamente de nuestra base de datos.</p>
+    <h2 class="section-title reveal">Galeria del <em>huerto</em></h2>
+    <p class="section-sub reveal">Imagenes en vivo de nuestro progreso, obtenidas directamente de nuestra base de datos.</p>
     <div class="carousel-container reveal" id="carouselContainer">
       <button class="carousel-btn prev" id="carouselPrev">&#10094;</button>
       <div class="carousel-track-wrapper">
@@ -316,13 +175,13 @@
   <div class="section-inner">
     <div class="section-tag reveal">Paso a paso</div>
     <h2 class="section-title reveal">Procedimiento del <em>cultivo</em></h2>
-    <p class="section-sub reveal">Documentamos cada etapa del proceso con fotografías tomadas por nuestro equipo durante el desarrollo del huerto.</p>
+    <p class="section-sub reveal">Documentamos cada etapa del proceso con fotografias tomadas por nuestro equipo durante el desarrollo del huerto.</p>
     <div class="proc-carousel-wrap reveal" id="procCarouselWrap">
       <button class="carousel-btn prev" id="procCarouselPrev">&#10094;</button>
       <div class="carousel-track-wrapper">
         <ul class="carousel-track" id="procCarouselTrack">
           <li class="carousel-slide">
-            <div class="slide-placeholder">Cargando imágenes del procedimiento...</div>
+            <div class="slide-placeholder">Cargando imagenes del procedimiento...</div>
           </li>
         </ul>
       </div>
@@ -332,35 +191,35 @@
   </div>
 </section>
 
-<!-- ===== POR QUÉ ===== -->
+<!-- ===== POR QUE ===== -->
 <section class="section problema" id="problema">
   <div class="section-inner">
-    <div class="section-tag reveal">El desafío</div>
-    <h2 class="section-title reveal">¿Por qué cultivar <em>lavanda</em>?</h2>
-    <p class="section-sub reveal">La lavanda es una planta aromática con múltiples beneficios educativos, ambientales y económicos, perfecta para nuestro huerto escolar.</p>
+    <div class="section-tag reveal">El desafio</div>
+    <h2 class="section-title reveal">Por que cultivar <em>lavanda</em>?</h2>
+    <p class="section-sub reveal">La lavanda es una planta aromatica con multiples beneficios educativos, ambientales y economicos, perfecta para nuestro huerto escolar.</p>
     <div class="cards-grid">
       <div class="card reveal" style="--delay:0s">
-        <div class="card-icon">💧</div>
+        <div class="card-icon">&#128167;</div>
         <h3>Bajo Consumo</h3>
-        <p>La lavanda requiere 70% menos agua que cultivos tradicionales, enseñándonos sobre agricultura sostenible y uso eficiente de recursos.</p>
+        <p>La lavanda requiere 70% menos agua que cultivos tradicionales, ensenando sobre agricultura sostenible y uso eficiente de recursos.</p>
         <div class="card-bar"><div class="bar-fill" style="--pct:85%"></div></div>
       </div>
       <div class="card reveal" style="--delay:0.1s">
-        <div class="card-icon">🦋</div>
+        <div class="card-icon">&#129419;</div>
         <h3>Biodiversidad</h3>
         <p>Atrae abejas y mariposas, ayudando a estudiantes a comprender la importancia de los polinizadores en nuestros ecosistemas.</p>
         <div class="card-bar"><div class="bar-fill" style="--pct:92%"></div></div>
       </div>
       <div class="card reveal" style="--delay:0.2s">
-        <div class="card-icon">🔬</div>
+        <div class="card-icon">&#128300;</div>
         <h3>Aprendizaje STEM</h3>
-        <p>Integramos sensores IoT para monitorear temperatura y humedad, combinando biología con tecnología y análisis de datos.</p>
+        <p>Integramos sensores IoT para monitorear temperatura y humedad, combinando biologia con tecnologia y analisis de datos.</p>
         <div class="card-bar"><div class="bar-fill" style="--pct:78%"></div></div>
       </div>
       <div class="card reveal" style="--delay:0.3s">
-        <div class="card-icon">🧠</div>
+        <div class="card-icon">&#129504;</div>
         <h3>Bienestar</h3>
-        <p>El aroma de la lavanda reduce el estrés escolar y mejora la concentración, creando espacios de aprendizaje más saludables.</p>
+        <p>El aroma de la lavanda reduce el estres escolar y mejora la concentracion, creando espacios de aprendizaje mas saludables.</p>
         <div class="card-bar"><div class="bar-fill" style="--pct:88%"></div></div>
       </div>
     </div>
@@ -378,15 +237,15 @@
         <div class="tl-dot"></div>
         <div class="tl-content">
           <span class="tl-phase">Fase 01</span>
-          <h3>Preparación del terreno</h3>
-          <p>Los estudiantes preparan el suelo con compost orgánico, aprenden sobre pH, drenaje y las condiciones ideales para lavanda.</p>
+          <h3>Preparacion del terreno</h3>
+          <p>Los estudiantes preparan el suelo con compost organico, aprenden sobre pH, drenaje y las condiciones ideales para lavanda.</p>
         </div>
       </div>
       <div class="tl-item reveal tl-right">
         <div class="tl-dot"></div>
         <div class="tl-content">
           <span class="tl-phase">Fase 02</span>
-          <h3>Instalación de sensores</h3>
+          <h3>Instalacion de sensores</h3>
           <p>Colocamos sensores de temperatura y humedad conectados a nuestra base de datos. Los datos se actualizan en tiempo real.</p>
         </div>
       </div>
@@ -394,16 +253,16 @@
         <div class="tl-dot"></div>
         <div class="tl-content">
           <span class="tl-phase">Fase 03</span>
-          <h3>Plantación y cuidado</h3>
-          <p>Cada grupo de estudiantes adopta una sección del huerto, registra observaciones semanales y ajusta el riego según las recomendaciones de nuestra API.</p>
+          <h3>Plantacion y cuidado</h3>
+          <p>Cada grupo de estudiantes adopta una seccion del huerto, registra observaciones semanales y ajusta el riego segun las recomendaciones de nuestra API.</p>
         </div>
       </div>
       <div class="tl-item reveal tl-right">
         <div class="tl-dot"></div>
         <div class="tl-content">
           <span class="tl-phase">Fase 04</span>
-          <h3>Cosecha y análisis</h3>
-          <p>Documentamos el crecimiento con fotografías, medimos rendimientos y creamos productos (sachets aromáticos, aceites esenciales) para la comunidad escolar.</p>
+          <h3>Cosecha y analisis</h3>
+          <p>Documentamos el crecimiento con fotografias, medimos rendimientos y creamos productos (sachets aromaticos, aceites esenciales) para la comunidad escolar.</p>
         </div>
       </div>
     </div>
@@ -414,58 +273,58 @@
 <section class="section impacto" id="impacto">
   <div class="section-inner">
     <div class="section-tag reveal">Datos en tiempo real</div>
-    <h2 class="section-title reveal">Monitoreo climático<br><em>del huerto</em></h2>
+    <h2 class="section-title reveal">Monitoreo climatico<br><em>del huerto</em></h2>
     <div class="chart-container reveal">
-      <h3>Temperatura de los últimos 7 días</h3>
+      <h3>Temperatura de los ultimos 7 dias</h3>
       <canvas id="tempChart"></canvas>
       <div class="chart-legend">
         <div class="legend-item">
           <span class="legend-color" style="background: #9B88C6;"></span>
-          <span>Zona óptima (15-25°C)</span>
+          <span>Zona optima (15-25 C)</span>
         </div>
       </div>
     </div>
     <div class="impact-grid">
       <div class="impact-big reveal">
         <div class="stats-card">
-          <div class="stat-icon">📊</div>
+          <div class="stat-icon">&#128202;</div>
           <div class="stat-info">
             <div class="stat-number" id="avgTemp">--°C</div>
-            <div class="stat-desc">Temperatura promedio (30 días)</div>
+            <div class="stat-desc">Temperatura promedio (30 dias)</div>
           </div>
         </div>
         <div class="stats-card">
-          <div class="stat-icon">🌡️</div>
+          <div class="stat-icon">&#127777;</div>
           <div class="stat-info">
             <div class="stat-number" id="maxTemp">--°C</div>
-            <div class="stat-desc">Temperatura máxima registrada</div>
+            <div class="stat-desc">Temperatura maxima registrada</div>
           </div>
         </div>
       </div>
       <div class="impact-numbers">
         <div class="imp-row reveal" style="--delay:0s">
-          <div class="imp-icon">💧</div>
+          <div class="imp-icon">&#128167;</div>
           <div id="riegoInfo">
             <strong>Cargando...</strong>
-            <span>Recomendación de riego</span>
+            <span>Recomendacion de riego</span>
           </div>
         </div>
         <div class="imp-row reveal" style="--delay:0.1s">
-          <div class="imp-icon">🌸</div>
+          <div class="imp-icon">&#127800;</div>
           <div id="floracionInfo">
             <strong>Analizando...</strong>
-            <span>Estado de floración estimado</span>
+            <span>Estado de floracion estimado</span>
           </div>
         </div>
         <div class="imp-row reveal" style="--delay:0.2s">
-          <div class="imp-icon">☀️</div>
+          <div class="imp-icon">&#9728;</div>
           <div id="optimalDays">
-            <strong class="counter" data-target="0">0</strong> días
-            <span>con temperatura óptima este mes</span>
+            <strong class="counter" data-target="0">0</strong> dias
+            <span>con temperatura optima este mes</span>
           </div>
         </div>
         <div class="imp-row reveal" style="--delay:0.3s">
-          <div class="imp-icon">🌿</div>
+          <div class="imp-icon">&#127807;</div>
           <div>
             <strong class="counter" data-target="67">0</strong> plantas
             <span>de lavanda cultivadas en el huerto</span>
@@ -473,6 +332,115 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ===== DIAGRAMA DE FLUJO INTERACTIVO ===== -->
+<section class="section diagrama-section" id="diagrama">
+  <div class="section-inner">
+    <div class="section-tag reveal">Proceso visual</div>
+    <h2 class="section-title reveal">Diagrama de <em>flujo del cultivo</em></h2>
+    <p class="section-sub reveal">Haz clic en cada paso para conocer los detalles del proceso.</p>
+
+    <div class="flowchart reveal" id="flowchart">
+
+      <!-- Nodo inicio -->
+      <div class="flow-node flow-start" data-step="inicio">
+        <div class="flow-node-inner">
+          <div class="flow-node-icon">&#127807;</div>
+          <div class="flow-node-label">Inicio del proyecto</div>
+        </div>
+      </div>
+
+      <div class="flow-arrow flow-arrow-down"></div>
+
+      <!-- Fila: decision suelo -->
+      <div class="flow-row">
+        <div class="flow-side-label flow-side-left">pH bajo</div>
+        <div class="flow-node flow-decision" data-step="suelo">
+          <div class="flow-node-inner">
+            <div class="flow-node-icon">&#9878;</div>
+            <div class="flow-node-label">Analisis del suelo</div>
+          </div>
+        </div>
+        <div class="flow-side-label flow-side-right">pH optimo</div>
+      </div>
+
+      <div class="flow-arrow flow-arrow-down"></div>
+
+      <!-- Preparacion -->
+      <div class="flow-node flow-process" data-step="preparacion">
+        <div class="flow-node-inner">
+          <div class="flow-node-icon">&#128247;</div>
+          <div class="flow-node-label">Preparacion y compost</div>
+        </div>
+      </div>
+
+      <div class="flow-arrow flow-arrow-down"></div>
+
+      <!-- Sensores -->
+      <div class="flow-node flow-process flow-highlight" data-step="sensores">
+        <div class="flow-node-inner">
+          <div class="flow-node-icon">&#128268;</div>
+          <div class="flow-node-label">Instalacion de sensores IoT</div>
+        </div>
+      </div>
+
+      <div class="flow-arrow flow-arrow-down"></div>
+
+      <!-- Plantacion -->
+      <div class="flow-node flow-process" data-step="plantacion">
+        <div class="flow-node-inner">
+          <div class="flow-node-icon">&#127807;</div>
+          <div class="flow-node-label">Plantacion de lavanda</div>
+        </div>
+      </div>
+
+      <div class="flow-arrow flow-arrow-down"></div>
+
+      <!-- Decision monitoreo -->
+      <div class="flow-row">
+        <div class="flow-side-label flow-side-left">Ajustar riego</div>
+        <div class="flow-node flow-decision" data-step="monitoreo">
+          <div class="flow-node-inner">
+            <div class="flow-node-icon">&#128200;</div>
+            <div class="flow-node-label">Monitoreo semanal</div>
+          </div>
+        </div>
+        <div class="flow-side-label flow-side-right">Condiciones OK</div>
+      </div>
+
+      <div class="flow-arrow flow-arrow-down"></div>
+
+      <!-- Cosecha -->
+      <div class="flow-node flow-process" data-step="cosecha">
+        <div class="flow-node-inner">
+          <div class="flow-node-icon">&#9986;</div>
+          <div class="flow-node-label">Cosecha</div>
+        </div>
+      </div>
+
+      <div class="flow-arrow flow-arrow-down"></div>
+
+      <!-- Productos -->
+      <div class="flow-node flow-end" data-step="productos">
+        <div class="flow-node-inner">
+          <div class="flow-node-icon">&#127801;</div>
+          <div class="flow-node-label">Productos y analisis final</div>
+        </div>
+      </div>
+
+    </div><!-- /flowchart -->
+
+    <!-- Panel de detalles -->
+    <div class="flow-detail-panel" id="flowDetailPanel">
+      <div class="flow-detail-close" id="flowDetailClose">&times;</div>
+      <div class="flow-detail-icon" id="flowDetailIcon"></div>
+      <h3 class="flow-detail-title" id="flowDetailTitle">Selecciona un paso</h3>
+      <p class="flow-detail-desc" id="flowDetailDesc">Haz clic en cualquier nodo del diagrama para ver su descripcion detallada.</p>
+      <ul class="flow-detail-list" id="flowDetailList"></ul>
+    </div>
+
   </div>
 </section>
 
@@ -492,13 +460,13 @@
 <section class="section" id="minijuego" style="background: linear-gradient(135deg, #f3f0ff 0%, #fce8f8 100%); padding: 60px 0;">
   <div class="section-inner">
     <div class="section-tag reveal">Minijuego</div>
-    <h2 class="section-title reveal">¡Ayuda a la <em>abeja</em> a llegar a la lavanda!</h2>
+    <h2 class="section-title reveal">Ayuda a la <em>abeja</em> a llegar a la lavanda</h2>
     <p class="section-sub reveal">Esquiva 20 avispas asesinas para ganar. Presiona Espacio o toca la pantalla para volar.</p>
     <div id="game-wrap" style="font-family: var(--font-sans, sans-serif); text-align: center; padding: 1rem 0;">
       <div style="display:flex; justify-content:center; gap:16px; align-items:center; margin:12px 0; flex-wrap:wrap;">
-        <span style="background:#EEEDFE; color:#3C3489; border-radius:8px; padding:6px 14px; font-size:13px; font-weight:500;">🐝 Esquiva 20 avispas</span>
+        <span style="background:#EEEDFE; color:#3C3489; border-radius:8px; padding:6px 14px; font-size:13px; font-weight:500;">Esquiva 20 avispas</span>
         <span style="background:#EEEDFE; color:#3C3489; border-radius:8px; padding:6px 14px; font-size:13px; font-weight:500;" id="scoreDisplay">Puntaje: 0</span>
-        <span style="background:#EEEDFE; color:#3C3489; border-radius:8px; padding:6px 14px; font-size:13px; font-weight:500;" id="bestDisplay">Récord: 0</span>
+        <span style="background:#EEEDFE; color:#3C3489; border-radius:8px; padding:6px 14px; font-size:13px; font-weight:500;" id="bestDisplay">Record: 0</span>
       </div>
       <canvas id="gameCanvas" width="480" height="320"
         style="border-radius:16px; border:2px solid #9B88C6; display:block; margin:0 auto; cursor:pointer;"></canvas>
@@ -506,145 +474,161 @@
       <div style="margin-top:10px;">
         <button id="startBeeBtn"
           style="background:#7F77DD; color:#fff; border:none; border-radius:10px; padding:10px 28px; font-size:15px; font-weight:500; cursor:pointer;">
-          ▶ Iniciar juego
+          Iniciar juego
         </button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== TESTIMONIOS ===== -->
-<section class="testimonios" id="testimonios">
+<!-- ===== DEJA TU OPINION ===== -->
+<section class="section opiniones-section" id="opiniones">
   <div class="section-inner">
-    <div class="section-tag reveal">Lo que dicen de nosotros</div>
-    <h2 class="section-title reveal">Opiniones sobre nuestro<br><em>jarabe de lavanda</em></h2>
-    <p class="section-sub reveal">Figuras reconocidas a nivel mundial han probado nuestro jarabe artesanal de lavanda para cafe </p>
+    <div class="section-tag reveal">Comunidad</div>
+    <h2 class="section-title reveal">Deja tu <em>opinion</em></h2>
+    <p class="section-sub reveal">Probaste nuestro jarabe de lavanda? Comparte tu experiencia con la comunidad.</p>
 
-    <div class="testimonios-grid">
-
-      <!-- Mark Rober -->
-      <div class="testimonial-card reveal" style="--delay:0s">
-        <div class="testimonial-stars">
-          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+    <!-- Formulario de opinion -->
+    <div class="opinion-form-wrap reveal">
+      <div class="opinion-form-card">
+        <h3 class="opinion-form-title">Tu resena</h3>
+        <div class="opinion-rating-selector" id="opinionRating">
+          <span class="rating-star" data-val="1">&#9733;</span>
+          <span class="rating-star" data-val="2">&#9733;</span>
+          <span class="rating-star" data-val="3">&#9733;</span>
+          <span class="rating-star" data-val="4">&#9733;</span>
+          <span class="rating-star" data-val="5">&#9733;</span>
         </div>
-        <p class="testimonial-text">
-          Chingon
-        </p>
+        <input type="text" class="opinion-input" id="opinionNombre" placeholder="Tu nombre...">
+        <input type="text" class="opinion-input" id="opinionRol" placeholder="Tu rol (ej: Estudiante, Maestro...)">
+        <textarea class="opinion-input opinion-textarea" id="opinionTexto" placeholder="Escribe tu opinion sobre el jarabe de lavanda..."></textarea>
+        <button class="btn-primary opinion-submit-btn" id="btnEnviarOpinion">Publicar opinion</button>
+      </div>
+    </div>
+
+    <!-- Grid de testimonios (cargado desde API) -->
+    <div class="testimonios-grid" id="testimoniosGrid">
+      <div class="testimonial-card reveal">
+        <div class="testimonial-stars">
+          <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
+        </div>
+        <p class="testimonial-text">Chingon</p>
         <div class="testimonial-author">
           <div class="testimonial-avatar" style="--av-bg: #e0f2fe;">G</div>
           <div>
             <div class="testimonial-name">German</div>
-            <div class="testimonial-role">Estudiante </div>
-            <span class="testimonial-badge">✔ Verificado</span>
+            <div class="testimonial-role">Estudiante</div>
+            <span class="testimonial-badge">Verificado</span>
           </div>
         </div>
       </div>
-
-     
       <div class="testimonial-card reveal" style="--delay:0.12s">
         <div class="testimonial-stars">
-          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+          <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
         </div>
-        <p class="testimonial-text">
-         Buena idea y sabor 
-        </p>
+        <p class="testimonial-text">Buena idea y sabor</p>
         <div class="testimonial-author">
           <div class="testimonial-avatar" style="--av-bg: #fef3c7;">F</div>
           <div>
             <div class="testimonial-name">Francisco</div>
             <div class="testimonial-role">Estudiante</div>
-            <span class="testimonial-badge">✔ Verificado</span>
+            <span class="testimonial-badge">Verificado</span>
           </div>
         </div>
       </div>
-
-     
       <div class="testimonial-card reveal" style="--delay:0.24s">
         <div class="testimonial-stars">
-          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+          <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
         </div>
-        <p class="testimonial-text">
-         Me gusto       
-        </p>
+        <p class="testimonial-text">Me gusto</p>
         <div class="testimonial-author">
           <div class="testimonial-avatar" style="--av-bg: #fce7f3;">M</div>
           <div>
             <div class="testimonial-name">Mizael</div>
             <div class="testimonial-role">Estudiante 4SV</div>
-            <span class="testimonial-badge">✔ Verificado</span>
+            <span class="testimonial-badge">Verificado</span>
           </div>
         </div>
       </div>
-
     </div>
+
   </div>
 </section>
 
 <!-- ===== EQUIPO ===== -->
 <section class="section equipo" id="equipo">
   <div class="section-inner">
-    <div class="section-tag reveal">Las personas detrás</div>
+    <div class="section-tag reveal">Las personas detras</div>
     <h2 class="section-title reveal">Nuestro <em>equipo</em></h2>
     <div class="team-grid">
       <div class="team-card reveal" style="--delay:0s">
         <div class="team-avatar" style="--color:#9B88C6">YF</div>
         <h4>Yael Fernando Valdez Camacho</h4>
         <span>Estudiante del MIT</span>
-        <p>Líder del proyecto, Programación de API</p>
+        <p>Lider del proyecto, Programacion de API</p>
       </div>
       <div class="team-card reveal" style="--delay:0.1s">
         <div class="team-avatar" style="--color:#7B68A6">JA</div>
-        <h4>Jesus Alonso Tapia+ Muñoz</h4>
+        <h4>Jesus Alonso Tapia Munoz</h4>
         <span>Estudiante del Cbtis75</span>
-        <p>Encargado de monitoreo técnico.</p>
+        <p>Encargado de monitoreo tecnico.</p>
       </div>
       <div class="team-card reveal" style="--delay:0.2s">
         <div class="team-avatar" style="--color:#B5A8D6">GP</div>
         <h4>German Perez Mata</h4>
         <span>Estudiante del Cbtis75</span>
-        <p>Responsable de análisis de datos climáticos.</p>
+        <p>Responsable de analisis de datos climaticos.</p>
       </div>
       <div class="team-card reveal" style="--delay:0.3s">
         <div class="team-avatar" style="--color:#D0C8E6">OS</div>
         <h4>Osvaldo Soto Ledezma</h4>
         <span>Estudiante del Cbtis 75</span>
-        <p>Responsable de la gestión de nuestra web.</p>
+        <p>Responsable de la gestion de nuestra web.</p>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ===== CONTACTO ===== -->
 <section class="section contacto" id="contacto">
   <div class="cta-blob blob1"></div>
   <div class="cta-blob blob2"></div>
   <div class="section-inner cta-inner">
-    <h2 class="cta-title reveal">¿Listo para<br><em>cultivar con nosotros</em>?</h2>
-    <p class="cta-sub reveal">Únete como estudiante, maestro, o apoya nuestro proyecto. Cada semilla cuenta.</p>
-    
-    <form action="https://formspree.io/f/lavandagarabe@gmail.com" method="POST" class="cta-form reveal">
-      
+    <h2 class="cta-title reveal">Listo para<br><em>cultivar con nosotros</em>?</h2>
+    <p class="cta-sub reveal">Unete como estudiante, maestro, o apoya nuestro proyecto. Cada semilla cuenta.</p>
+
+    <form
+      action="https://formspree.io/f/lavandagarabe@gmail.com"
+      method="POST"
+      class="cta-form reveal"
+      id="formContacto"
+    >
       <input type="text" name="nombre" placeholder="Tu nombre" class="form-input" id="contactName" required>
-      
-      <input type="email" name="correo" placeholder="Tu correo electrónico" class="form-input" id="contactEmail" required>
-      
+      <input type="email" name="correo" placeholder="Tu correo electronico" class="form-input" id="contactEmail" required>
       <select name="tipo_solicitud" class="form-input" id="contactType">
         <option>Quiero ser estudiante voluntario</option>
         <option>Soy maestro interesado</option>
         <option>Quiero donar materiales</option>
         <option>Prensa / Media</option>
       </select>
-      
       <textarea
         name="mensaje"
         id="contactMessage"
         class="form-input"
-        placeholder="Escribe tu mensaje o comentario aquí (opcional)..."
+        placeholder="Escribe tu mensaje o comentario aqui (opcional)..."
         rows="3"
         style="resize:vertical; min-height:80px;"
       ></textarea>
-      
+      <!-- Campo honeypot anti-spam -->
+      <input type="text" name="_gotcha" style="display:none">
+      <input type="hidden" name="_subject" value="Nuevo contacto - Huerto Escolar La Lavanda">
       <button type="submit" class="btn-primary btn-full" id="btnEnviarContacto">Enviar solicitud</button>
     </form>
+    <div id="formSuccess" style="display:none; text-align:center; padding:2rem;">
+      <div style="font-size:3rem; margin-bottom:1rem;">&#127807;</div>
+      <h3 style="color:#fff; font-family:'Playfair Display',serif; font-size:1.6rem; margin-bottom:0.75rem;">Mensaje enviado</h3>
+      <p style="color:rgba(255,255,255,0.75); font-size:0.95rem;">Gracias por contactarnos. Te responderemos pronto.</p>
+    </div>
 
   </div>
 </section>
@@ -654,7 +638,7 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="footer-logo">
-        <span class="logo-leaf">🌿</span>
+        <span class="logo-leaf">&#127807;</span>
         <span class="logo-text">Huerto Escolar</span>
       </div>
       <p>Cultivando conocimiento, cosechando futuro.</p>
@@ -662,9 +646,8 @@
         <span class="status-dot"></span>
         <span class="status-text">Conectando con API...</span>
       </div>
-      <!-- REDES SOCIALES -->
       <div style="margin-top:1.25rem;">
-        <p class="footer-social-label">Síguenos</p>
+        <p class="footer-social-label">Siguenos</p>
         <div class="footer-social">
           <a href="https://www.instagram.com/lavanda_proyecto2026?igsh=OXNvM2s4dGxnZWV2" target="_blank" rel="noopener noreferrer" class="ig" title="Instagram del Huerto">
             <i class="fab fa-instagram"></i>
@@ -677,8 +660,8 @@
     </div>
     <div class="footer-links">
       <h5>Proyecto</h5>
-      <a href="#">Quiénes somos</a>
-      <a href="#">Metodología</a>
+      <a href="#">Quienes somos</a>
+      <a href="#">Metodologia</a>
       <a href="#">Datos abiertos</a>
       <a href="#">Blog</a>
     </div>
@@ -697,7 +680,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 Huerto Escolar La Lavanda — Proyecto Ambiental CBTis 75</p>
+    <p>2026 Huerto Escolar La Lavanda — Proyecto Ambiental CBTis 75</p>
   </div>
 </footer>
 
@@ -706,8 +689,8 @@
   <div class="modal-content">
     <button class="close-btn" id="btnCerrarModal" aria-label="Cerrar">&times;</button>
     <h3>Acceso Restringido</h3>
-    <p>Ingresa la contraseña maestra para editar el huerto.</p>
-    <input type="password" id="passAdmin" placeholder="Contraseña...">
+    <p>Ingresa la contrasena maestra para editar el huerto.</p>
+    <input type="password" id="passAdmin" placeholder="Contrasena...">
     <button class="adm-btn" id="btnVerificarPass">Entrar al Panel</button>
   </div>
 </div>
@@ -716,96 +699,98 @@
 <div id="panelAdminCompleto" class="adm-wrapper" role="main">
   <aside class="adm-sidebar">
     <div class="adm-brand"><i class="fas fa-leaf"></i> Admin Lavanda</div>
-    <div class="adm-menu active" data-tab="galeria"><i class="fas fa-images"></i> Galería</div>
+    <div class="adm-menu active" data-tab="galeria"><i class="fas fa-images"></i> Galeria</div>
     <div class="adm-menu" data-tab="procedimiento"><i class="fas fa-camera-retro"></i> Procedimiento</div>
     <div class="adm-menu" data-tab="diagramas"><i class="fas fa-project-diagram"></i> Diagramas</div>
     <div class="adm-menu" data-tab="cronogramas"><i class="fas fa-calendar-alt"></i> Cronogramas</div>
-    <div class="adm-menu" data-tab="info"><i class="fas fa-align-left"></i> Información</div>
+    <div class="adm-menu" data-tab="comentarios"><i class="fas fa-comments"></i> Comentarios</div>
+    <div class="adm-menu" data-tab="info"><i class="fas fa-align-left"></i> Informacion</div>
   </aside>
 
   <main class="adm-main">
     <div class="adm-header">
       <div>
         <h1>Gestor de Contenido</h1>
-        <p>Agrega o quita elementos de tu página en tiempo real.</p>
+        <p>Agrega o quita elementos de tu pagina en tiempo real.</p>
       </div>
       <button class="adm-btn-danger" id="btnCerrarPanel"><i class="fas fa-times"></i> Cerrar Panel</button>
     </div>
 
     <div class="adm-grid">
 
-      <!-- ===== TAB: GALERÍA ===== -->
+      <!-- TAB: GALERIA -->
       <div class="adm-tab-content" id="tab-galeria">
         <div class="adm-card">
-          <h2><i class="fas fa-camera"></i> Subir Imagen a Galería</h2>
-          <input type="text" id="tituloImagen" class="adm-input" placeholder="Título de la imagen...">
+          <h2><i class="fas fa-camera"></i> Subir Imagen a Galeria</h2>
+          <input type="text" id="tituloImagen" class="adm-input" placeholder="Titulo de la imagen...">
           <input type="file" id="archivoImagen" class="adm-input" accept="image/*">
           <button class="adm-btn" id="btnSubirImagen"><i class="fas fa-upload"></i> Guardar Imagen</button>
         </div>
         <div class="adm-card" style="grid-column: 1 / -1;">
-          <h2><i class="fas fa-trash-alt"></i> Gestionar Galería</h2>
-          <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 15px;">Aquí puedes ver todas las fotos subidas y eliminarlas si es necesario.</p>
+          <h2><i class="fas fa-trash-alt"></i> Gestionar Galeria</h2>
           <div id="listaFotosAdmin" class="admin-gallery-grid">
-            <p>Cargando imágenes...</p>
+            <p>Cargando imagenes...</p>
           </div>
         </div>
       </div>
 
-      <!-- ===== TAB: PROCEDIMIENTO ===== -->
+      <!-- TAB: PROCEDIMIENTO -->
       <div class="adm-tab-content" id="tab-procedimiento" style="display:none;">
         <div class="adm-card">
           <h2><i class="fas fa-camera-retro"></i> Subir Imagen de Procedimiento</h2>
-          <p style="font-size: 0.85rem; color: #6b7280; margin-bottom: 12px;">
-            Estas imágenes aparecerán en la sección <strong>Procedimiento del cultivo</strong> de la página principal.
-          </p>
-          <input type="text" id="tituloProc" class="adm-input" placeholder="Ej: Preparación del suelo, Trasplante...">
-          <input type="text" id="descripcionProc" class="adm-input" placeholder="Descripción breve (opcional)">
+          <input type="text" id="tituloProc" class="adm-input" placeholder="Ej: Preparacion del suelo, Trasplante...">
+          <input type="text" id="descripcionProc" class="adm-input" placeholder="Descripcion breve (opcional)">
           <input type="file" id="archivoProc" class="adm-input" accept="image/*">
           <button class="adm-btn" id="btnSubirProc"><i class="fas fa-upload"></i> Subir al Procedimiento</button>
         </div>
         <div class="adm-card" style="grid-column: 1 / -1;">
-          <h2><i class="fas fa-images"></i> Imágenes del Procedimiento</h2>
-          <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 15px;">
-            El orden en que aparecen es del más reciente al más antiguo. Puedes eliminar las que ya no necesites.
-          </p>
+          <h2><i class="fas fa-images"></i> Imagenes del Procedimiento</h2>
           <div id="listaProcAdmin" class="admin-gallery-grid">
-            <p>Cargando imágenes del procedimiento...</p>
+            <p>Cargando imagenes del procedimiento...</p>
           </div>
         </div>
       </div>
 
-      <!-- ===== TAB: DOCUMENTOS ===== -->
+      <!-- TAB: DOCUMENTOS -->
       <div class="adm-tab-content" id="tab-cronogramas" style="display:none;">
         <div class="adm-card">
           <h2><i class="fas fa-file-upload"></i> Subir Documento</h2>
-          <p style="font-size: 0.85rem; color: #6b7280; margin-bottom: 10px;">
-            Formatos: <strong>PDF</strong>, Excel (.xlsx), Word (.docx). Los PDFs se abrirán en el navegador.
-          </p>
           <input type="text" id="tituloCronograma" class="adm-input" placeholder="Nombre del documento...">
-          <input type="file" id="archivoCronograma" class="adm-input"
-                 accept=".pdf,application/pdf,.xls,.xlsx,.doc,.docx">
+          <input type="file" id="archivoCronograma" class="adm-input" accept=".pdf,application/pdf,.xls,.xlsx,.doc,.docx">
           <button class="adm-btn" id="btnSubirDocumento"><i class="fas fa-upload"></i> Subir Archivo</button>
         </div>
         <div class="adm-card" style="grid-column: 1 / -1;">
           <h2><i class="fas fa-folder-open"></i> Gestionar Documentos</h2>
-          <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 15px;">Archivos subidos. Puedes eliminarlos aquí.</p>
           <div id="listaDocsAdmin" class="docs-grid">
             <p>Cargando documentos...</p>
           </div>
         </div>
       </div>
 
-      <!-- ===== TAB: INFO ===== -->
+      <!-- TAB: COMENTARIOS (nuevo) -->
+      <div class="adm-tab-content" id="tab-comentarios" style="display:none;">
+        <div class="adm-card" style="grid-column: 1 / -1;">
+          <h2><i class="fas fa-comments"></i> Gestionar Comentarios y Opiniones</h2>
+          <p style="font-size:0.88rem; color:#6b7280; margin-bottom:16px;">
+            Aqui puedes revisar todos los comentarios recibidos y eliminar los que consideres inapropiados.
+          </p>
+          <div id="listaComentariosAdmin">
+            <p>Cargando comentarios...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: INFO -->
       <div class="adm-tab-content" id="tab-info" style="display:none;">
         <div class="adm-card">
-          <h2><i class="fas fa-file-alt"></i> Actualizar Información</h2>
-          <input type="text" class="adm-input" placeholder="Título de la sección">
-          <textarea class="adm-input" placeholder="Escribe aquí la nueva información..."></textarea>
+          <h2><i class="fas fa-file-alt"></i> Actualizar Informacion</h2>
+          <input type="text" class="adm-input" placeholder="Titulo de la seccion">
+          <textarea class="adm-input" placeholder="Escribe aqui la nueva informacion..."></textarea>
           <button class="adm-btn" id="btnGuardarInfo"><i class="fas fa-save"></i> Publicar Texto</button>
         </div>
       </div>
 
-    </div><!-- /adm-grid -->
+    </div>
   </main>
 </div>
 
@@ -935,13 +920,8 @@
       ctx.fillStyle='#2C2C2A';
       ctx.beginPath(); ctx.arc(cx+Math.cos(a)*16,cy+Math.sin(a)*16,2,0,Math.PI*2); ctx.fill();
     }
-    ['💜','🌸','✨','🌿','🦋'].forEach((e,i)=>{
-      const a=i*Math.PI*2/5+t;
-      ctx.font='24px serif';
-      ctx.fillText(e,cx+Math.cos(a)*120-10,cy+Math.sin(a)*90);
-    });
     ctx.fillStyle='#3C3489'; ctx.font='bold 22px sans-serif'; ctx.textAlign='center';
-    ctx.fillText('¡Llegaste a la lavanda! 🐝',cx,cy-100);
+    ctx.fillText('Llegaste a la lavanda!',cx,cy-100);
     ctx.font='15px sans-serif'; ctx.fillStyle='#534AB7';
     ctx.fillText('Puntaje final: '+score,cx,cy-74);
     ctx.fillStyle='#7F77DD';
@@ -951,9 +931,9 @@
   function drawIdle(){
     drawSky(); drawGround();
     ctx.fillStyle='#3C3489'; ctx.font='bold 24px sans-serif'; ctx.textAlign='center';
-    ctx.fillText('Happy Bee 🐝',W/2,H/2-40);
+    ctx.fillText('Happy Bee',W/2,H/2-40);
     ctx.font='15px sans-serif'; ctx.fillStyle='#534AB7';
-    ctx.fillText('Esquiva 20 avispas para ganar 🌸',W/2,H/2);
+    ctx.fillText('Esquiva 20 avispas para ganar',W/2,H/2);
     ctx.textAlign='left';
     bee.y=H/2-40; drawBee();
   }
@@ -969,9 +949,9 @@
     ctx.fillStyle='rgba(255,255,255,0.88)';
     ctx.beginPath(); ctx.roundRect(W/2-120,H/2-55,240,100,14); ctx.fill();
     ctx.fillStyle='#A32D2D'; ctx.font='bold 22px sans-serif'; ctx.textAlign='center';
-    ctx.fillText('¡Te picaron! 🐝',W/2,H/2-20);
+    ctx.fillText('Te picaron!',W/2,H/2-20);
     ctx.fillStyle='#534AB7'; ctx.font='15px sans-serif';
-    ctx.fillText('Puntaje: '+score+' | Récord: '+best,W/2,H/2+12);
+    ctx.fillText('Puntaje: '+score+' | Record: '+best,W/2,H/2+12);
     ctx.fillText('Toca para reintentar',W/2,H/2+36);
     ctx.textAlign='left';
   }
@@ -1017,14 +997,14 @@
         w.passed=true; score++; updateScore();
         if(score>=20){
           state='win'; spawnWinParticles();
-          if(score>best){ best=score; document.getElementById('bestDisplay').textContent='Récord: '+best; }
+          if(score>best){ best=score; document.getElementById('bestDisplay').textContent='Record: '+best; }
           requestAnimationFrame(gameLoop); return;
         }
       }
     }
     if(checkCollision()){
       spawnDeathParticles();
-      if(score>best){ best=score; document.getElementById('bestDisplay').textContent='Récord: '+best; }
+      if(score>best){ best=score; document.getElementById('bestDisplay').textContent='Record: '+best; }
       state='dead'; requestAnimationFrame(gameLoop); return;
     }
     drawSky(); drawGround(); wasps.forEach(drawWasp); drawBee();
