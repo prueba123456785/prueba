@@ -43,7 +43,7 @@ body {
   100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
 }
 
-/* ===== NAVBAR ===== */
+
 .navbar {
   position: fixed; top: 0; left: 0; right: 0;
   z-index: 1000;
@@ -99,7 +99,7 @@ body {
 .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
 .hamburger span { display: block; width: 24px; height: 2px; background: var(--lavender-deep); border-radius: 2px; transition: all 0.3s; }
 
-/* ===== HERO ===== */
+
 .hero {
   position: relative; min-height: 100vh;
   display: flex; align-items: center; overflow: hidden;
@@ -200,7 +200,7 @@ body {
 .btn-ghost:hover { background: var(--lavender-mist); transform: translateY(-2px); }
 .btn-full { width: 100%; justify-content: center; }
 
-/* ===== WIDGET TEMPERATURA ===== */
+
 .temp-widget {
   background: linear-gradient(135deg, rgba(155,136,198,0.08), rgba(208,200,230,0.12));
   border: 1.5px solid var(--lavender-ghost);
@@ -249,7 +249,7 @@ body {
   transform: rotate(45deg);
 }
 
-/* ===== SECCIONES BASE ===== */
+
 .section { position: relative; padding: 6rem 0; overflow: hidden; }
 .section-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
 .section-tag {
@@ -272,7 +272,7 @@ body {
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* ===== GALERIA ===== */
+
 .galeria { background: var(--white); }
 .carousel-container {
   position: relative; width: 100%; max-width: 900px; height: 450px;
@@ -328,7 +328,7 @@ body {
 .carousel-btn.prev { left: 20px; }
 .carousel-btn.next { right: 20px; }
 
-/* ===== PROCEDIMIENTO ===== */
+
 .procedimiento {
   background: linear-gradient(160deg, var(--lavender-mist) 0%, #fdf0ff 100%);
   position: relative;
@@ -344,7 +344,7 @@ body {
   pointer-events: none;
 }
 
-/* Carrusel del procedimiento — FIX imagenes enormes */
+
 .proc-carousel-wrap {
   position: relative;
   width: 100%;
@@ -357,7 +357,7 @@ body {
   border: 2px solid var(--lavender-ghost);
 }
 
-/* Override para el track dentro del procedimiento */
+
 .proc-carousel-wrap .carousel-track-wrapper {
   width: 100%;
   height: 100%;
@@ -398,7 +398,7 @@ body {
   margin-bottom: 0.5rem;
 }
 
-/* Miniaturas del procedimiento */
+
 .proc-thumbnails {
   display: flex;
   gap: 12px;
@@ -439,7 +439,7 @@ body {
 }
 .proc-thumb.active span { color: var(--lavender-mid); }
 
-/* ===== POR QUE ===== */
+
 .problema { background: var(--cream); }
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
 .card {
@@ -468,7 +468,7 @@ body {
 }
 .card.visible .bar-fill { width: var(--pct); }
 
-/* ===== TIMELINE ===== */
+
 .solucion { background: var(--lavender-mist); }
 .timeline { position: relative; margin-top: 3rem; }
 .timeline-line {
@@ -497,7 +497,7 @@ body {
 .tl-content h3 { font-family: var(--font-display); font-size: 1.4rem; color: var(--lavender-deep); margin-bottom: 0.75rem; font-weight: 700; }
 .tl-content p  { font-size: 0.92rem; color: var(--text-mid); line-height: 1.65; }
 
-/* ===== MONITOREO ===== */
+
 .impacto { background: var(--white); }
 .chart-container {
   background: var(--cream); border-radius: var(--radius); padding: 2rem;
@@ -535,7 +535,7 @@ body {
 .imp-row strong { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--lavender-deep); }
 .imp-row span   { font-size: 0.85rem; color: var(--text-muted); }
 
-/* ===== DIAGRAMA DE FLUJO ===== */
+
 .diagrama-section {
   background: linear-gradient(170deg, #f0eeff 0%, var(--cream) 100%);
   position: relative;
@@ -561,7 +561,7 @@ body {
   position: relative;
 }
 
-/* Nodo base */
+
 .flow-node {
   position: relative;
   cursor: pointer;
@@ -604,7 +604,7 @@ body {
   letter-spacing: 0.01em;
 }
 
-/* Variantes de nodo */
+
 .flow-start .flow-node-inner,
 .flow-end .flow-node-inner {
   border-radius: 50px;
@@ -641,7 +641,7 @@ body {
   color: var(--white);
 }
 
-/* Fila con labels laterales */
+
 .flow-row {
   display: flex;
   align-items: center;
@@ -662,7 +662,7 @@ body {
 .flow-side-left { text-align: right; }
 .flow-side-right { text-align: left; }
 
-/* Flechas */
+
 .flow-arrow {
   display: flex;
   justify-content: center;
@@ -688,7 +688,7 @@ body {
   border-top: 10px solid var(--lavender-main);
 }
 
-/* Panel de detalles */
+
 .flow-detail-panel {
   background: var(--white);
   border: 2px solid var(--lavender-ghost);
@@ -747,7 +747,7 @@ body {
   border-left: 3px solid var(--lavender-main);
 }
 
-/* ===== DOCUMENTOS ===== */
+
 .docs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
 .doc-card  {
   position: relative; background: white; padding: 20px; border-radius: 12px;
@@ -759,7 +759,7 @@ body {
 .doc-info h4 { margin: 0 0 5px 0; font-family: var(--font-body); font-size: 1.1rem; color: #2d3748; }
 .doc-info span { font-size: 0.85rem; color: #718096; background: #edf2f7; padding: 3px 8px; border-radius: 12px; }
 
-/* ===== OPINIONES / TESTIMONIOS ===== */
+
 .opiniones-section {
   background: linear-gradient(160deg, #f5f3fa 0%, #fce8f8 100%);
   position: relative;
@@ -775,7 +775,7 @@ body {
   pointer-events: none;
 }
 
-/* Formulario de opinion */
+
 .opinion-form-wrap {
   max-width: 520px;
   margin: 0 auto 4rem;
@@ -838,7 +838,7 @@ body {
   margin-top: 0.5rem;
 }
 
-/* Grid de testimonios */
+
 .testimonios-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -930,7 +930,7 @@ body {
   letter-spacing: 0.04em;
 }
 
-/* ===== EQUIPO ===== */
+
 .equipo { background: var(--lavender-mist); }
 .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
 .team-card {
@@ -950,7 +950,7 @@ body {
 .team-card span { font-size: 0.78rem; color: var(--lavender-main); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; display: block; margin-bottom: 0.85rem; }
 .team-card p   { font-size: 0.88rem; color: var(--text-mid); line-height: 1.6; }
 
-/* ===== CONTACTO ===== */
+
 .contacto { background: var(--lavender-deep); position: relative; overflow: hidden; }
 .cta-blob  { position: absolute; border-radius: 50%; filter: blur(70px); pointer-events: none; }
 .blob1 { width: 400px; height: 400px; background: rgba(155,136,198,0.15); top: -100px; right: -100px; animation: orbFloat 7s ease-in-out infinite alternate; }
@@ -970,7 +970,7 @@ body {
 .form-input:focus { border-color: var(--lavender-pale); background: rgba(255,255,255,0.12); }
 .form-input option { background: var(--lavender-deep); color: var(--white); }
 
-/* ===== FOOTER ===== */
+
 .footer { background: var(--lavender-deep); border-top: 1px solid rgba(255,255,255,0.08); padding: 4rem 0 2rem; }
 .footer-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; }
 .footer-brand .footer-logo { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
@@ -986,7 +986,7 @@ body {
 .footer-bottom { max-width: 1100px; margin: 3rem auto 0; padding: 1.5rem 2rem 0; border-top: 1px solid rgba(255,255,255,0.08); text-align: center; }
 .footer-bottom p { font-size: 0.82rem; color: rgba(255,255,255,0.35); }
 
-/* Footer redes */
+
 .footer-social { display: flex; gap: 1rem; margin-top: 1rem; }
 .footer-social a {
   display: flex; align-items: center; justify-content: center;
@@ -999,7 +999,7 @@ body {
 .footer-social a:hover { transform: translateY(-3px) scale(1.12); }
 .footer-social-label { font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-bottom: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
 
-/* ===== MODAL ADMIN ===== */
+
 .modal-login {
   display: none; position: fixed; z-index: 99999; inset: 0;
   background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
@@ -1015,7 +1015,7 @@ body {
 .modal-content input[type="password"] { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 20px; font-family: inherit; }
 .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #9ca3af; background: none; border: none; line-height: 1; }
 
-/* ===== PANEL ADMIN ===== */
+
 .adm-wrapper {
   display: none; position: fixed; inset: 0;
   background: #f8f7fa; z-index: 100000;
@@ -1052,7 +1052,7 @@ body {
 .btn-delete-img { position: absolute; top: 7px; right: 7px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
 .btn-delete-img:hover { background: #dc2626; transform: scale(1.15); }
 
-/* ===== ADMIN: COMENTARIOS ===== */
+
 .admin-comment-list {
   display: flex;
   flex-direction: column;
@@ -1107,7 +1107,7 @@ body {
   font-size: 0.95rem;
 }
 
-/* ===== RESPONSIVE ===== */
+
 @media (max-width: 900px) {
   .navbar { padding: 1rem 1.5rem; }
   .navbar.scrolled { padding: 0.7rem 1.5rem; }
