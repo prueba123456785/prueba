@@ -3,9 +3,7 @@
 const API_URL = '/api';
 let tempChart = null;
 
-// =====================================================
-// PARTICULAS
-// =====================================================
+
 function initParticles() {
   const container = document.getElementById('particles');
   if (!container) return;
@@ -25,9 +23,7 @@ function initParticles() {
   }
 }
 
-// =====================================================
-// NAVBAR
-// =====================================================
+
 function initNavbar() {
   const navbar    = document.getElementById('navbar');
   const hamburger = document.getElementById('hamburger');
@@ -63,9 +59,7 @@ function initNavbar() {
   }
 }
 
-// =====================================================
-// REVEAL / COUNTERS / TILT
-// =====================================================
+
 function initReveal() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
@@ -110,9 +104,7 @@ function initCardTilt() {
   });
 }
 
-// =====================================================
-// TEMPERATURA
-// =====================================================
+
 async function obtenerTemperaturaActual() {
   try {
     const response = await fetch(`${API_URL}/temperatura/actual`);
@@ -127,8 +119,7 @@ async function obtenerTemperaturaActual() {
   }
 }
 
-// FIX 1: usa innerHTML para que los iconos unicode se rendericen bien
-// y los estados coinciden con los que manda el server (sin acento)
+
 function actualizarWidgetTemperatura(data) {
   const tempValue          = document.getElementById('tempValue');
   const tempLabel          = document.getElementById('tempLabel');
@@ -307,9 +298,7 @@ function crearGraficoTemperaturaFallback() {
   });
 }
 
-// =====================================================
-// CARRUSEL GALERIA
-// =====================================================
+
 async function inicializarCarrusel() {
   try {
     const response = await fetch(`${API_URL}/fotos`);
@@ -369,9 +358,7 @@ function iniciarLogicaCarrusel(trackId, prevId, nextId, totalSlides) {
   });
 }
 
-// =====================================================
-// CARRUSEL PROCEDIMIENTO
-// =====================================================
+
 async function inicializarCarruselProcedimiento() {
   try {
     const response = await fetch(`${API_URL}/procedimiento`);
@@ -438,9 +425,7 @@ function irAPasoProc(index, total) {
   track.style.transform = `translateX(${-(idx * 100)}%)`;
 }
 
-// =====================================================
-// DIAGRAMA DE FLUJO INTERACTIVO
-// =====================================================
+
 const flowData = {
   inicio: {
     icon: '&#127807;',
@@ -531,9 +516,7 @@ function initFlowchart() {
   }
 }
 
-// =====================================================
-// DOCUMENTOS PUBLICOS
-// =====================================================
+
 async function cargarDocumentosPublicos() {
   const contenedor = document.getElementById('listaDocumentosPublicos');
   if (!contenedor) return;
@@ -581,9 +564,7 @@ async function cargarDocumentosPublicos() {
   }
 }
 
-// =====================================================
-// API STATUS
-// =====================================================
+
 function actualizarEstadoAPI(conectado) {
   const apiStatus = document.getElementById('apiStatus');
   if (!apiStatus) return;
@@ -598,9 +579,7 @@ function actualizarEstadoAPI(conectado) {
   }
 }
 
-// =====================================================
-// NOTIFICACION VISUAL
-// =====================================================
+
 function mostrarNotificacion(texto, tipo = 'success') {
   const existente = document.getElementById('toastNotif');
   if (existente) existente.remove();
@@ -629,11 +608,7 @@ function mostrarNotificacion(texto, tipo = 'success') {
   }, 4000);
 }
 
-// =====================================================
-// FORMULARIO OPINION
-// FIX 2: stopPropagation en inputs para que el juego
-// no consuma Espacio cuando el usuario escribe
-// =====================================================
+
 function initOpinionForm() {
   let ratingSelected = 5;
 
@@ -658,10 +633,10 @@ function initOpinionForm() {
     });
   });
 
-  // Marcar todas activas por defecto
+
   stars.forEach(s => s.classList.add('active'));
 
-  // Evitar que el juego consuma teclas cuando el usuario escribe en los inputs
+  
   ['opinionNombre', 'opinionRol', 'opinionTexto'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('keydown', e => e.stopPropagation());
@@ -754,9 +729,7 @@ async function cargarOpiniones() {
   }
 }
 
-// =====================================================
-// FORMULARIO CONTACTO
-// =====================================================
+
 function initContacto() {
   const btn = document.getElementById('btnEnviarContacto');
   if (!btn) return;
@@ -814,9 +787,7 @@ function initContacto() {
   });
 }
 
-// =====================================================
-// ADMIN PANEL
-// =====================================================
+
 function initAdmin() {
   const btnFloat    = document.getElementById('btnAdminFloat');
   const modal       = document.getElementById('modalAdmin');
@@ -891,9 +862,7 @@ function initAdmin() {
   if (btnGuardarInfo) btnGuardarInfo.addEventListener('click', () => alert('Funcion de informacion proximamente.'));
 }
 
-// =====================================================
-// ADMIN: GALERIA
-// =====================================================
+
 async function cargarFotosAdmin() {
   const contenedor = document.getElementById('listaFotosAdmin');
   if (!contenedor) return;
@@ -959,9 +928,7 @@ async function borrarImagen(id) {
   }
 }
 
-// =====================================================
-// ADMIN: PROCEDIMIENTO
-// =====================================================
+
 async function cargarProcAdmin() {
   const contenedor = document.getElementById('listaProcAdmin');
   if (!contenedor) return;
@@ -1034,9 +1001,7 @@ async function borrarImagenProcedimiento(id) {
   }
 }
 
-// =====================================================
-// ADMIN: DOCUMENTOS
-// =====================================================
+
 async function cargarDocsAdmin() {
   const contenedor = document.getElementById('listaDocsAdmin');
   if (!contenedor) return;
@@ -1115,9 +1080,7 @@ async function borrarDocumento(id) {
   }
 }
 
-// =====================================================
-// ADMIN: COMENTARIOS
-// =====================================================
+
 async function cargarComentariosAdmin() {
   const contenedor = document.getElementById('listaComentariosAdmin');
   if (!contenedor) return;
@@ -1244,9 +1207,7 @@ function buildCommentItem(data, tipo) {
   return item;
 }
 
-// =====================================================
-// INICIALIZACION
-// =====================================================
+
 async function inicializarDatos() {
   console.log('Iniciando Huerto Escolar La Lavanda...');
   await Promise.allSettled([
