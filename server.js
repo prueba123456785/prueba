@@ -22,9 +22,7 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log('Conectado a MongoDB Atlas (ClimasHuerto)'))
   .catch(err => console.error('Error MongoDB:', err));
 
-// =====================================================
-// SCHEMAS / MODELS
-// =====================================================
+
 const climaSchema = new mongoose.Schema({
   fecha:       String,
   temperatura: Number
@@ -69,9 +67,7 @@ const comentarioSchema = new mongoose.Schema({
 
 const Comentario = mongoose.model('Comentario', comentarioSchema);
 
-// =====================================================
-// NUEVO: SCHEMA DE OPINIONES
-// =====================================================
+
 const opinionSchema = new mongoose.Schema({
   nombre:   { type: String, required: true },
   rol:      { type: String, default: 'Usuario' },
@@ -82,24 +78,20 @@ const opinionSchema = new mongoose.Schema({
 
 const Opinion = mongoose.model('Opinion', opinionSchema);
 
-// Multer — limite 50 MB para permitir PDFs
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 50 * 1024 * 1024 }
 });
 
-// =====================================================
-// HELPERS
-// =====================================================
+
 const obtenerFechaString = (diasAtras = 0) => {
   const d = new Date();
   d.setDate(d.getDate() - diasAtras);
   return d.toISOString().split('T')[0];
 };
 
-// =====================================================
-// RUTAS: TEMPERATURA
-// =====================================================
+
 app.get('/api/temperatura/actual', async (req, res) => {
   try {
     const ultimo = await Clima.findOne().sort({ fecha: -1 });
@@ -142,9 +134,7 @@ app.get('/api/temperatura/estadisticas', async (req, res) => {
   }
 });
 
-// =====================================================
-// RUTAS: RECOMENDACIONES
-// =====================================================
+
 app.get('/api/recomendaciones/riego', async (req, res) => {
   try {
     const ultimo = await Clima.findOne().sort({ fecha: -1 });
@@ -170,9 +160,7 @@ app.get('/api/estado/floracion', async (req, res) => {
   }
 });
 
-// =====================================================
-// RUTAS: GALERIA
-// =====================================================
+
 app.get('/api/fotos', async (req, res) => {
   try {
     const fotos = await Foto.find().sort({ _id: -1 });
@@ -211,9 +199,7 @@ app.delete('/api/fotos/:id', async (req, res) => {
   }
 });
 
-// =====================================================
-// RUTAS: PROCEDIMIENTO
-// =====================================================
+
 app.get('/api/procedimiento', async (req, res) => {
   try {
     const fotos = await ImagenProcedimiento.find().sort({ fecha: 1 });
@@ -252,9 +238,7 @@ app.delete('/api/procedimiento/:id', async (req, res) => {
   }
 });
 
-// =====================================================
-// RUTAS: DOCUMENTOS
-// =====================================================
+
 app.get('/api/documentos', async (req, res) => {
   try {
     const documentos = await Documento.find().sort({ fecha: -1 });
@@ -325,9 +309,7 @@ app.delete('/api/documentos/:id', async (req, res) => {
   }
 });
 
-// =====================================================
-// RUTAS: COMENTARIOS / CONTACTO
-// =====================================================
+
 app.post('/api/comentarios', async (req, res) => {
   try {
     const { nombre, email, tipo, mensaje } = req.body;
@@ -365,11 +347,7 @@ app.delete('/api/comentarios/:id', async (req, res) => {
   }
 });
 
-// =====================================================
-// RUTAS: OPINIONES (jarabe de lavanda)
-// =====================================================
 
-// GET — listar todas las opiniones
 app.get('/api/opiniones', async (req, res) => {
   try {
     const opiniones = await Opinion.find().sort({ fecha: -1 });
@@ -380,7 +358,7 @@ app.get('/api/opiniones', async (req, res) => {
   }
 });
 
-// POST — guardar nueva opinion
+
 app.post('/api/opiniones', async (req, res) => {
   try {
     const { nombre, rol, texto, estrellas } = req.body;
@@ -402,7 +380,7 @@ app.post('/api/opiniones', async (req, res) => {
   }
 });
 
-// DELETE — eliminar opinion por id (admin)
+
 app.delete('/api/opiniones/:id', async (req, res) => {
   try {
     const borrada = await Opinion.findByIdAndDelete(req.params.id);
@@ -415,9 +393,7 @@ app.delete('/api/opiniones/:id', async (req, res) => {
   }
 });
 
-// =====================================================
-// RUTA PRINCIPAL
-// =====================================================
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
