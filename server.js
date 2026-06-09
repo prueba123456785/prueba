@@ -42,7 +42,7 @@ const Foto = mongoose.model('Foto', fotoSchema);
 
 const procedimientoSchema = new mongoose.Schema({
   url:         { type: String, required: true },
-  titulo:      { type: String, default: 'Sin título' },
+  titulo:      { type: String, default: 'Sin titulo' },
   descripcion: { type: String, default: '' },
   fecha:       { type: Date, default: Date.now }
 }, { collection: 'Procedimiento' });
@@ -59,9 +59,6 @@ const documentoSchema = new mongoose.Schema({
 
 const Documento = mongoose.model('Documento', documentoSchema);
 
-// =====================================================
-// NUEVO: SCHEMA DE COMENTARIOS / CONTACTO
-// =====================================================
 const comentarioSchema = new mongoose.Schema({
   nombre:  { type: String, required: true },
   email:   { type: String, required: true },
@@ -72,7 +69,20 @@ const comentarioSchema = new mongoose.Schema({
 
 const Comentario = mongoose.model('Comentario', comentarioSchema);
 
-// Multer — límite 50 MB para permitir PDFs
+// =====================================================
+// NUEVO: SCHEMA DE OPINIONES
+// =====================================================
+const opinionSchema = new mongoose.Schema({
+  nombre:   { type: String, required: true },
+  rol:      { type: String, default: 'Usuario' },
+  texto:    { type: String, required: true },
+  estrellas:{ type: Number, default: 5, min: 1, max: 5 },
+  fecha:    { type: Date, default: Date.now }
+}, { collection: 'Opiniones' });
+
+const Opinion = mongoose.model('Opinion', opinionSchema);
+
+// Multer — limite 50 MB para permitir PDFs
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 50 * 1024 * 1024 }
@@ -96,12 +106,12 @@ app.get('/api/temperatura/actual', async (req, res) => {
     if (!ultimo) {
       return res.json({ temperatura: 22, fecha: obtenerFechaString(), estado: 'S/D', mensaje: 'Sin datos en Atlas' });
     }
-    let estado  = 'ÓPTIMO';
-    let mensaje = '🟣 Temperatura ideal';
-    if (ultimo.temperatura > 25) { estado = 'CÁLIDO';        mensaje = '🟠 Hace calor'; }
-    if (ultimo.temperatura < 15) { estado = 'FRESCO';        mensaje = '🔵 Temperatura baja'; }
-    if (ultimo.temperatura > 35) { estado = 'EXTREMO CALOR'; mensaje = '🔴 Temperatura peligrosa'; }
-    if (ultimo.temperatura < 5)  { estado = 'HELADA';        mensaje = '❄️ Riesgo de helada'; }
+    let estado  = 'OPTIMO';
+    let mensaje = 'Temperatura ideal';
+    if (ultimo.temperatura > 25) { estado = 'CALIDO';        mensaje = 'Hace calor'; }
+    if (ultimo.temperatura < 15) { estado = 'FRESCO';        mensaje = 'Temperatura baja'; }
+    if (ultimo.temperatura > 35) { estado = 'EXTREMO CALOR'; mensaje = 'Temperatura peligrosa'; }
+    if (ultimo.temperatura < 5)  { estado = 'HELADA';        mensaje = 'Riesgo de helada'; }
     res.json({ temperatura: ultimo.temperatura, fecha: ultimo.fecha, estado, mensaje });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -139,9 +149,9 @@ app.get('/api/recomendaciones/riego', async (req, res) => {
   try {
     const ultimo = await Clima.findOne().sort({ fecha: -1 });
     const temp   = ultimo ? ultimo.temperatura : 22;
-    let riego = { recomendacion: 'Riego moderado', frecuencia: 'Cada 7 días', cantidad: 'Normal' };
-    if (temp > 25) riego = { recomendacion: 'Riego frecuente', frecuencia: 'Cada 2-3 días', cantidad: 'Abundante' };
-    if (temp < 15) riego = { recomendacion: 'Riego escaso',    frecuencia: 'Cada 12 días',  cantidad: 'Mínima' };
+    let riego = { recomendacion: 'Riego moderado', frecuencia: 'Cada 7 dias', cantidad: 'Normal' };
+    if (temp > 25) riego = { recomendacion: 'Riego frecuente', frecuencia: 'Cada 2-3 dias', cantidad: 'Abundante' };
+    if (temp < 15) riego = { recomendacion: 'Riego escaso',    frecuencia: 'Cada 12 dias',  cantidad: 'Minima' };
     res.json(riego);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -153,7 +163,7 @@ app.get('/api/estado/floracion', async (req, res) => {
     const ultimo = await Clima.findOne().sort({ fecha: -1 });
     const temp   = ultimo ? ultimo.temperatura : 22;
     let flor = { estado: 'CRECIMIENTO', mensaje: 'Desarrollo de hojas activo' };
-    if (temp >= 20 && temp <= 25) flor = { estado: 'FLORACIÓN', mensaje: '¡Momento ideal para las flores!' };
+    if (temp >= 20 && temp <= 25) flor = { estado: 'FLORACION', mensaje: 'Momento ideal para las flores!' };
     res.json(flor);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -161,7 +171,7 @@ app.get('/api/estado/floracion', async (req, res) => {
 });
 
 // =====================================================
-// RUTAS: GALERÍA
+// RUTAS: GALERIA
 // =====================================================
 app.get('/api/fotos', async (req, res) => {
   try {
@@ -174,17 +184,17 @@ app.get('/api/fotos', async (req, res) => {
 
 app.post('/subir-imagen', upload.single('imagen'), async (req, res) => {
   try {
-    if (!req.file) return res.status(400).json({ ok: false, error: 'No se recibió imagen' });
+    if (!req.file) return res.status(400).json({ ok: false, error: 'No se recibio imagen' });
     const base64    = req.file.buffer.toString('base64');
     const nuevaFoto = new Foto({
-      titulo: req.body.titulo || 'Sin título',
+      titulo: req.body.titulo || 'Sin titulo',
       url:    `data:${req.file.mimetype};base64,${base64}`
     });
     await nuevaFoto.save();
-    console.log('✅ Imagen guardada en galería');
+    console.log('Imagen guardada en galeria');
     res.json({ ok: true, mensaje: 'Imagen subida correctamente' });
   } catch (err) {
-    console.error('❌ Error al subir imagen:', err);
+    console.error('Error al subir imagen:', err);
     res.status(500).json({ ok: false, error: err.message });
   }
 });
@@ -192,11 +202,11 @@ app.post('/subir-imagen', upload.single('imagen'), async (req, res) => {
 app.delete('/api/fotos/:id', async (req, res) => {
   try {
     const fotoBorrada = await Foto.findByIdAndDelete(req.params.id);
-    if (!fotoBorrada) return res.status(404).json({ ok: false, error: 'No se encontró la imagen' });
-    console.log(`🗑️ Imagen de galería eliminada: ${req.params.id}`);
+    if (!fotoBorrada) return res.status(404).json({ ok: false, error: 'No se encontro la imagen' });
+    console.log(`Imagen de galeria eliminada: ${req.params.id}`);
     res.json({ ok: true, mensaje: 'Imagen eliminada correctamente' });
   } catch (error) {
-    console.error('❌ Error al borrar imagen:', error);
+    console.error('Error al borrar imagen:', error);
     res.status(500).json({ ok: false, error: error.message });
   }
 });
@@ -215,18 +225,18 @@ app.get('/api/procedimiento', async (req, res) => {
 
 app.post('/subir-procedimiento', upload.single('imagen'), async (req, res) => {
   try {
-    if (!req.file) return res.status(400).json({ ok: false, error: 'No se recibió imagen' });
+    if (!req.file) return res.status(400).json({ ok: false, error: 'No se recibio imagen' });
     const base64   = req.file.buffer.toString('base64');
     const nuevaImg = new ImagenProcedimiento({
-      titulo:      req.body.titulo      || 'Sin título',
+      titulo:      req.body.titulo      || 'Sin titulo',
       descripcion: req.body.descripcion || '',
       url:         `data:${req.file.mimetype};base64,${base64}`
     });
     await nuevaImg.save();
-    console.log('✅ Imagen de procedimiento guardada');
+    console.log('Imagen de procedimiento guardada');
     res.json({ ok: true, mensaje: 'Imagen de procedimiento subida correctamente' });
   } catch (err) {
-    console.error('❌ Error al subir imagen de procedimiento:', err);
+    console.error('Error al subir imagen de procedimiento:', err);
     res.status(500).json({ ok: false, error: err.message });
   }
 });
@@ -234,8 +244,8 @@ app.post('/subir-procedimiento', upload.single('imagen'), async (req, res) => {
 app.delete('/api/procedimiento/:id', async (req, res) => {
   try {
     const borrada = await ImagenProcedimiento.findByIdAndDelete(req.params.id);
-    if (!borrada) return res.status(404).json({ ok: false, error: 'No se encontró la imagen del procedimiento' });
-    console.log(`🗑️ Imagen de procedimiento eliminada: ${req.params.id}`);
+    if (!borrada) return res.status(404).json({ ok: false, error: 'No se encontro la imagen del procedimiento' });
+    console.log(`Imagen de procedimiento eliminada: ${req.params.id}`);
     res.json({ ok: true, mensaje: 'Imagen de procedimiento eliminada correctamente' });
   } catch (error) {
     res.status(500).json({ ok: false, error: error.message });
@@ -257,7 +267,7 @@ app.get('/api/documentos', async (req, res) => {
     }));
     res.json(mapeados);
   } catch (error) {
-    console.error('❌ Error al obtener documentos:', error);
+    console.error('Error al obtener documentos:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -268,7 +278,7 @@ app.get('/ver-documento/:id', async (req, res) => {
     if (!doc) return res.status(404).send('Documento no encontrado');
     const dataUri  = doc.datosBase64;
     const matches  = dataUri.match(/^data:([^;]+);base64,(.+)$/);
-    if (!matches) return res.status(500).send('Formato de archivo inválido');
+    if (!matches) return res.status(500).send('Formato de archivo invalido');
     const mimeType = matches[1];
     const buffer   = Buffer.from(matches[2], 'base64');
     const disposition = mimeType === 'application/pdf'
@@ -279,26 +289,26 @@ app.get('/ver-documento/:id', async (req, res) => {
     res.set('Content-Length', buffer.length);
     res.send(buffer);
   } catch (error) {
-    console.error('❌ Error al servir documento:', error);
+    console.error('Error al servir documento:', error);
     res.status(500).send('Error al abrir el documento');
   }
 });
 
 app.post('/subir-documento', upload.single('documento'), async (req, res) => {
   try {
-    if (!req.file) return res.status(400).json({ ok: false, error: 'No se recibió ningún documento' });
+    if (!req.file) return res.status(400).json({ ok: false, error: 'No se recibio ningun documento' });
     const base64         = req.file.buffer.toString('base64');
     const nuevoDocumento = new Documento({
-      titulo:        req.body.titulo || 'Sin título',
+      titulo:        req.body.titulo || 'Sin titulo',
       nombreArchivo: req.file.originalname,
       tipoArchivo:   req.file.mimetype,
       datosBase64:   `data:${req.file.mimetype};base64,${base64}`
     });
     await nuevoDocumento.save();
-    console.log('✅ Documento guardado:', req.file.originalname, '—', req.file.mimetype);
+    console.log('Documento guardado:', req.file.originalname, '—', req.file.mimetype);
     res.json({ ok: true, mensaje: 'Documento subido correctamente' });
   } catch (err) {
-    console.error('❌ Error al subir documento:', err);
+    console.error('Error al subir documento:', err);
     res.status(500).json({ ok: false, error: err.message });
   }
 });
@@ -306,11 +316,11 @@ app.post('/subir-documento', upload.single('documento'), async (req, res) => {
 app.delete('/api/documentos/:id', async (req, res) => {
   try {
     const docBorrado = await Documento.findByIdAndDelete(req.params.id);
-    if (!docBorrado) return res.status(404).json({ ok: false, error: 'No se encontró el documento' });
-    console.log(`🗑️ Documento eliminado: ${req.params.id}`);
+    if (!docBorrado) return res.status(404).json({ ok: false, error: 'No se encontro el documento' });
+    console.log(`Documento eliminado: ${req.params.id}`);
     res.json({ ok: true, mensaje: 'Documento eliminado correctamente' });
   } catch (error) {
-    console.error('❌ Error al borrar documento:', error);
+    console.error('Error al borrar documento:', error);
     res.status(500).json({ ok: false, error: error.message });
   }
 });
@@ -318,8 +328,6 @@ app.delete('/api/documentos/:id', async (req, res) => {
 // =====================================================
 // RUTAS: COMENTARIOS / CONTACTO
 // =====================================================
-
-// POST — guardar nuevo comentario desde el formulario
 app.post('/api/comentarios', async (req, res) => {
   try {
     const { nombre, email, tipo, mensaje } = req.body;
@@ -328,21 +336,82 @@ app.post('/api/comentarios', async (req, res) => {
     }
     const nuevo = new Comentario({ nombre, email, tipo: tipo || 'General', mensaje: mensaje || '' });
     await nuevo.save();
-    console.log(`✅ Comentario guardado de: ${nombre} <${email}>`);
-    res.json({ ok: true, mensaje: '¡Gracias por tu mensaje! Lo revisaremos pronto.' });
+    console.log(`Comentario guardado de: ${nombre} <${email}>`);
+    res.json({ ok: true, mensaje: 'Gracias por tu mensaje! Lo revisaremos pronto.' });
   } catch (err) {
-    console.error('❌ Error al guardar comentario:', err);
+    console.error('Error al guardar comentario:', err);
     res.status(500).json({ ok: false, error: err.message });
   }
 });
 
-// GET — listar todos los comentarios (para el admin si lo necesitas)
 app.get('/api/comentarios', async (req, res) => {
   try {
     const comentarios = await Comentario.find().sort({ fecha: -1 });
     res.json(comentarios);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/api/comentarios/:id', async (req, res) => {
+  try {
+    const borrado = await Comentario.findByIdAndDelete(req.params.id);
+    if (!borrado) return res.status(404).json({ ok: false, error: 'Comentario no encontrado' });
+    console.log(`Comentario eliminado: ${req.params.id}`);
+    res.json({ ok: true, mensaje: 'Comentario eliminado correctamente' });
+  } catch (error) {
+    console.error('Error al borrar comentario:', error);
+    res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
+// =====================================================
+// RUTAS: OPINIONES (jarabe de lavanda)
+// =====================================================
+
+// GET — listar todas las opiniones
+app.get('/api/opiniones', async (req, res) => {
+  try {
+    const opiniones = await Opinion.find().sort({ fecha: -1 });
+    res.json(opiniones);
+  } catch (error) {
+    console.error('Error al obtener opiniones:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST — guardar nueva opinion
+app.post('/api/opiniones', async (req, res) => {
+  try {
+    const { nombre, rol, texto, estrellas } = req.body;
+    if (!nombre || !texto) {
+      return res.status(400).json({ ok: false, error: 'Nombre y texto son obligatorios.' });
+    }
+    const nueva = new Opinion({
+      nombre,
+      rol:      rol      || 'Usuario',
+      texto,
+      estrellas: estrellas || 5
+    });
+    await nueva.save();
+    console.log(`Opinion guardada de: ${nombre}`);
+    res.json({ ok: true, mensaje: 'Opinion publicada correctamente.' });
+  } catch (err) {
+    console.error('Error al guardar opinion:', err);
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// DELETE — eliminar opinion por id (admin)
+app.delete('/api/opiniones/:id', async (req, res) => {
+  try {
+    const borrada = await Opinion.findByIdAndDelete(req.params.id);
+    if (!borrada) return res.status(404).json({ ok: false, error: 'Opinion no encontrada' });
+    console.log(`Opinion eliminada: ${req.params.id}`);
+    res.json({ ok: true, mensaje: 'Opinion eliminada correctamente' });
+  } catch (error) {
+    console.error('Error al borrar opinion:', error);
+    res.status(500).json({ ok: false, error: error.message });
   }
 });
 
@@ -354,5 +423,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
