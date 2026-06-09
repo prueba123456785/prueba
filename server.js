@@ -59,10 +59,23 @@ const documentoSchema = new mongoose.Schema({
 
 const Documento = mongoose.model('Documento', documentoSchema);
 
+// =====================================================
+// NUEVO: SCHEMA DE COMENTARIOS / CONTACTO
+// =====================================================
+const comentarioSchema = new mongoose.Schema({
+  nombre:  { type: String, required: true },
+  email:   { type: String, required: true },
+  tipo:    { type: String, default: 'General' },
+  mensaje: { type: String, default: '' },
+  fecha:   { type: Date, default: Date.now }
+}, { collection: 'Comentarios' });
+
+const Comentario = mongoose.model('Comentario', comentarioSchema);
+
 // Multer — límite 50 MB para permitir PDFs
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 50 * 1024 * 1024 }  // 50 MB para tener margen
+  limits: { fileSize: 50 * 1024 * 1024 }
 });
 
 // =====================================================
@@ -232,8 +245,6 @@ app.delete('/api/procedimiento/:id', async (req, res) => {
 // =====================================================
 // RUTAS: DOCUMENTOS
 // =====================================================
-
-// GET lista de documentos (sin el base64 completo, solo metadatos + id)
 app.get('/api/documentos', async (req, res) => {
   try {
     const documentos = await Documento.find().sort({ fecha: -1 });
@@ -243,7 +254,6 @@ app.get('/api/documentos', async (req, res) => {
       nombreArchivo: doc.nombreArchivo,
       tipoArchivo:   doc.tipoArchivo,
       fecha:         doc.fecha
-      // NO enviamos datosBase64 aquí — el cliente usará /ver-documento/:id
     }));
     res.json(mapeados);
   } catch (error) {
@@ -252,43 +262,31 @@ app.get('/api/documentos', async (req, res) => {
   }
 });
 
-// GET documento individual — devuelve el archivo con Content-Type correcto
-// Esto permite que PDFs se abran en el navegador (inline) y otros se descarguen
 app.get('/ver-documento/:id', async (req, res) => {
   try {
     const doc = await Documento.findById(req.params.id);
     if (!doc) return res.status(404).send('Documento no encontrado');
-
-    // Extraer el buffer desde el data URI base64
     const dataUri  = doc.datosBase64;
     const matches  = dataUri.match(/^data:([^;]+);base64,(.+)$/);
     if (!matches) return res.status(500).send('Formato de archivo inválido');
-
     const mimeType = matches[1];
     const buffer   = Buffer.from(matches[2], 'base64');
-
-    // Para PDFs: inline (se abre en el navegador)
-    // Para otros: attachment (se descarga)
     const disposition = mimeType === 'application/pdf'
       ? `inline; filename="${encodeURIComponent(doc.nombreArchivo || 'documento.pdf')}"`
       : `attachment; filename="${encodeURIComponent(doc.nombreArchivo || 'documento')}"`;
-
     res.set('Content-Type', mimeType);
     res.set('Content-Disposition', disposition);
     res.set('Content-Length', buffer.length);
     res.send(buffer);
-
   } catch (error) {
     console.error('❌ Error al servir documento:', error);
     res.status(500).send('Error al abrir el documento');
   }
 });
 
-// POST subir documento (PDF, Excel, Word)
 app.post('/subir-documento', upload.single('documento'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ ok: false, error: 'No se recibió ningún documento' });
-
     const base64         = req.file.buffer.toString('base64');
     const nuevoDocumento = new Documento({
       titulo:        req.body.titulo || 'Sin título',
@@ -296,7 +294,6 @@ app.post('/subir-documento', upload.single('documento'), async (req, res) => {
       tipoArchivo:   req.file.mimetype,
       datosBase64:   `data:${req.file.mimetype};base64,${base64}`
     });
-
     await nuevoDocumento.save();
     console.log('✅ Documento guardado:', req.file.originalname, '—', req.file.mimetype);
     res.json({ ok: true, mensaje: 'Documento subido correctamente' });
@@ -306,7 +303,6 @@ app.post('/subir-documento', upload.single('documento'), async (req, res) => {
   }
 });
 
-// DELETE documento
 app.delete('/api/documentos/:id', async (req, res) => {
   try {
     const docBorrado = await Documento.findByIdAndDelete(req.params.id);
@@ -316,6 +312,37 @@ app.delete('/api/documentos/:id', async (req, res) => {
   } catch (error) {
     console.error('❌ Error al borrar documento:', error);
     res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
+// =====================================================
+// RUTAS: COMENTARIOS / CONTACTO
+// =====================================================
+
+// POST — guardar nuevo comentario desde el formulario
+app.post('/api/comentarios', async (req, res) => {
+  try {
+    const { nombre, email, tipo, mensaje } = req.body;
+    if (!nombre || !email) {
+      return res.status(400).json({ ok: false, error: 'Nombre y correo son obligatorios.' });
+    }
+    const nuevo = new Comentario({ nombre, email, tipo: tipo || 'General', mensaje: mensaje || '' });
+    await nuevo.save();
+    console.log(`✅ Comentario guardado de: ${nombre} <${email}>`);
+    res.json({ ok: true, mensaje: '¡Gracias por tu mensaje! Lo revisaremos pronto.' });
+  } catch (err) {
+    console.error('❌ Error al guardar comentario:', err);
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// GET — listar todos los comentarios (para el admin si lo necesitas)
+app.get('/api/comentarios', async (req, res) => {
+  try {
+    const comentarios = await Comentario.find().sort({ fecha: -1 });
+    res.json(comentarios);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
