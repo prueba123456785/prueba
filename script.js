@@ -430,7 +430,7 @@ const flowData = {
   inicio: {
     icon: '&#127807;',
     title: 'Inicio del proyecto',
-    desc: 'El proyecto Huerto Escolar La Lavanda comenzo con la idea de combinar educacion ambiental, tecnologia IoT y agricultura sostenible en un espacio escolar.',
+    desc: 'El proyecto Huerto Escolar La Lavanda comenzo con la idea de combinar educacion ambiental, agricultura sostenible en un espacio escolar.',
     items: ['Planeacion del proyecto por el equipo', 'Seleccion del cultivo: lavanda', 'Gestion de recursos y materiales', 'Formacion de equipos de trabajo']
   },
   suelo: {
@@ -441,14 +441,14 @@ const flowData = {
   },
   preparacion: {
     icon: '&#128247;',
-    title: 'Preparacion y compost',
+    title: 'Preparacion',
     desc: 'Con los resultados del analisis preparamos el terreno con compost organico y ajustamos las condiciones para maximizar el desarrollo de la lavanda.',
     items: ['Mezcla con compost organico (30%)', 'Aireacion y volteo del suelo', 'Nivelacion de las camas de cultivo', 'Instalacion del sistema de riego por goteo']
   },
   sensores: {
     icon: '&#128268;',
-    title: 'Instalacion de sensores IoT',
-    desc: 'Colocamos sensores de temperatura y humedad conectados a nuestra base de datos en MongoDB Atlas. Los datos se actualizan automaticamente.',
+    title: 'Instalacion del sistema de riego,
+    desc: 'Colocamos sistemas de riego automatizados.',
     items: ['Sensor DHT22 de temperatura y humedad', 'Conexion WiFi via microcontrolador', 'Sincronizacion con MongoDB Atlas', 'Dashboard en tiempo real en la web']
   },
   plantacion: {
@@ -460,7 +460,7 @@ const flowData = {
   monitoreo: {
     icon: '&#128200;',
     title: 'Monitoreo semanal',
-    desc: 'Revisamos los datos de los sensores semanalmente. Si las condiciones no son optimas, ajustamos el riego y los cuidados.',
+    desc: 'Revisamos las lavandas semanalmente. Si las condiciones no son optimas, ajustamos el riego y los cuidados.',
     items: ['Temperatura optima: 15 - 25 C', 'Si condiciones incorrectas: ajuste de riego', 'Si condiciones OK: se continua normalmente', 'Registro en bitacora escolar']
   },
   cosecha: {
