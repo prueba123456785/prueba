@@ -305,9 +305,6 @@ function crearGraficoTemperaturaFallback() {
 // =====================================================
 // CARRUSEL GALERÍA
 // =====================================================
-let currentSlideIndex = 0;
-let carouselTimer = null;
-
 async function inicializarCarrusel() {
   try {
     const response = await fetch(`${API_URL}/fotos`);
@@ -383,7 +380,6 @@ async function inicializarCarruselProcedimiento() {
       if (thumbsContainer) thumbsContainer.innerHTML = '';
 
       fotos.forEach((foto, i) => {
-        // Slide principal
         const li = document.createElement('li');
         li.className = 'carousel-slide';
         li.innerHTML = `
@@ -396,7 +392,6 @@ async function inicializarCarruselProcedimiento() {
         `;
         track.appendChild(li);
 
-        // Miniatura
         if (thumbsContainer) {
           const thumb = document.createElement('div');
           thumb.className = 'proc-thumb';
@@ -457,13 +452,10 @@ async function cargarDocumentosPublicos() {
     docs.forEach(doc => {
       const a = document.createElement('a');
       a.className = 'doc-card';
-      // Usamos la ruta del servidor que sirve el archivo con Content-Type correcto
-      // Los PDFs se abren en el navegador, los demás se descargan
       a.href   = `/ver-documento/${doc._id}`;
       a.target = '_blank';
       a.rel    = 'noopener noreferrer';
 
-      // Detectar ícono por tipoArchivo (MIME) o por nombre de archivo
       let icon  = 'fa-file-alt';
       let label = 'Abrir archivo';
       const mime = (doc.tipoArchivo || '').toLowerCase();
@@ -512,25 +504,83 @@ function actualizarEstadoAPI(conectado) {
 }
 
 // =====================================================
-// CONTACTO
+// CONTACTO — FORMULARIO FUNCIONAL CON API
 // =====================================================
 function initContacto() {
   const btn = document.getElementById('btnEnviarContacto');
   if (!btn) return;
+
   btn.addEventListener('click', async () => {
-    const nombre = document.getElementById('contactName').value.trim();
-    const email  = document.getElementById('contactEmail').value.trim();
-    const tipo   = document.getElementById('contactType').value;
+    const nombre  = document.getElementById('contactName').value.trim();
+    const email   = document.getElementById('contactEmail').value.trim();
+    const tipo    = document.getElementById('contactType').value;
+    const mensaje = document.getElementById('contactMessage') ? document.getElementById('contactMessage').value.trim() : '';
+
     if (!nombre || !email) {
-      alert('Por favor completa todos los campos');
+      mostrarNotificacion('Por favor completa nombre y correo.', 'error');
       return;
     }
-    console.log('Enviando contacto:', { nombre, email, tipo });
-    alert(`¡Gracias ${nombre}! Te contactaremos pronto a ${email}`);
-    document.getElementById('contactName').value = '';
-    document.getElementById('contactEmail').value = '';
-    document.getElementById('contactType').selectedIndex = 0;
+
+    // Validar email básico
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      mostrarNotificacion('Por favor ingresa un correo válido.', 'error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    try {
+      const res = await fetch('/api/comentarios', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, email, tipo, mensaje })
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        mostrarNotificacion(`¡Gracias ${nombre}! Tu mensaje fue enviado correctamente. 🌿`, 'success');
+        document.getElementById('contactName').value    = '';
+        document.getElementById('contactEmail').value   = '';
+        document.getElementById('contactType').selectedIndex = 0;
+        if (document.getElementById('contactMessage')) document.getElementById('contactMessage').value = '';
+      } else {
+        mostrarNotificacion('Error al enviar: ' + (data.error || 'Intenta de nuevo.'), 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      mostrarNotificacion('Error de conexión con el servidor.', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Enviar solicitud';
+    }
   });
+}
+
+// Notificación visual en lugar de alert()
+function mostrarNotificacion(texto, tipo = 'success') {
+  const existente = document.getElementById('toastNotif');
+  if (existente) existente.remove();
+
+  const toast = document.createElement('div');
+  toast.id = 'toastNotif';
+  toast.style.cssText = `
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    background: ${tipo === 'success' ? '#5a4a7a' : '#ef4444'};
+    color: #fff; padding: 1rem 2rem; border-radius: 50px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2); z-index: 99999;
+    animation: toastIn 0.4s ease; max-width: 90vw; text-align: center;
+  `;
+  toast.textContent = texto;
+
+  const style = document.createElement('style');
+  style.textContent = `@keyframes toastIn { from { opacity:0; transform: translateX(-50%) translateY(20px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }`;
+  document.head.appendChild(style);
+
+  document.body.appendChild(toast);
+  setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.4s'; setTimeout(() => toast.remove(), 400); }, 4000);
 }
 
 // =====================================================
@@ -561,7 +611,6 @@ function initAdmin() {
         passInput.value = '';
         panel.classList.add('active');
         document.body.style.overflow = 'hidden';
-        // Cargar tab activo por defecto (galería)
         cargarFotosAdmin();
         cargarDocsAdmin();
       } else {
@@ -583,28 +632,20 @@ function initAdmin() {
     });
   }
 
-  // ===== TABS del panel admin =====
   document.querySelectorAll('.adm-menu').forEach(menu => {
     menu.addEventListener('click', () => {
       const tab = menu.dataset.tab;
-
-      // Activar menú
       document.querySelectorAll('.adm-menu').forEach(m => m.classList.remove('active'));
       menu.classList.add('active');
-
-      // Mostrar tab correspondiente
       document.querySelectorAll('.adm-tab-content').forEach(t => t.style.display = 'none');
       const tabEl = document.getElementById('tab-' + tab);
       if (tabEl) tabEl.style.display = 'contents';
-
-      // Cargar datos del tab si aplica
       if (tab === 'galeria')       cargarFotosAdmin();
       if (tab === 'procedimiento') cargarProcAdmin();
       if (tab === 'cronogramas')   cargarDocsAdmin();
     });
   });
 
-  // Botones de subida
   const btnSubirImg = document.getElementById('btnSubirImagen');
   if (btnSubirImg) btnSubirImg.addEventListener('click', subirImagen);
 
@@ -786,17 +827,13 @@ async function cargarDocsAdmin() {
       const name = (doc.nombreArchivo || '').toLowerCase();
 
       if (mime === 'application/pdf' || name.endsWith('.pdf')) {
-        icon = 'fa-file-pdf';
-        label = 'Abrir PDF';
+        icon = 'fa-file-pdf'; label = 'Abrir PDF';
       } else if (mime.includes('excel') || mime.includes('spreadsheet') || name.endsWith('.xls') || name.endsWith('.xlsx')) {
-        icon = 'fa-file-excel';
-        label = 'Descargar Excel';
+        icon = 'fa-file-excel'; label = 'Descargar Excel';
       } else if (mime.includes('word') || mime.includes('document') || name.endsWith('.doc') || name.endsWith('.docx')) {
-        icon = 'fa-file-word';
-        label = 'Descargar Word';
+        icon = 'fa-file-word'; label = 'Descargar Word';
       }
 
-      // Ruta limpia que sirve el archivo con Content-Type correcto
       const urlVer = `/ver-documento/${doc._id}`;
 
       div.innerHTML = `
