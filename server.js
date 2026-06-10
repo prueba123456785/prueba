@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, '.')));
 
-const MONGO_URI = 'mongodb+srv://yael24571_db_user:y12345@cluster0.86hmorz.mongodb.net/ClimasHuerto?appName=Cluster0';
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('Conectado a MongoDB Atlas (ClimasHuerto)'))
@@ -396,6 +396,10 @@ app.delete('/api/opiniones/:id', async (req, res) => {
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/api/config', (req, res) => {
+  res.json({ adminPassword: process.env.ADMIN_PASSWORD });
 });
 
 app.listen(PORT, () => {
