@@ -441,7 +441,7 @@ const flowData = {
     icon: '&#128268;',
     title: 'Instalacion del sistema de riego',
     desc: 'Colocamos un sistema de riego automatico',
-    items: ['Sensor DHT22 de temperatura y humedad', 'Conexion WiFi via microcontrolador', 'Sincronizacion con MongoDB Atlas', 'Dashboard en tiempo real en la web']
+    items: ['Perforación de la tapa o base para regular la salida de agua.', 'Fijación de la botella en la tierra junto a la planta.', 'Llenado de agua y ajuste del goteo constante.', 'Recolección y limpieza de botellas de plástico reutilizables.']
   },
   plantacion: {
     icon: '&#127807;',
