@@ -3,9 +3,6 @@
 const API_URL = '/api';
 let tempChart = null;
 
-// =====================================================
-// PARTICULAS
-// =====================================================
 function initParticles() {
   const container = document.getElementById('particles');
   if (!container) return;
@@ -25,9 +22,6 @@ function initParticles() {
   }
 }
 
-// =====================================================
-// NAVBAR
-// =====================================================
 function initNavbar() {
   const navbar    = document.getElementById('navbar');
   const hamburger = document.getElementById('hamburger');
@@ -63,9 +57,6 @@ function initNavbar() {
   }
 }
 
-// =====================================================
-// REVEAL / COUNTERS / TILT
-// =====================================================
 function initReveal() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
@@ -110,9 +101,6 @@ function initCardTilt() {
   });
 }
 
-// =====================================================
-// TEMPERATURA
-// =====================================================
 async function obtenerTemperaturaActual() {
   try {
     const response = await fetch(`${API_URL}/temperatura/actual`);
@@ -127,8 +115,6 @@ async function obtenerTemperaturaActual() {
   }
 }
 
-// FIX 1: usa innerHTML para que los iconos unicode se rendericen bien
-// y los estados coinciden con los que manda el server (sin acento)
 function actualizarWidgetTemperatura(data) {
   const tempValue          = document.getElementById('tempValue');
   const tempLabel          = document.getElementById('tempLabel');
@@ -307,9 +293,6 @@ function crearGraficoTemperaturaFallback() {
   });
 }
 
-// =====================================================
-// CARRUSEL GALERIA
-// =====================================================
 async function inicializarCarrusel() {
   try {
     const response = await fetch(`${API_URL}/fotos`);
@@ -369,9 +352,6 @@ function iniciarLogicaCarrusel(trackId, prevId, nextId, totalSlides) {
   });
 }
 
-// =====================================================
-// CARRUSEL PROCEDIMIENTO
-// =====================================================
 async function inicializarCarruselProcedimiento() {
   try {
     const response = await fetch(`${API_URL}/procedimiento`);
@@ -438,32 +418,29 @@ function irAPasoProc(index, total) {
   track.style.transform = `translateX(${-(idx * 100)}%)`;
 }
 
-// =====================================================
-// DIAGRAMA DE FLUJO INTERACTIVO
-// =====================================================
 const flowData = {
   inicio: {
     icon: '&#127807;',
     title: 'Inicio del proyecto',
-    desc: 'El proyecto Huerto Escolar La Lavanda comenzo con la idea de combinar educacion ambiental, tecnologia IoT y agricultura sostenible en un espacio escolar.',
+    desc: 'El proyecto Huerto Escolar La Lavanda comenzo con la idea de combinar educacion ambiental, agricultura sostenible en un espacio escolar.',
     items: ['Planeacion del proyecto por el equipo', 'Seleccion del cultivo: lavanda', 'Gestion de recursos y materiales', 'Formacion de equipos de trabajo']
   },
   suelo: {
     icon: '&#9878;',
-    title: 'Analisis del suelo',
+    title: 'Analisis del area',
     desc: 'Antes de plantar, analizamos las propiedades del suelo para garantizar condiciones optimas de crecimiento para la lavanda.',
     items: ['Medicion de pH (optimo: 6.5 - 7.5)', 'Evaluacion de drenaje y textura', 'Si pH bajo: se agrega cal agricola', 'Si pH optimo: se procede directamente']
   },
   preparacion: {
     icon: '&#128247;',
-    title: 'Preparacion y compost',
+    title: 'Preparacion',
     desc: 'Con los resultados del analisis preparamos el terreno con compost organico y ajustamos las condiciones para maximizar el desarrollo de la lavanda.',
     items: ['Mezcla con compost organico (30%)', 'Aireacion y volteo del suelo', 'Nivelacion de las camas de cultivo', 'Instalacion del sistema de riego por goteo']
   },
   sensores: {
     icon: '&#128268;',
-    title: 'Instalacion de sensores IoT',
-    desc: 'Colocamos sensores de temperatura y humedad conectados a nuestra base de datos en MongoDB Atlas. Los datos se actualizan automaticamente.',
+    title: 'Instalacion del sistema de riego',
+    desc: 'Colocamos un sistema de riego automatico',
     items: ['Sensor DHT22 de temperatura y humedad', 'Conexion WiFi via microcontrolador', 'Sincronizacion con MongoDB Atlas', 'Dashboard en tiempo real en la web']
   },
   plantacion: {
@@ -475,7 +452,7 @@ const flowData = {
   monitoreo: {
     icon: '&#128200;',
     title: 'Monitoreo semanal',
-    desc: 'Revisamos los datos de los sensores semanalmente. Si las condiciones no son optimas, ajustamos el riego y los cuidados.',
+    desc: 'Revisamos los datos semanalmente. Si las condiciones no son optimas, ajustamos el riego y los cuidados.',
     items: ['Temperatura optima: 15 - 25 C', 'Si condiciones incorrectas: ajuste de riego', 'Si condiciones OK: se continua normalmente', 'Registro en bitacora escolar']
   },
   cosecha: {
