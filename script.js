@@ -812,21 +812,24 @@ function initAdmin() {
     });
   }
 
-  if (btnVerif) {
-    btnVerif.addEventListener('click', () => {
-      if (passInput.value === 'LAVANDA2026') {
-        modal.classList.remove('active');
-        passInput.value = '';
-        panel.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        cargarFotosAdmin();
-        cargarDocsAdmin();
-      } else {
-        alert('Contrasena incorrecta. Acceso denegado.');
-        passInput.value = '';
-        passInput.focus();
-      }
-    });
+ if (btnVerif) {
+  btnVerif.addEventListener('click', async () => {
+    const res = await fetch('/api/config');
+    const config = await res.json();
+    if (passInput.value === config.adminPassword) {
+      modal.classList.remove('active');
+      passInput.value = '';
+      panel.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      cargarFotosAdmin();
+      cargarDocsAdmin();
+    } else {
+      alert('Contrasena incorrecta. Acceso denegado.');
+      passInput.value = '';
+      passInput.focus();
+    }
+  });
+
   }
 
   if (passInput) {
